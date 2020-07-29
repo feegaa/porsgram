@@ -1,0 +1,17 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+
+    
+    {% for user in users %}
+        {{ user.id }}
+        {{ user.email}}
+        {{ user.username }}
+    {% endfor %}
+        
+
+
+{% endblock content %}
+    
+

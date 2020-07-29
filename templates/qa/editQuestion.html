@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+
+
+
+{% block content %}
+    
+<form id="post_form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    {{ q_form.media }}
+    {{ q_form.as_p }}
+
+    <input type="submit" name="edit" value="Edit" />
+</form>
+
+
+{% endblock content %}
+    
+
+

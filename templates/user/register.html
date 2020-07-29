@@ -1,0 +1,16 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="register">
+    <div class="clear"></div> </div>
+
+</form>
+
+    
+{% endblock content %}
+    

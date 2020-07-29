@@ -1,0 +1,43 @@
+{% extends 'template.html' %}
+
+{% block content %}
+
+
+
+
+<form id="post_form" method="post" action="" enctype="multipart/form-data">
+
+    {% csrf_token %}
+      
+    {{ q_form.media }}
+    {{ q_form.as_p }}
+
+
+    <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
+        {% for tag in tags %}
+            <option value="{{ tag.id }}">{{ tag.tag }}</option>
+        {% endfor %}
+        
+    </select>
+
+    <input type="submit" name="submit" value="Submit" />
+</form>
+
+
+<script>
+    $(document).ready(function(){
+        $('#tags').select2({
+        tags: true,
+        tokenSeprators: ['.', ' '],
+        maximumSelectionLength: 3,
+    })
+    });
+</script>
+{% load static %}
+<script src="{% static 'script/select2.min.js' %}"></script>
+
+
+
+{% endblock content %}
+    
+

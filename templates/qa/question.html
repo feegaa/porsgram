@@ -1,0 +1,87 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+
+
+<div class="card" style="margin-top: 10px;">
+    <div class="card-body">
+      <h5 class="card-title">{{ question.title }}</h5>
+      <p>{{ question.content|safe }}</p>
+      <div class="row">
+        <a href="#" class="col-md-6 text-left">{{ question.author.username }}</a>
+        <div class="col-md-6 text-right">
+            <a href="#" class="btn btn-primary">Button</a>  
+        </div>
+      </div>
+
+    </div>
+  </div> 
+
+
+  <p>{{ question.content }}</p>
+
+
+
+    {% for answer in answers %}
+
+    <div class="card w-75" style="margin-top: 10px;">
+        <div class="card-body">
+            <p>{{ answer.content|safe }}</p>
+
+          <div class="row">
+            <a href="#" class="col-md-6 text-left">{{ answer.author.username }}</a>
+            {% if request.user == answer.author %}
+              <div class="col-md-6 text-right">
+                <a href="{% url 'QA:answer_edit' q_id=question.id a_id=answer.id %}" class="btn btn-primary">Edit</a>  
+                <a href="{% url 'QA:answer_delete' q_id=question.id a_id=answer.id %}" class="btn btn-danger">Delete</a>  
+              </div>
+            {% endif %}
+          </div>
+
+            <div class="row">
+                {% if request.user == question.author %}
+                    <input type="checkbox" id="approved" name="approved" value="Bike">
+                    <label for="approved"> Approve </label><br>
+                {% endif %}
+
+            </div>    
+
+        </div>
+      </div> 
+
+
+
+
+
+    {% empty %}
+
+        <p>There is no answer for this question</p>
+
+    {% endfor %}
+        
+
+
+    {% if user.is_authenticated and not user_answered %}
+        <h3>Write answer to this question</h3>
+
+        <form method="post" action="" enctype="multipart/form-data">
+        
+            {% csrf_token %}
+            {{ answer_form.media }}
+            {{ answer_form.as_p }}
+
+            <input type="submit" name="submit" value="Submit" />
+
+        </form>
+
+
+
+    {% endif %}
+        
+
+
+{% endblock content %}
+    
+
+

@@ -1,0 +1,48 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+    
+
+
+
+
+    {% for question in questions %}
+
+
+    <!-- 
+        TODO:
+            hit counter
+            deposit
+            approved answer
+     -->
+
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-body"> 
+            <div class="row">
+                <img class="rounded" width="40dp" height="40dp" src="{{ question.author.avatarmodel.avatar.url }}" alt="avatar">
+                <a href="{% url 'QA:question' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
+            </div>
+          <div class="row">
+            <a href="#" class="col-md-6 text-left">{{ question.author.username }}</a>
+            <div class="col-md-6 text-right">
+                <a href="#" class="btn btn-primary">Button</a>  
+            </div>
+          </div>
+
+        </div>
+      </div>    
+
+    {% empty %}
+
+        <h1>There is no posts</h1>
+
+    {% endfor %}
+        
+
+
+    
+
+{% endblock content %}
+    
+

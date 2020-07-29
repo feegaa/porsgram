@@ -1,0 +1,22 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+
+
+{{ user.username }}
+
+<img class="rounded-circle" width="100" height="100" src="{{ user.avatarmodel.avatar.url }}" alt="avatar">
+
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    {{ avatar_form.as_p }}
+    <input type="submit" value="update">
+    <div class="clear"></div> </div>
+
+</form>
+{% endblock content %}
+    
+
