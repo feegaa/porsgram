@@ -4,7 +4,7 @@
 {% block content %}
 
 
-<div class="card" style="margin-top: 10px;">
+  <div class="card" style="margin-top: 10px;">
     <div class="card-body">
       <h5 class="card-title">{{ question.title }}</h5>
         <p>{{ question.content|safe }}</p>
@@ -20,22 +20,22 @@
 
 
 
-    {% if user.is_authenticated %}
-        <h3>Edit answer to this question</h3>
+  {% if user.is_authenticated %}
+    <h3>Edit answer to this question</h3>
 
-        <form method="post" action="" enctype="multipart/form-data">
-        
-            {% csrf_token %}
-            {{ answer_form.media }}
-            {{ answer_form.as_p }}
+    <form method="post" action="" enctype="multipart/form-data">
+    
+      {% csrf_token %}
+      {{ answer_form.media }}
+      {{ answer_form.as_p }}
 
-            <input type="submit" name="edit" value="Edit" />
+      <input type="submit" name="edit" value="Edit" />
 
-        </form>
+    </form>
 
 
 
-    {% endif %}
+  {% endif %}
         
 
 

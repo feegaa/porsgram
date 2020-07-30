@@ -9,7 +9,7 @@ urlpatterns = [
     path('question/<int:id>', views.question, name='question'),
 
     # question CRUD
-    path('question/create/', views.createQuestion, name='createQuestion'),
+    path('question/create/', views.createQuestion, name='question_create'),
     path('question/<int:id>/delete', views.deleteQuestion, name='question_delete'),
     path('question/<int:id>/edit', views.editQuestion, name='question_edit'),
 

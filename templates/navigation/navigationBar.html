@@ -11,9 +11,10 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'QA:createQuestion' %}">CQ</a>
+              <a class="nav-link" href="{% url 'QA:question_create' %}">CQ</a>
             </li>
-            
+
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'user:users' %}">Users</a>
             </li>
@@ -26,7 +27,7 @@
             {% if user.is_authenticated %}
 
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'user:dashboard'%}">Dashboard</a>
+                <a class="nav-link" href="{% url 'user:dashboard' %}">Dashboard</a>
               </li>            
 
               <li class="nav-item">

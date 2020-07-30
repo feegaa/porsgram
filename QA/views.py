@@ -33,13 +33,13 @@ def setQTags(tags, question):
     for tag in tags:
         tag_tuple = QTagModel()
         if tag.isdigit() and int(tag) in tags_id:
-            tag_tuple.tag_key = TagListModel.objects.get(id=int(tag))
+            tag_tuple.tag = TagListModel.objects.get(id=int(tag))
         else:
             tag_obj     = TagListModel()        
             tag_obj.tag = tag
             tag_obj.save()
-            tag_tuple.tag_key  = tag_obj
-        tag_tuple.question_key = question 
+            tag_tuple.tag  = tag_obj
+        tag_tuple.question = question 
         tag_tuple.save()
 
 
@@ -53,7 +53,7 @@ def createQuestion(request):
 
     if request.method == 'POST':
         q_form = QuestionForm(request.POST)
-        tags = request.POST.getlist('tags')
+        tags   = request.POST.getlist('tags')
         if q_form.is_valid():
             instance        = q_form.save(commit=False)            
             instance.author = request.user
@@ -70,6 +70,9 @@ def createQuestion(request):
         }
 
     return render(request, 'qa/createQuestion.html', context=context)
+
+
+
 
 
 
@@ -122,7 +125,9 @@ def question(request, id):
 def editQuestion(request, id):
 
     try:
-        question = QuestionModel.objects.get(id=id)
+        question      = QuestionModel.objects.get(id=id)
+        selected_tags = QTagModel.objects.filter(question_id=question).values_list('tag', flat=True)
+        tags          = TagListModel.objects.all()
     except ObjectDoesNotExist:
         return redirect('QA:index')
         
@@ -130,19 +135,27 @@ def editQuestion(request, id):
     if request.user == question.author:
             
         if request.method == 'POST' :
-            q_form = QuestionForm(request.POST, instance=question)
+            q_form   = QuestionForm(request.POST, instance=question)
+            new_tags = request.POST.getlist('tags')
 
             if q_form.is_valid():
                 instance        = q_form.save(commit=False)
                 instance.author = request.user
                 instance.save()
+                QTagModel.objects.filter(question_id=question).delete()
+                setQTags(new_tags, instance)
 
             return redirect('QA:question', id=id)
 
         else:
             q_form = QuestionForm(instance=question)
+            context = {
+                'q_form'        : q_form,
+                'selected_tags' : selected_tags,   
+                'tags'          : tags,   
+            }
 
-        return render(request, 'qa/editQuestion.html', {'q_form': q_form})
+        return render(request, 'qa/editQuestion.html', context=context)
 
     else:
         return redirect('QA:index')

@@ -64,11 +64,12 @@ class TagListModel(models.Model):
     objects = models.Manager()
 
 class QTagModel(models.Model):
-    tag_key      = models.ForeignKey(TagListModel, on_delete=models.CASCADE)
-    question_key = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
+    tag      = models.ForeignKey(TagListModel, on_delete=models.CASCADE)
+    question = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
+    objects  = models.Manager()
 
     class Meta:
-        unique_together = ['tag_key', 'question_key']
+        unique_together = ['tag', 'question']
 
 
 class QVote(models.Model):

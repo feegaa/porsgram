@@ -1,21 +1,49 @@
 {% extends 'template.html' %}
 
-
-
 {% block content %}
-    
+
+
+
+
 <form id="post_form" method="post" action="" enctype="multipart/form-data">
 
     {% csrf_token %}
-
+      
     {{ q_form.media }}
     {{ q_form.as_p }}
 
-    <input type="submit" name="edit" value="Edit" />
+
+    <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
+
+
+        {% for tag in tags %}
+            {% if tag.id in selected_tags %}
+                <option value="{{ tag.id }}" selected="selected" >{{ tag.tag }}</option>
+            {% else %}
+                <option value="{{ tag.id }}">{{ tag.tag }}</option>
+            {% endif %}
+        {% endfor %}
+        
+    </select>
+
+    <input type="submit" name="Edit" value="Edit" />
 </form>
+
+
+<script>
+    $(document).ready(function(){
+        $('#tags').select2({
+        tags: true,
+        tokenSeprators: ['.', ' '],
+        maximumSelectionLength: 3,
+        })
+    });
+</script>
+{% load static %}
+<script src="{% static 'script/select2.min.js' %}"></script>
+
 
 
 {% endblock content %}
     
-
 

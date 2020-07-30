@@ -11,7 +11,14 @@
       <div class="row">
         <a href="#" class="col-md-6 text-left">{{ question.author.username }}</a>
         <div class="col-md-6 text-right">
-            <a href="#" class="btn btn-primary">Button</a>  
+          {% if request.user == question.author %}
+          <div class="col-md-6 text-right">
+            <a href="{% url 'QA:question_edit' id=question.id  %}" class="btn btn-primary">Edit</a>  
+            <a href="{% url 'QA:question_delete' id=question.id %}" class="btn btn-danger">Delete</a>  
+          </div>
+        {% endif %}  
+          
+          <a href="#" class="btn btn-primary">Button</a>  
         </div>
       </div>
 
