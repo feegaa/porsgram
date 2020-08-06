@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 from QA.forms import QuestionForm, AnswerForm
-from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel
-
+from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote
+from user.models import UserModel
 
 '''
     TODO:
@@ -16,11 +17,6 @@ from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel
         2.create suitable redirect when user_authentication
 
 '''
-
-
-
-
-
 
 
 def index(request):
@@ -74,13 +70,42 @@ def createQuestion(request):
 
 
 
-
-
 def questions(request):
     questions = QuestionModel.objects.all()    
     return render(request, 'qa/questions.html', {'questions': questions})
         
+
+
+
+@login_required
+def voteQuestion(request):
+    question = get_object_or_404(QuestionModel, id=request.POST['id'])
+    _state = request.POST['state']
+
+    if (request.user.is_authenticated and 
+        request.method == "POST" and
+        request.is_ajax()):
+        try:
+            qv = QVote.objects.get(question=question, user=request.user)
+            if (qv.like_or_dislike and _state=="False"):
+                qv.delete()
+            elif ((not qv.like_or_dislike) and _state=="True"):
+                qv.delete()
+            else:
+                pass
+        except ObjectDoesNotExist:
+            qvote                 = QVote()        
+            qvote.user            = request.user
+            qvote.question        = question
+            qvote.like_or_dislike = True if _state == "True" else False
+            qvote.save()
+
         
+        return HttpResponse(status=204)
+
+    else:
+        # EXCEPTION PAGE
+        return redirect('QA:index')
 
 
 def question(request, id):
@@ -104,7 +129,6 @@ def question(request, id):
             instance.question = question
             instance.save()
             return redirect('QA:question', id=id)
-
 
 
     else:

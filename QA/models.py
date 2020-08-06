@@ -2,6 +2,9 @@ from django.db import models
 from django.template.defaultfilters import slugify 
 from datetime import datetime
 from django.utils import timezone
+from django import template
+from django.shortcuts import reverse
+
 from porsgram.settings import TEMPLATES_DIR
 
 from ckeditor_uploader.fields import RichTextUploadingField 
@@ -20,6 +23,7 @@ from user.models import UserModel
         on answer and question models 
 '''
 
+register = template.Library()
 
 
 class QuestionModel(models.Model):
@@ -38,6 +42,16 @@ class QuestionModel(models.Model):
     def delete(self, force_insert=False, force_update=False, using=None):
         delete_QA_images(self.content)
         super().delete()
+
+    @register.filter(name="get_rate_url")
+    def get_rate_url(self):
+        return reverse('QA:question_vote')
+
+    @register.filter(name="reload")
+    def getLikeState(self):
+        likes    = QVote.objects.filter(question=self, like_or_dislike=True).count()
+        dislikes = QVote.objects.filter(question=self, like_or_dislike=False).count()
+        return likes - dislikes
 
 
 class AnswerModel(models.Model):
@@ -73,33 +87,28 @@ class QTagModel(models.Model):
 
 
 class QVote(models.Model):
-    STATUS_CHOICES = (
-        ('like'   , 'like'),
-        ('none'   , 'none'),
-        ('dislike', 'dislike'),
-    )
 
-    user_key        = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    question_key    = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
-    like_or_dislike = models.CharField(choices=STATUS_CHOICES, default='none', max_length=7)
+    user            = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    question        = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
+    like_or_dislike = models.BooleanField(default=False, blank=False)
+    
+    objects         = models.Manager()
 
     class Meta:
-        unique_together = ['user_key', 'question_key']
+        unique_together = ['user', 'question']
+
 
 
 class AVote(models.Model):
-    STATUS_CHOICES = (
-        ('like'   , 'like'),
-        ('none'   , 'none'),
-        ('dislike', 'dislike'),
-    )
 
-    user_key        = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    answer_key      = models.ForeignKey(AnswerModel, on_delete=models.CASCADE)
-    like_or_dislike = models.CharField(choices=STATUS_CHOICES, default='none', max_length=7)
+    user            = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    answer          = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
+    like_or_dislike = models.BooleanField(default=False, blank=False)
+    
+    objects         = models.Manager()
 
     class Meta:
-        unique_together = ['user_key', 'answer_key']
+        unique_together = ['user', 'answer']
 
 
 
