@@ -13,7 +13,6 @@ urlpatterns = [
     path('question/<int:id>/delete', views.deleteQuestion, name='question_delete'),
     path('question/<int:id>/edit', views.editQuestion, name='question_edit'),
     path('question/vote/', views.voteQuestion, name='question_vote'),
-    path('questionss/', views.testQuestion, name='question_test'),
 
 
     # answer CRUD

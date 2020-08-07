@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 
 from QA.forms import QuestionForm, AnswerForm
 from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote
+
 from user.models import UserModel
 
 '''
@@ -100,7 +101,6 @@ def voteQuestion(request):
             qvote.like_or_dislike = True if _state == "True" else False
             qvote.save()
 
-        
         return HttpResponse(status=204)
 
     else:
@@ -129,7 +129,6 @@ def question(request, id):
             instance.question = question
             instance.save()
             return redirect('QA:question', id=id)
-
 
     else:
         answer_form = AnswerForm()

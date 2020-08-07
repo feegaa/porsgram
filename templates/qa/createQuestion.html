@@ -9,8 +9,19 @@
 
     {% csrf_token %}
       
+
     {{ q_form.media }}
     {{ q_form.as_p }}
+    <!-- {{ q_form.content }} -->
+
+<!-- 
+    <div class="django-ckeditor-widget" style="display: inline-block;">
+        <textarea cols="40" id="content" name="content" rows="10" required data-processed="0" 
+                  data-config='{"skin": "moono-lisa", "toolbar_Basic": [["Source", "-", "Bold", "Italic"]], "toolbar_Full": [["Styles", "Format", "Bold", "Italic", "Underline", "Strike", "SpellChecker", "Undo", "Redo"], ["Link", "Unlink", "Anchor"], ["Image", "Table", "HorizontalRule"], ["TextColor", "BGColor"], ["Smiley", "SpecialChar"], ["Source"], ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"], ["NumberedList", "BulletedList"], ["Indent", "Outdent"], ["Maximize"]], "toolbar": "Full", "height": 291, "width": 835, "filebrowserWindowWidth": 940, "filebrowserWindowHeight": 725, "extraPlugins": "justify,liststyle,indent", "filebrowserUploadUrl": "/ckeditor/upload", "filebrowserBrowseUrl": "/ckeditor/browse", "language": "en-us"}'
+                data-external-plugin-resources="[]" data-id="id_content" data-type="ckeditortype">
+        </textarea>
+    </div> -->
+
 
 
     <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
@@ -24,17 +35,44 @@
 </form>
 
 
+
+<pre>
+    <div id="preview" style="min-height: 60px;"></div>
+</pre>
+
+
+
+
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'script/select2.min.js' %}"></script>
+
+
+
 <script>
-    $(document).ready(function(){
-        $('#tags').select2({
+
+    $('#tags').select2({
         tags: true,
         tokenSeprators: ['.', ' '],
         maximumSelectionLength: 3,
-        })
+    })
+
+
+
+
+    $(document).ready(function(){
+        var content = CKEDITOR.instances['id_content'];
+        content.on('contentDom', function(event){
+            content.on('change', function(event){
+                console.log(this.getData());
+                document.getElementById('preview').innerHTML = this.getData();
+            });
+        });
     });
+    
+
+
 </script>
-{% load static %}
-<script src="{% static 'script/select2.min.js' %}"></script>
 
 
 
