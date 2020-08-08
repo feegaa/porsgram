@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 
 from QA.forms import QuestionForm, AnswerForm
-from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote
+from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote, AVote
 
 from user.models import UserModel
 
@@ -100,6 +100,38 @@ def voteQuestion(request):
             qvote.question        = question
             qvote.like_or_dislike = True if _state == "True" else False
             qvote.save()
+
+        return HttpResponse(status=204)
+
+    else:
+        # EXCEPTION PAGE
+        return redirect('QA:index')
+
+
+
+
+@login_required
+def voteAnswer(request):
+    answer = get_object_or_404(AnswerModel, id=request.POST['id'])
+    _state = request.POST['state']
+
+    if (request.user.is_authenticated and 
+        request.method == "POST" and
+        request.is_ajax()):
+        try:
+            av = AVote.objects.get(answer=answer, user=request.user)
+            if (av.like_or_dislike and _state=="False"):
+                av.delete()
+            elif ((not av.like_or_dislike) and _state=="True"):
+                av.delete()
+            else:
+                pass
+        except ObjectDoesNotExist:
+            avote                 = AVote()        
+            avote.user            = request.user
+            avote.answer          = answer
+            avote.like_or_dislike = True if _state == "True" else False
+            avote.save()
 
         return HttpResponse(status=204)
 

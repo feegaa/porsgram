@@ -15,14 +15,14 @@
       <div>
         <div class="votecell post-layout--left">
           {% csrf_token %}
-          <button id="vote-up" class="grid--cell s-btn s-btn__unset c-pointer" 
-            data-href="{{ question.get_rate_url }}"
+          <button id="question-vote-up" class="grid--cell s-btn s-btn__unset c-pointer" 
+            data-href="{{ question.getVoteUrl }}"
             data-question="{{ question.id }}"
             data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="false" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
-        <div id="counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ question.getLikeState }}</div>
+        <div id="question-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ question.getVoteState }}</div>
           {% csrf_token %}
-          <button id="vote-down" class="grid--cell s-btn s-btn__unset c-pointer" 
-            data-href="{{ question.get_rate_url }}"
+          <button id="question-vote-down" class="grid--cell s-btn s-btn__unset c-pointer" 
+            data-href="{{ question.getVoteUrl }}"
             data-question="{{ question.id }}" 
             data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
       </div>
@@ -37,17 +37,34 @@
 
     </div>
   </div> 
+</div>
 
-
-  <p>{{ question.content }}</p>
 
 
     {% for answer in answers %}
 
     <div class="card w-75" style="margin-top: 10px;">
+
+
+      <div class="row">
+
         <div class="card-body">
             <p>{{ answer.content|safe }}</p>
 
+              <div class="votecell post-layout--left">
+                {% csrf_token %}
+                <button id="answer-vote-up" class="grid--cell s-btn s-btn__unset c-pointer" 
+                  data-href="{{ answer.getVoteUrl }}"
+                  data-answer="{{ answer.id }}"
+                  data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="false" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
+              <div id="answer-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ answer.getVoteState }}</div>
+                {% csrf_token %}
+                <button id="answer-vote-down" class="grid--cell s-btn s-btn__unset c-pointer" 
+                  data-href="{{ answer.getVoteUrl }}"
+                  data-answer="{{ answer.id }}" 
+                  data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+            </div>
+      
           <div class="row">
             <a href="#" class="col-md-6 text-left">{{ answer.author.username }}</a>
             {% if request.user == answer.author %}
@@ -58,15 +75,15 @@
             {% endif %}
           </div>
 
-            <div class="row">
-                {% if request.user == question.author %}
-                    <input type="checkbox" id="approved" name="approved" value="Bike">
-                    <label for="approved"> Approve </label><br>
-                {% endif %}
+          <div class="row">
+            {% if request.user == question.author %}
+                <input type="checkbox" id="approved" name="approved" value="Bike">
+                <label for="approved"> Approve </label><br>
+            {% endif %}
 
-            </div>    
+          </div>    
 
-        </div>
+        </div> 
       </div> 
 
 
@@ -93,45 +110,9 @@
 
     {% endif %}
     
-    
 {% block scripts %}
-  
- <script>
-  $(document).ready(function(){
-    
-    $('#vote-up').click(function(event){
-    event.preventDefault()
-    var likeUrl = $(this).attr("data-href")
-    var _id     = $(this).attr("data-question")
-    var _state  = "True"
-    $.ajax({
-      url: likeUrl,
-      method: "POST",
-      data: {id:_id, state:_state, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() },
-      }).done(function(){
-        $("#counter").load(location.href + " #counter")
-      });
-    });
-
-
-    $('#vote-down').click(function(event){
-      event.preventDefault()
-      var likeUrl = $(this).attr("data-href")
-      var _id     = $(this).attr("data-question")
-      var _state  = "False"
-      $.ajax({
-        url: likeUrl,
-        method: "POST",
-        data: {id:_id, state:_state, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() },
-      }).done(function(){
-        $("#counter").load(location.href + " #counter")
-      });
-    });
-
-   })
-
-
- </script>
+  {% load static %}    
+  <script src="{% static 'script/vote.js' %}"></script>
 {% endblock scripts %}
   
 

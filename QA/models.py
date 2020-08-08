@@ -15,7 +15,6 @@ from user.models import UserModel
 
 
 
-# Create your models here.
 
 '''
     TODO:
@@ -43,12 +42,12 @@ class QuestionModel(models.Model):
         delete_QA_images(self.content)
         super().delete()
 
-    @register.filter(name="get_rate_url")
-    def get_rate_url(self):
+    @register.filter(name="getVoteUrl")
+    def getVoteUrl(self):
         return reverse('QA:question_vote')
 
-    @register.filter(name="reload")
-    def getLikeState(self):
+    @register.filter(name="getVoteState")
+    def getVoteState(self):
         likes    = QVote.objects.filter(question=self, like_or_dislike=True).count()
         dislikes = QVote.objects.filter(question=self, like_or_dislike=False).count()
         return likes - dislikes
@@ -71,6 +70,17 @@ class AnswerModel(models.Model):
         delete_QA_images(self.content)
         super().delete()
 
+
+    @register.filter(name="getVoteUrl")
+    def getVoteUrl(self):
+        return reverse('QA:answer_vote')
+
+
+    @register.filter(name="getVoteState")
+    def getVoteState(self):
+        likes    = AVote.objects.filter(answer=self, like_or_dislike=True).count()
+        dislikes = AVote.objects.filter(answer=self, like_or_dislike=False).count()
+        return likes - dislikes
 
 
 class TagListModel(models.Model):
@@ -102,7 +112,7 @@ class QVote(models.Model):
 class AVote(models.Model):
 
     user            = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    answer          = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
+    answer          = models.ForeignKey(AnswerModel, on_delete=models.CASCADE)
     like_or_dislike = models.BooleanField(default=False, blank=False)
     
     objects         = models.Manager()
