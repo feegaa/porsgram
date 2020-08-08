@@ -53,13 +53,15 @@
 
               <div class="votecell post-layout--left">
                 {% csrf_token %}
-                <button id="answer-vote-up" class="grid--cell s-btn s-btn__unset c-pointer" 
+                <button element-up-id="answer-vote-up-{{ answer.id }}" class="grid--cell s-btn s-btn__unset c-pointer" 
                   data-href="{{ answer.getVoteUrl }}"
                   data-answer="{{ answer.id }}"
                   data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="false" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
-              <div id="answer-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ answer.getVoteState }}</div>
+              
+                  <div id="answer-{{ answer.id }}-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ answer.getVoteState }}</div>
                 {% csrf_token %}
-                <button id="answer-vote-down" class="grid--cell s-btn s-btn__unset c-pointer" 
+              
+                <button element-down-id="answer-vote-down-{{ answer.id }}" class="grid--cell s-btn s-btn__unset c-pointer" 
                   data-href="{{ answer.getVoteUrl }}"
                   data-answer="{{ answer.id }}" 
                   data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
@@ -112,6 +114,7 @@
     
 {% block scripts %}
   {% load static %}    
+  <script src="{% static 'script/jquery.js' %}"></script>
   <script src="{% static 'script/vote.js' %}"></script>
 {% endblock scripts %}
   

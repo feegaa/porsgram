@@ -39,7 +39,7 @@ class QuestionModel(models.Model):
 
 
     def delete(self, force_insert=False, force_update=False, using=None):
-        delete_QA_images(self.content)
+        deleteQAImages(self.content)
         super().delete()
 
     @register.filter(name="getVoteUrl")
@@ -67,7 +67,7 @@ class AnswerModel(models.Model):
 
 
     def delete(self, force_insert=False, force_update=False, using=None):
-        delete_QA_images(self.content)
+        deleteQAImages(self.content)
         super().delete()
 
 
@@ -123,7 +123,7 @@ class AVote(models.Model):
 
 
 # Special functions
-def delete_QA_images(content):
+def deleteQAImages(content):
     imgs = re.findall('src="([^"]*)"', content)
     for img in imgs:
         path = TEMPLATES_DIR + img
