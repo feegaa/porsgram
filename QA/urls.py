@@ -14,10 +14,11 @@ urlpatterns = [
     path('question/<int:id>/edit', views.editQuestion, name='question_edit'),
     path('question/vote/', views.voteQuestion, name='question_vote'),
 
-
     # answer CRUD
     path('question/<int:q_id>/answer/<int:a_id>/edit', views.editAnswer, name='answer_edit'),
     path('question/<int:q_id>/answer/<int:a_id>/delete', views.deleteAnswer, name='answer_delete'),
     path('answer/vote/', views.voteAnswer, name='answer_vote'),
+    path('answer/approved/', views.approveAnswer, name='answer_approved'),
+
 
 ]

@@ -4,8 +4,9 @@ from datetime import datetime
 from django.utils import timezone
 from django import template
 from django.shortcuts import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
-from porsgram.settings import TEMPLATES_DIR
+from porsgram.settings import TEMPLATES_DIR, STATIC_URL
 
 from ckeditor_uploader.fields import RichTextUploadingField 
 import re 
@@ -53,12 +54,20 @@ class QuestionModel(models.Model):
         return likes - dislikes
 
 
+    @register.filter(name="getApprovedAnswerId")
+    def getApprovedAnswerId(self):
+        try:
+            result = list(AnswerModel.objects.filter(question=self).values_list('id', flat=True))
+        except ObjectDoesNotExist:
+            result = None
+        return result
+
 class AnswerModel(models.Model):
     content      = RichTextUploadingField()
     vote_counter = models.SmallIntegerField(default=0)
-    approved     = models.BooleanField(default=False)
     question     = models.ForeignKey(QuestionModel, on_delete=models.CASCADE, related_name='question')
     author       = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='author')    
+    is_approved  = models.BooleanField(default=False)
 
     objects      = models.Manager()
 
@@ -74,6 +83,19 @@ class AnswerModel(models.Model):
     @register.filter(name="getVoteUrl")
     def getVoteUrl(self):
         return reverse('QA:answer_vote')
+
+
+    @register.filter(name="getAnswerApproveUrl")
+    def getAnswerApproveUrl(self):
+        return reverse('QA:answer_approved')
+
+
+    @register.filter(name="isApproved")
+    def isApproved(self):
+        print(self.id, self.is_approved)
+        path = STATIC_URL + "image/"+("approved.svg" if self.is_approved else "not_approved.svg")
+        print(path)
+        return path
 
 
     @register.filter(name="getVoteState")
@@ -105,7 +127,10 @@ class QVote(models.Model):
     objects         = models.Manager()
 
     class Meta:
-        unique_together = ['user', 'question']
+        constraints = [
+            models.UniqueConstraint(fields=['question', 'user'], name='qvote')
+        ]
+        # unique_together = ['user', 'question']
 
 
 
@@ -120,6 +145,12 @@ class AVote(models.Model):
     class Meta:
         unique_together = ['user', 'answer']
 
+
+class AnswerApproved(models.Model):
+    answer   = models.ForeignKey(AnswerModel, on_delete=models.CASCADE)
+    question = models.OneToOneField(QuestionModel, on_delete=models.CASCADE, primary_key=True, related_name="answer_approved")
+
+    objects  = models.Manager() 
 
 
 # Special functions

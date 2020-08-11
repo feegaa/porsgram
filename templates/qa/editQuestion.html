@@ -29,20 +29,21 @@
     <input type="submit" name="Edit" value="Edit" />
 </form>
 
-
-<script>
-    $(document).ready(function(){
-        $('#tags').select2({
-        tags: true,
-        tokenSeprators: ['.', ' '],
-        maximumSelectionLength: 3,
-        })
-    });
-</script>
-{% load static %}
-<script src="{% static 'script/select2.min.js' %}"></script>
+<pre>
+    <div id="preview" style="min-height: 60px;"></div>
+</pre>
 
 
+
+
+
+{% block scripts %}
+    {% load static %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'script/select2.min.js' %}"></script>
+    <script src="{% static 'script/custom.js' %}"></script>
+{% endblock scripts %}
+    
 
 {% endblock content %}
     

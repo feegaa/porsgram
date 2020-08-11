@@ -6,9 +6,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
+from django.db import IntegrityError
+
 
 from QA.forms import QuestionForm, AnswerForm
-from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote, AVote
+from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote, AVote, AnswerApproved
 
 from user.models import UserModel
 
@@ -93,15 +95,25 @@ def voteQuestion(request):
             elif ((not qv.like_or_dislike) and _state=="True"):
                 qv.delete()
             else:
-                pass
+                return HttpResponse(status=204)
+                
         except ObjectDoesNotExist:
+
             qvote                 = QVote()        
-            qvote.user            = request.user
             qvote.question        = question
+            qvote.user            = request.user
             qvote.like_or_dislike = True if _state == "True" else False
-            qvote.save()
+            try:
+                qvote.save()
+            except IntegrityError:
+                pass
+
+                
+
+            return HttpResponse(status=204)
 
         return HttpResponse(status=204)
+
 
     else:
         # EXCEPTION PAGE
@@ -127,11 +139,14 @@ def voteAnswer(request):
             else:
                 pass
         except ObjectDoesNotExist:
+
             avote                 = AVote()        
             avote.user            = request.user
             avote.answer          = answer
             avote.like_or_dislike = True if _state == "True" else False
             avote.save()
+
+            return HttpResponse(status=204)
 
         return HttpResponse(status=204)
 
@@ -142,9 +157,9 @@ def voteAnswer(request):
 
 def question(request, id):
     try:
-        question      = QuestionModel.objects.get(id=id)
-        answers       = AnswerModel.objects.filter(question=question)
-        user_answered = answers.filter(author=request.user) if request.user.is_authenticated else None
+        question        = QuestionModel.objects.get(id=id)
+        answers         = AnswerModel.objects.filter(question=question)
+        user_answered   = answers.filter(author=request.user) if request.user.is_authenticated else None
 
     except ObjectDoesNotExist:
         return HttpResponseRedirect('QA:index')
@@ -163,16 +178,74 @@ def question(request, id):
             return redirect('QA:question', id=id)
 
     else:
-        answer_form = AnswerForm()
+        try:
+            approved_answer = AnswerApproved.objects.get(question=question)
+        except ObjectDoesNotExist:
+            approved_answer = None
+        answer_form = AnswerForm(request.POST)
         context = {
-            'answer_form'   : answer_form,
-            'question'      : question,
-            'answers'       : answers,
-            'user_answered' : user_answered,
+            'answer_form'     : answer_form,
+            'question'        : question,
+            'answers'         : answers,
+            'user_answered'   : user_answered,
+            'approved_answer' : approved_answer,
         }
 
     return render(request, 'qa/question.html', context=context)
         
+
+@login_required
+def approveAnswer(request):
+
+
+    try:
+        a_id     = request.POST['answer_id']
+        answer   = AnswerModel.objects.get(id=a_id)
+        question = answer.question
+
+    except ObjectDoesNotExist:
+        return HttpResponse(status=303)
+
+    if (request.user.is_authenticated and 
+        request.user == question.author and
+        request.method == "POST" and
+        request.is_ajax()):
+        
+
+        try:
+            approved_answer = AnswerApproved.objects.get(question=question)        
+        except ObjectDoesNotExist:
+            approved_answer = None
+        
+        if approved_answer == None:
+            answer.is_approved   = True
+            approved_answer          = AnswerApproved()
+            approved_answer.answer   = answer
+            approved_answer.question = question
+            try:
+                approved_answer.save()        
+                answer.save()                
+            except IntegrityError:
+                pass
+
+        elif approved_answer.answer == answer:
+            answer.is_approved = False
+            answer.save()                
+            approved_answer.delete()
+        else:
+            approved_answer.answer.is_approved = False
+            approved_answer.answer.save()
+            answer.is_approved   = True
+            approved_answer.answer = answer
+            try:
+                approved_answer.save()      
+                answer.save()                
+
+            except IntegrityError:
+                pass
+
+
+    return HttpResponse(status=204)
 
 
 

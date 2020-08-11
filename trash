@@ -1,0 +1,46 @@
+ <button 
+              answer-id="answer-{{ answer.id }}"
+              data-href="{{ answer.getAnswerApproveUrl }}"
+              data-answer-id="{{ answer.id }}" 
+              data-question-id="{{ question.id }}" 
+              data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
+              data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
+            >
+              <img width="40" height="40" src="{% static  'image/not_approved.svg' %}" alt="not_approved">
+            </button>
+
+
+
+                          <div id="answer-{{answer.id}}-approve" data-approved="{{approved_answer.answer.id}}" >
+                <img  width="40" height="40" src="{{ answer.isApproved }}" alt="{{ answer.isApproved }}">
+              </div>
+
+
+
+
+
+
+
+
+
+    $(document).on('click', '[answer-id]', function( event ) {   
+        event.preventDefault();
+        var likeUrl = $(this).attr("data-href");
+        var a_id    = $(this).attr("data-answer-id");
+        var aa_id   = $("#answer-"+a_id+"-approve").attr("data-approved");
+        console.log("aa"+aa_id)
+        console.log("a"+a_id)
+        $.ajax({
+            url: likeUrl,
+            method: "POST",
+            data: {answer_id:a_id, csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val() },
+        }).done(function(){
+            if(aa_id != "None"){
+                console.log("if"+aa_id)
+                $("#answer-"+aa_id+"-approve").load(location.href + " #answer-"+aa_id+"-approve");
+            }
+            console.log("finish")            
+            $("#answer-"+a_id+"-approve").load(location.href + " #answer-"+a_id+"-approve");
+        });
+    });
+        

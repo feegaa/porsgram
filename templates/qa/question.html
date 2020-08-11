@@ -2,6 +2,7 @@
 
 
 {% block content %}
+{% load static %}
 
 
 <div class="card" style="margin-top: 10px;">
@@ -15,15 +16,15 @@
       <div>
         <div class="votecell post-layout--left">
           {% csrf_token %}
-          <button id="question-vote-up" class="grid--cell s-btn s-btn__unset c-pointer" 
-            data-href="{{ question.getVoteUrl }}"
-            data-question="{{ question.id }}"
-            data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="false" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
+          <button id="question-vote-up" class="grid--cell s-btn s-btn__unset c-pointer" type="button"
+          data-href="{{ question.getVoteUrl }}"
+          data-question="{{ question.id }}"
+            data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
         <div id="question-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ question.getVoteState }}</div>
           {% csrf_token %}
-          <button id="question-vote-down" class="grid--cell s-btn s-btn__unset c-pointer" 
-            data-href="{{ question.getVoteUrl }}"
-            data-question="{{ question.id }}" 
+          <button id="question-vote-down" class="grid--cell s-btn s-btn__unset c-pointer" type="button"
+          data-href="{{ question.getVoteUrl }}"
+          data-question="{{ question.id }}" 
             data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
       </div>
 
@@ -41,10 +42,13 @@
 
 
 
-    {% for answer in answers %}
+  {% for answer in answers %}
 
     <div class="card w-75" style="margin-top: 10px;">
-
+      
+  
+  
+  
 
       <div class="row">
 
@@ -53,16 +57,16 @@
 
               <div class="votecell post-layout--left">
                 {% csrf_token %}
-                <button element-up-id="answer-vote-up-{{ answer.id }}" class="grid--cell s-btn s-btn__unset c-pointer" 
+                <button element-up-id="answer-vote-up-{{ answer.id }}" class="grid--cell s-btn s-btn__unset c-pointer" type="button"
                   data-href="{{ answer.getVoteUrl }}"
                   data-answer="{{ answer.id }}"
                   data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="false" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
               
                   <div id="answer-{{ answer.id }}-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ answer.getVoteState }}</div>
-                {% csrf_token %}
+                  {% csrf_token %}
               
-                <button element-down-id="answer-vote-down-{{ answer.id }}" class="grid--cell s-btn s-btn__unset c-pointer" 
-                  data-href="{{ answer.getVoteUrl }}"
+                <button element-down-id="answer-vote-down-{{ answer.id }}" class="grid--cell s-btn s-btn__unset c-pointer" type="button"
+                  data-href="{{ answer.getVoteUrl }}" 
                   data-answer="{{ answer.id }}" 
                   data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
             </div>
@@ -77,11 +81,33 @@
             {% endif %}
           </div>
 
-          <div class="row">
-            {% if request.user == question.author %}
-                <input type="checkbox" id="approved" name="approved" value="Bike">
-                <label for="approved"> Approve </label><br>
-            {% endif %}
+          {% if request.user == question.author %}
+
+
+          <div>
+            <button
+              answer-id="answer-{{ answer.id }}"
+              data-href="{{ answer.getAnswerApproveUrl }}"
+              data-answers="{{question.getApprovedAnswerId}}"
+              data-answer-id="{{ answer.id }}" 
+              data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
+              data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
+              >
+
+              <div id="answer-{{answer.id}}-approve" >
+                <img  width="40" height="40" src="{{ answer.isApproved }}" alt="{{ answer.isApproved }}">
+              </div>
+
+            </button>          
+  
+           
+          </div>
+          {% endif %}
+  
+              {% if request.user != question.author and answer == approved_answer.answer %}
+                <img  width="40" height="40" src="{% static 'image/approved.svg' %}" alt="approved answer"">
+                  
+              {% endif %}
 
           </div>    
 
@@ -98,24 +124,36 @@
 
     {% if user.is_authenticated and not user_answered %}
         <h3>Write answer to this question</h3>
-
-        <form method="post" action="" enctype="multipart/form-data">
+        <div id="is_answered">
+          <form method="post" action="" enctype="multipart/form-data">
         
             {% csrf_token %}
             {{ answer_form.media }}
             {{ answer_form.as_p }}
 
+
             <input type="submit" name="submit" value="Submit" />
 
         </form>
 
+        </div>
 
     {% endif %}
+
     
+
+<pre>
+  <div id="preview" style="min-height: 60px;"></div>
+</pre>
+
+  
+
+
 {% block scripts %}
   {% load static %}    
   <script src="{% static 'script/jquery.js' %}"></script>
   <script src="{% static 'script/vote.js' %}"></script>
+  <script src="{% static 'script/custom.js' %}"></script>
 {% endblock scripts %}
   
 
