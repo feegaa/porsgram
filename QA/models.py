@@ -6,7 +6,7 @@ from django import template
 from django.shortcuts import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
-from porsgram.settings import TEMPLATES_DIR, STATIC_URL
+from porsgram.settings import TEMPLATES_DIR, MEDIA_URL
 
 from ckeditor_uploader.fields import RichTextUploadingField 
 import re 
@@ -93,7 +93,7 @@ class AnswerModel(models.Model):
     @register.filter(name="isApproved")
     def isApproved(self):
         print(self.id, self.is_approved)
-        path = STATIC_URL + "image/"+("approved.svg" if self.is_approved else "not_approved.svg")
+        path = MEDIA_URL + ("green.png" if self.is_approved else "gray.png")
         print(path)
         return path
 
@@ -130,7 +130,7 @@ class QVote(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['question', 'user'], name='qvote')
         ]
-        # unique_together = ['user', 'question']
+        # unique_together = ['user', 'question']    
 
 
 

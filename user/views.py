@@ -14,6 +14,7 @@ from user.models import UserModel
 
 
 def register(request):
+    next_path = request.GET.get('next', '/')
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -27,7 +28,7 @@ def register(request):
                                         )
             login(request, user)
             # messages.success(request, 'welcome '+str(username))        
-            return redirect('user:dashboard')
+            return redirect(next_path)
 
     elif request.user.is_authenticated:
         messages.warning(request, 'Logout '+str(request.user.username))        
@@ -62,19 +63,20 @@ def users(request):
 
 
 def loginView(request):
+    next_path = request.GET.get('next', '/')
     if request.POST:
         username = request.POST['username']
-        password =  request.POST['password']
-        # user     = authenticate(username=username, password=password)
+        password = request.POST['password']
+        print(next)
         try:
             user = UserModel.objects.get(username=username, 
                                         password=password)
             if user is not None:
                 login(request, user)
-
                 request.session['id']  = user.id
                 messages.success(request, 'welcome '+str(user.username))        
-                return redirect('user:dashboard')
+                return redirect(next_path)
+        
         except ObjectDoesNotExist:
             messages.error(request, 'نام کاربری و یا رمز عبور اشتباه است.')
     return render(request, 'user/login.html', {})

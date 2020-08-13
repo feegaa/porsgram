@@ -6,6 +6,7 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <input type="hidden" name="next" value="{{ request.path }}">
     <input type="submit" value="register">
     <div class="clear"></div> </div>
 

@@ -144,7 +144,10 @@ def voteAnswer(request):
             avote.user            = request.user
             avote.answer          = answer
             avote.like_or_dislike = True if _state == "True" else False
-            avote.save()
+            try:
+                avote.save()            
+            except IntegrityError:
+                pass
 
             return HttpResponse(status=204)
 
