@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
-
+from django.core.paginator import Paginator
 
 from QA.forms import QuestionForm, AnswerForm
 from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote, AVote, AnswerApproved
@@ -17,8 +17,6 @@ from user.models import UserModel
 '''
     TODO:
         1.create NOT_FOUND page
-        2.create suitable redirect when user_authentication
-
 '''
 
 
@@ -74,8 +72,16 @@ def createQuestion(request):
 
 
 def questions(request):
-    questions = QuestionModel.objects.all()    
-    return render(request, 'qa/questions.html', {'questions': questions})
+    questions   = QuestionModel.objects.all()    
+    paginator   = Paginator(questions, 2)
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
+
+    context     = {
+        'page_obj': page_obj,
+    }
+
+    return render(request, 'qa/questions.html', context=context)
         
 
 
@@ -108,7 +114,6 @@ def voteQuestion(request):
             except IntegrityError:
                 pass
 
-                
 
             return HttpResponse(status=204)
 

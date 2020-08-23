@@ -1,0 +1,66 @@
+
+<div class="navbar">
+  <div class="inner">
+    <a href="{% url 'QA:index' %}"><img width="30px" height="30px" src="{{ MEDIA_URL }}/images/porsgram.png" alt="porsgram"></a>
+    <a href="{% url 'QA:question_create' %}" 
+    title="{% if not request.user.is_authenticated %} اول باید عضو شی!{% endif %}">سوال داری؟</a>
+    <a href="{% url 'QA:questions' %}">سوالها</a>
+    <a href="{% url 'user:users' %}">اعضا</a>
+    {% if user.is_authenticated %}
+      <div class="dropdown">
+        <button class="dropbtn">{{user.username}} 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="{% url 'user:dashboard' %}">داشبور</a>
+          <a href="{% url 'user:logout' %}">خروج</a>
+        </div>
+      </div>
+    {% else %}
+      <a href="{% url 'user:login' %}?next={{request.path}}">ورود</a>
+      <a href="{% url 'user:register'%}?next={{request.path}}">ثبت نام</a>
+    {% endif %}
+
+
+
+    </div>
+
+  </div>
+</div>
+
+
+<!--
+  <header>
+    <nav>
+          <input type="checkbox" id="css-toggle-menu" name="css-toggle-menu"> 
+          <div class="outer">
+            <ul class="inner">
+              <li><a href="{% url 'QA:index' %}"><img width="40px" height="40px" src="{{ MEDIA_URL }}/logo.png" alt="porsgram"></a></li>
+              <li><a href="{% url 'QA:question_create' %}">سوال داری؟</a></li>
+              <li><a href="{% url 'QA:questions' %}">سوالها</a></li>
+              <li><a href="{% url 'user:users' %}">اعضا</a></li>
+  
+              {% if user.is_authenticated %}
+              <div class="dropdown">
+                <button class="dropbtn">{{user.username}} 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                  <a href="{% url 'user:dashboard' %}">داشبور</a>
+                  <a href="{% url 'user:logout' %}">خروج</a>
+                </div>
+              </div>
+              {% else %}
+                    <li><a href="{% url 'user:login' %}?next={{request.path}}">ورود</a></li>
+                    <li><a href="{% url 'user:register'%}?next={{request.path}}">ثبت نام</a></li>
+              {% endif %}
+                
+
+            </ul>
+                  </div>
+
+            <label for="css-toggle-menu" id="css-toggle-menu"></label> 
+    </nav>
+  </header>
+
+-->

@@ -6,7 +6,9 @@ $(document).ready(function(){
         maximumSelectionLength: 3,
     })
 
-    if($('#is_answered').length) {
+
+    if($('#has_editor').length) {
+        console.log("yoyoyoyo");
         var content = CKEDITOR.instances['id_content'];
         content.on('contentDom', function(event){
             content.on('change', function(event){
@@ -41,7 +43,9 @@ $(document).ready(function(){
         });
     });
         
-        
+    setTimeout(function() {
+        $('#alert').fadeOut('fast');
+    }, 2000);        
 
 
 });

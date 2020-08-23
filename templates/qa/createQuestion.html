@@ -4,32 +4,34 @@
 
 
 
+<div id="has_editor">
+    <form id="post_form" method="post" action="" enctype="multipart/form-data">
 
-<form id="post_form" method="post" action="" enctype="multipart/form-data">
-
-    {% csrf_token %}
-      
-
-    {{ q_form.media }}
-    {{ q_form.as_p }}
-
-
-
-
-    <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
-        {% for tag in tags %}
-            <option value="{{ tag.id }}">{{ tag.tag }}</option>
-        {% endfor %}
-        
-    </select>
-
-    <input type="submit" name="submit" value="Submit" />
-</form>
+        {% csrf_token %}
+          
+    
+        {{ q_form.media }}
+        {{ q_form.as_p }}
+    
+    
+    
+    
+    
+        <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
+            {% for tag in tags %}
+                <option value="{{ tag.id }}">{{ tag.tag }}</option>
+            {% endfor %}
+            
+        </select>
+    
+        <input type="submit" name="submit" value="Submit" />
+    </form>    
+</div>
 
 
 
 <pre>
-    <div id="preview" style="min-height: 60px;"></div>
+    <div id="preview" style="min-height: 60px;">preview</div>
 </pre>
 
 
@@ -38,13 +40,6 @@
 
 
 
-
-{% block scripts %}
-    {% load static %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static 'script/select2.min.js' %}"></script>
-    <script src="{% static 'script/custom.js' %}"></script>
-{% endblock scripts %}
     
 
 

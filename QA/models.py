@@ -92,9 +92,7 @@ class AnswerModel(models.Model):
 
     @register.filter(name="isApproved")
     def isApproved(self):
-        print(self.id, self.is_approved)
-        path = MEDIA_URL + ("green.png" if self.is_approved else "gray.png")
-        print(path)
+        path = MEDIA_URL + "images/" + ("green.png" if self.is_approved else "gray.png")
         return path
 
 

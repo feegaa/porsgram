@@ -15,16 +15,20 @@
         <div class="col-md-6 text-right">
 
       <div>
-        <div class="votecell post-layout--left">
+        <div class="">
           {% csrf_token %}
-          <button id="question-vote-up" class="grid--cell s-btn s-btn__unset c-pointer" type="button"
+          <button id="question-vote-up" 
+          class="button-vote" 
+          type="button"
           data-href="{{ question.getVoteUrl }}"
           data-is_authenticated="{{ request.user.is_authenticated }}"
           data-question="{{ question.id }}"
             data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
         <div id="question-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ question.getVoteState }}</div>
           {% csrf_token %}
-          <button id="question-vote-down" class="grid--cell s-btn s-btn__unset c-pointer" type="button"
+          <button id="question-vote-down" 
+          class="button-vote"
+          type="button"
           data-href="{{ question.getVoteUrl }}"
           data-is_authenticated="{{ request.user.is_authenticated }}"
           data-question="{{ question.id }}" 
@@ -43,7 +47,6 @@
   </div> 
 </div>
 
-{{ request.path }}
   {% for answer in answers %}
 
     <div class="card w-75" style="margin-top: 10px;">
@@ -57,11 +60,10 @@
         <div class="card-body">
             <p>{{ answer.content|safe }}</p>
 
-              <div class="votecell post-layout--left">
+              <div class="">
                 {% csrf_token %}
                 <button element-up-id="answer-vote-up-{{ answer.id }}" type="button"
-                class="grid--cell s-btn s-btn__unset c-pointer" 
-                style="background-color: transparent; border: none;"
+                class="button-vote" 
                   data-href="{{ answer.getVoteUrl }}"
                   data-is_authenticated="{{ request.user.is_authenticated }}"
                   data-answer="{{ answer.id }}"
@@ -73,16 +75,18 @@
                   <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36">
                     <path d="M2 26h32L18 10 2 26z"/></svg></button>
               
-                  <div id="answer-{{ answer.id }}-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ answer.getVoteState }}</div>
+                  <div id="answer-{{ answer.id }}-counter" class="" itemprop="upvoteCount">{{ answer.getVoteState }}</div>
                   {% csrf_token %}
               
                 <button element-down-id="answer-vote-down-{{ answer.id }}" type="button"
-                  class="grid--cell s-btn s-btn__unset c-pointer" 
-                  style="background-color: transparent; border: none;"
+                  class="button-vote"
                   data-href="{{ answer.getVoteUrl }}" 
                   data-is_authenticated="{{ request.user.is_authenticated }}"
                   data-answer="{{ answer.id }}" 
-                  data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+                  data-controller="s-tooltip" 
+                  data-s-tooltip-placement="right" 
+                  title="{% if request.user.is_authenticated %}سوال مفید یا واضح نیست{% else %}باید عضو شی!{% endif %} " 
+                  aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
             </div>
       
           <div class="row">
@@ -100,21 +104,18 @@
 
           <div>
             <button 
-            class="grid--cell s-btn s-btn__unset c-pointer" 
-
-            style="background-color: transparent; border: none;"
-            class="tttt"
-              answer-id="answer-{{ answer.id }}"
+            class="button-vote"
+            answer-id="answer-{{ answer.id }}"
               data-href="{{ answer.getAnswerApproveUrl }}"
-              data-answers="{{question.getApprovedAnswerId}}"
+              data-answers="{{ question.getApprovedAnswerId }}"
               data-answer-id="{{ answer.id }}" 
               title="Accept this answer if it solved your problem or was the most helpful in finding your solution"
               data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
               >
 
               <div id="answer-{{answer.id}}-approve" 
-                  data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
-                  data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
+                data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
+                data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
               >
                 <img  width="20" height="20" src="{{ answer.isApproved }}" alt="{{ answer.isApproved }}">
               </div>
@@ -126,7 +127,7 @@
           {% endif %}
   
               {% if request.user != question.author and answer == approved_answer.answer %}
-                <img  width="20" height="20" src="{{ MEDIA_URL }}/green.png" alt="approved answer"">
+                <img  width="20" height="20" src="{{ MEDIA_URL }}/images/green.png" alt="approved answer"">
                   
               {% endif %}
 
@@ -145,7 +146,7 @@
 
     {% if user.is_authenticated and not user_answered %}
         <h3>Write answer to this question</h3>
-        <div id="is_answered">
+        <div id="has_editor">
           <form method="post" action="" enctype="multipart/form-data">
         
             {% csrf_token %}
@@ -169,14 +170,6 @@
 
   
 
-
-{% block scripts %}
-  {% load static %}    
-  <script src="{% static 'script/jquery.js' %}"></script>
-  <script src="{% static 'script/vote.js' %}"></script>
-  <script src="{% static 'script/custom.js' %}"></script>
-{% endblock scripts %}
-  
 
 
 
