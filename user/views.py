@@ -49,6 +49,15 @@ def index(request):
     return render(request, 'qa/index.html', context=None)
 
 
+def user(request, id):
+    try:
+        user = UserModel.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return redirect('user:index')
+
+    return render(request, 'user/user.html', {"user": user})
+
+
 
 def users(request):
     try:
@@ -101,7 +110,7 @@ def dashboard(request):
     except ObjectDoesNotExist:
         return HttpResponse("invalid user_profile!")
 
-    if request.method == "POST":
+    if request.method == "POST" :
         update_user_form   = UserUpdateForm(data=request.POST, instance=user)
         update_avatar_form = AvatarUpdateForm(request.POST, request.FILES, instance=user.avatarmodel)
 

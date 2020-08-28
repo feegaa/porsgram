@@ -1,5 +1,5 @@
 from django.urls import path
-from  QA import views
+from QA import views
 
 app_name = 'QA'
 

@@ -5,15 +5,14 @@ from django.utils import timezone
 from django import template
 from django.shortcuts import reverse
 from django.core.exceptions import ObjectDoesNotExist
+from django.apps import apps
+
 
 from porsgram.settings import TEMPLATES_DIR, MEDIA_URL
 
 from ckeditor_uploader.fields import RichTextUploadingField 
 import re 
 import os
-
-from user.models import UserModel
-
 
 
 
@@ -27,11 +26,13 @@ register = template.Library()
 
 
 class QuestionModel(models.Model):
-    title        = models.CharField(max_length=200)
-    content      = RichTextUploadingField()
-    vote_counter = models.SmallIntegerField(default=0)
-    author       = models.ForeignKey(UserModel, on_delete=models.CASCADE)
-    date         = models.DateTimeField(auto_now_add=True)
+    title      = models.CharField(max_length=200)
+    content    = RichTextUploadingField()
+    vote       = models.SmallIntegerField(default=0)
+    author     = models.ForeignKey(to="user.UserModel", on_delete=models.CASCADE)
+    date       = models.DateTimeField(auto_now_add=True)
+    review     = models.PositiveSmallIntegerField(default=0)
+    answers_NO = models.PositiveSmallIntegerField(default=0)
 
     objects      = models.Manager()
 
@@ -47,12 +48,17 @@ class QuestionModel(models.Model):
     def getVoteUrl(self):
         return reverse('QA:question_vote')
 
-    @register.filter(name="getVoteState")
-    def getVoteState(self):
-        likes    = QVote.objects.filter(question=self, like_or_dislike=True).count()
-        dislikes = QVote.objects.filter(question=self, like_or_dislike=False).count()
-        return likes - dislikes
+    @register.filter(name="getVoteNO")
+    def getVoteNO(self):
+        self.setVoteNO()
+        return self.vote
 
+    def setVoteNO(self):
+        self.vote = 0
+        likes     = QVote.objects.filter(question=self, like_or_dislike=True).count()
+        dislikes  = QVote.objects.filter(question=self, like_or_dislike=False).count()
+        self.vote = likes - dislikes
+        self.save()
 
     @register.filter(name="getApprovedAnswerId")
     def getApprovedAnswerId(self):
@@ -64,9 +70,9 @@ class QuestionModel(models.Model):
 
 class AnswerModel(models.Model):
     content      = RichTextUploadingField()
-    vote_counter = models.SmallIntegerField(default=0)
+    vote         = models.SmallIntegerField(default=0)
     question     = models.ForeignKey(QuestionModel, on_delete=models.CASCADE, related_name='question')
-    author       = models.ForeignKey(UserModel, on_delete=models.DO_NOTHING, related_name='author')    
+    author       = models.ForeignKey(to="user.UserModel", on_delete=models.DO_NOTHING, related_name='author')    
     is_approved  = models.BooleanField(default=False)
 
     objects      = models.Manager()
@@ -78,6 +84,14 @@ class AnswerModel(models.Model):
     def delete(self, force_insert=False, force_update=False, using=None):
         deleteQAImages(self.content)
         super().delete()
+
+
+    def setVoteNO(self):
+        self.vote = 0
+        likes     = AVote.objects.filter(answer=self, like_or_dislike=True).count()
+        dislikes  = AVote.objects.filter(answer=self, like_or_dislike=False).count()
+        self.vote = likes - dislikes
+        self.save()
 
 
     @register.filter(name="getVoteUrl")
@@ -96,11 +110,10 @@ class AnswerModel(models.Model):
         return path
 
 
-    @register.filter(name="getVoteState")
-    def getVoteState(self):
-        likes    = AVote.objects.filter(answer=self, like_or_dislike=True).count()
-        dislikes = AVote.objects.filter(answer=self, like_or_dislike=False).count()
-        return likes - dislikes
+    @register.filter(name="getVoteNO")
+    def getVoteNO(self):
+        self.setVoteNO()
+        return self.vote
 
 
 class TagListModel(models.Model):
@@ -118,7 +131,7 @@ class QTagModel(models.Model):
 
 class QVote(models.Model):
 
-    user            = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user            = models.ForeignKey(to="user.UserModel", on_delete=models.CASCADE)
     question        = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
     like_or_dislike = models.BooleanField(default=False, blank=False)
     
@@ -134,7 +147,7 @@ class QVote(models.Model):
 
 class AVote(models.Model):
 
-    user            = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    user            = models.ForeignKey(to="user.UserModel", on_delete=models.CASCADE)
     answer          = models.ForeignKey(AnswerModel, on_delete=models.CASCADE)
     like_or_dislike = models.BooleanField(default=False, blank=False)
     
@@ -146,7 +159,10 @@ class AVote(models.Model):
 
 class AnswerApproved(models.Model):
     answer   = models.ForeignKey(AnswerModel, on_delete=models.CASCADE)
-    question = models.OneToOneField(QuestionModel, on_delete=models.CASCADE, primary_key=True, related_name="answer_approved")
+    question = models.OneToOneField(QuestionModel, 
+                                    on_delete=models.CASCADE, 
+                                    primary_key=True, 
+                                    related_name="answer_approved")
 
     objects  = models.Manager() 
 

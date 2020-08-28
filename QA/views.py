@@ -14,10 +14,14 @@ from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote
 
 from user.models import UserModel
 
+
+
 '''
     TODO:
         1.create NOT_FOUND page
 '''
+
+
 
 
 def index(request):
@@ -52,12 +56,12 @@ def createQuestion(request):
         q_form = QuestionForm(request.POST)
         tags   = request.POST.getlist('tags')
         if q_form.is_valid():
-            instance        = q_form.save(commit=False)            
+            instance        = q_form.save(commit=False)    
             instance.author = request.user
             instance.save()
             setQTags(tags, instance)
 
-        return redirect('QA:index')
+        return redirect('QA:question', id=instance.id)
 
     else:
         q_form = QuestionForm()
@@ -73,7 +77,7 @@ def createQuestion(request):
 
 def questions(request):
     questions   = QuestionModel.objects.all()    
-    paginator   = Paginator(questions, 2)
+    paginator   = Paginator(questions, 5)
     page_number = request.GET.get('page')
     page_obj    = paginator.get_page(page_number)
 
@@ -145,7 +149,7 @@ def voteAnswer(request):
                 pass
         except ObjectDoesNotExist:
 
-            avote                 = AVote()        
+            avote                 = AVote()
             avote.user            = request.user
             avote.answer          = answer
             avote.like_or_dislike = True if _state == "True" else False
@@ -169,8 +173,14 @@ def question(request, id):
         answers         = AnswerModel.objects.filter(question=question)
         user_answered   = answers.filter(author=request.user) if request.user.is_authenticated else None
 
+        if question.author is not request.user :
+            question.review += 1
+            question.save()
+
     except ObjectDoesNotExist:
         return HttpResponseRedirect('QA:index')
+
+
 
     if (request.user.is_authenticated and
         request.method == 'POST' and 
@@ -179,9 +189,11 @@ def question(request, id):
         answer_form = AnswerForm(request.POST)
 
         if answer_form.is_valid():
-            instance          = answer_form.save(commit=False)
-            instance.author   = request.user
-            instance.question = question
+            instance             = answer_form.save(commit=False)
+            instance.author      = request.user
+            question.answers_NO += 1
+            question.save()
+            instance.question    = question
             instance.save()
             return redirect('QA:question', id=id)
 
@@ -205,7 +217,6 @@ def question(request, id):
 @login_required
 def approveAnswer(request):
 
-
     try:
         a_id     = request.POST['answer_id']
         answer   = AnswerModel.objects.get(id=a_id)
@@ -226,28 +237,27 @@ def approveAnswer(request):
             approved_answer = None
         
         if approved_answer == None:
-            answer.is_approved   = True
-            approved_answer          = AnswerApproved()
-            approved_answer.answer   = answer
-            approved_answer.question = question
+            answer.is_approved        = True
+            approved_answer           = AnswerApproved()
+            approved_answer.answer    = answer
+            approved_answer.question  = question
             try:
-                approved_answer.save()        
                 answer.save()                
+                approved_answer.save()        
             except IntegrityError:
                 pass
 
         elif approved_answer.answer == answer:
-            answer.is_approved = False
-            answer.save()                
+            answer.is_approved        = False
             approved_answer.delete()
         else:
             approved_answer.answer.is_approved = False
             approved_answer.answer.save()
-            answer.is_approved   = True
-            approved_answer.answer = answer
+            answer.is_approved                 = True
+            approved_answer.answer             = answer
             try:
-                approved_answer.save()      
                 answer.save()                
+                approved_answer.save()      
 
             except IntegrityError:
                 pass
@@ -275,6 +285,8 @@ def editQuestion(request, id):
             new_tags = request.POST.getlist('tags')
 
             if q_form.is_valid():
+                content  = q_form.cleaned_data['content']
+                print(content)
                 instance        = q_form.save(commit=False)
                 instance.author = request.user
                 instance.save()
@@ -308,13 +320,12 @@ def deleteQuestion(request, id):
         return redirect('QA:index')
         
     if request.user == question.author:
-
         question.delete()        
         messages.warning(request, 'سوال شما حذف شد!')
         return redirect('QA:questions')
 
     else:
-        return redirect('QA:index')
+        return redirect('QA:dashboard')
 
 
 
@@ -365,7 +376,9 @@ def deleteAnswer(request, q_id, a_id):
         return HttpResponseRedirect('QA:index')
 
     if request.user == answer.author:
-
+        question       = QuestionModel.objects.get(id=q_id)
+        question.vote -= 1
+        question.save()
         answer.delete()
         return redirect('QA:question', id=q_id)
 

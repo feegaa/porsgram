@@ -9,9 +9,13 @@
 
 
     <!-- style -->
+    <link rel="stylesheet"
+    href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/dracula.min.css">
     <link href="{% static 'style/custom.css' %}" rel="stylesheet" >
     <link href="{% static 'style/select2.css' %}" rel="stylesheet" >
     <link href="{% static 'style/navbar.css' %}" rel="stylesheet" >
+    <link href="{% static 'style/question.css' %}" rel="stylesheet" >
+    <link href="{% static 'style/questions.css' %}" rel="stylesheet" >
 
 
     <link rel="icon" type="image/png" href="{{ MEDIA_URL }}/images/porsgram.png"/>
@@ -37,8 +41,8 @@
 
         {% block content %}
         {% endblock content %}    
-    </div>
 
+    </div>
 
 
 
@@ -49,12 +53,14 @@
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script>
 
     <script src="{% static 'script/jquery.js' %}"></script>
     <script src="{% static 'script/bootstrap.js' %}"></script>
     <script src="{% static 'script/select2.min.js' %}"></script>
     <script src="{% static 'script/custom.js' %}"></script>
     <script src="{% static 'script/vote.js' %}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 
 </body>
 </html>

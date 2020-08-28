@@ -16,6 +16,8 @@
 	justify-content: space-between;
 	background-color: #333;
 	border-bottom: 5px solid #ff5000;
+	top: 0;
+	z-index: 1000;
   }
   
   .navbar .inner {
@@ -29,7 +31,7 @@
 	align-items: center;
 	-ms-flex-pack: justify;
 	justify-content: space-between;
-	padding: 0 20px;
+	padding: 0 10px;
   }
   
   .navbar a {
@@ -44,6 +46,7 @@
   .dropdown {
 	float: right;
 	overflow: hidden;
+	display: block;
   }
   
   .dropdown .dropbtn {
@@ -55,9 +58,11 @@
 	background-color: inherit;
 	font-family: inherit;
 	margin: 0;
+	z-index: 1000;
   }
   
   .navbar a:hover, .dropdown:hover .dropbtn {
+	position: relative;
 	color: #ff5000;
   }
   
@@ -65,9 +70,12 @@
 	display: none;
 	position: absolute;
 	background-color: #333;
+	border-right: 4px solid #ff5000;
+	border-bottom: 4px solid #ff5000;
+	border-left: 4px solid #ff5000;
 	min-width: 160px;
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
+	z-index: 1000;
   }
   
   .dropdown-content a {
@@ -77,6 +85,7 @@
 	text-decoration: none;
 	display: block;
 	text-align: right;
+	position: relative;
   }
   
   .dropdown-content a:hover {
@@ -87,6 +96,10 @@
 	display: block;
   }
 
+
+
+
+  
 
 @media only screen and (max-width: 1080px){
 	.navbar {

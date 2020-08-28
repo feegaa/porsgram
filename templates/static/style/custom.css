@@ -63,7 +63,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 body {
   margin: 0;
   font-family: PerFont;
-  font-size: 1rem;
+  font-size: 1.2rem;
   /* font-weight: 400; */
   direction: rtl;
   line-height: 1.5;
@@ -72,76 +72,27 @@ body {
   background-color: #fff;
 }
 
+a {
+  text-decoration: none;
+}
 
-
+a:hover {
+  color: rgb(0, 120, 190);
+}
 
 
 /* Container */
 
 .container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+  position: relative;
+  width: 70%;
+  margin: 30px auto;
 }
 
-
-@media (min-width: 576px) {
-  .container {
-    max-width: 540px;
-  }
+@media only screen and (max-width: 1080px){
+  .container {width: 90%;}
 }
 
-@media (min-width: 768px) {
-  .container {
-    max-width: 720px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container {
-    max-width: 960px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    max-width: 1140px;
-  }
-}
-
-.container-fluid, .container-sm, .container-md, .container-lg, .container-xl {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-@media (min-width: 576px) {
-  .container, .container-sm {
-    max-width: 540px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container, .container-sm, .container-md {
-    max-width: 720px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container, .container-sm, .container-md, .container-lg {
-    max-width: 960px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container, .container-sm, .container-md, .container-lg, .container-xl {
-    max-width: 1140px;
-  }
-}
 
 /* Container */
 
@@ -405,6 +356,9 @@ code {
   margin: 0 auto;
 }
 
+.wrapper .a {
+  text-align: center;
+}
 
 .wrapper > div {
   background-color: inherit;
@@ -542,6 +496,184 @@ code {
 
 /* Pagination */
 
+
+/* Questions box */
+
+
+.box {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  position: static;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #ccc;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  direction: rtl;
+  width: 100%;
+  margin: 10px 0 10px 0;
+  padding: 5px 10px;
+}
+
+.box .profile {
+  display: flexbox;
+  flex-direction: row;
+  position: relative;
+  right: 0;
+  margin: auto 0;
+}
+
+.box .profile a {
+  text-decoration: none;
+}
+
+.box .state {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  right: 0;
+  margin-right: 10px;
+  margin: auto 5px;
+  border: 0;
+  border-radius: 0.5rem;
+  background-color: #eee;
+}
+
+.box .state .tuple {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0 10px;
+}
+
+.box .state .tuple > p {
+  font-size: 0.9rem;
+}
+
+.box .content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  padding: 0;
+  margin-right: 20px;
+  /* margin: auto 0; */
+}
+
+.box .content .title {
+  display: block;
+  position: relative;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.box .content .title > p > a { text-decoration: none; }
+
+
+.box .content .details {
+  display: flexbox;
+  position: relative;
+  padding: 0;
+}
+
+.box .content .details .tags {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  float: right;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.box .content .details .tags .style {
+  position: relative;
+  border: 0;
+  border-radius: 0.25rem;
+  background-color: #ddd;
+  padding: 0 4px;
+  margin: 0 5px;
+}
+
+.box .content .details .tags .style > a {
+  font-size: 0.7rem;
+  text-decoration: none;
+}
+
+.box .content .details .contain {
+  position: relative;
+  float: left;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 0;
+}
+
+.box .content .details .contain > p {
+  font-size: 0.7rem;
+}
+
+.box .content .details .contain > p > a {
+  display: none;
+  text-decoration: none;
+  font-size: 0.7rem;
+  padding-right: 20px;
+}
+
+@media only screen and (max-width: 1080px){
+
+  .box {
+      width: 100%;
+      overflow: hidden;
+  }
+
+  .box .profile {
+    display: none;
+  }
+
+
+  .box .state {
+    margin: auto 0;
+  }
+
+  .box .state .tuple {
+    margin: 0 5px;
+  }
+
+  .box .state .tuple > p {
+    font-size: 0.8rem;
+  }
+
+
+  .box .content .title {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+
+  .box .content .details .tags .style > a {
+    font-size: 0.7rem;
+  }
+
+  .box .content .details .contain > p {
+    font-size: 0.7rem;
+  }
+
+  .box .content .details .contain > p > a {
+    display: inline;
+  }
+
+}
+/* Questions box */
+
+
+
+
+
+
 .rounded-circle {
   border-radius: 50% !important;
 }
@@ -561,3 +693,8 @@ code {
   margin-right: -15px;
   margin-left: -15px;
 }
+
+
+
+
+

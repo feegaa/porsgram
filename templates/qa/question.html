@@ -6,135 +6,195 @@
 <link href="{% static 'style/custom.css' %}" rel="stylesheet" >
 
 
-<div class="card" style="margin-top: 10px;">
-    <div class="card-body">
-      <h5 class="card-title">{{ question.title }}</h5>
-      <p>{{ question.content|safe }}</p>
-      <div class="row">
-        <a href="#" class="col-md-6 text-left">{{ question.author.username }}</a>
-        <div class="col-md-6 text-right">
+<div class="question">
+            
+  <div class="info">
+    <div class="avatar">
+      <a href="{% url 'user:user' id=question.author.id %}" class="anchor">
+        <img width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="test">
+        <p>{{ question.author.username }}</p>
+      </a>    
+    </div>    
+    <div class="vote">
+      <button id="question-vote-up" 
+        class="vote-btn" 
+        type="button"
+        data-href="{{ question.getVoteUrl }}"
+        data-is_authenticated="{{ request.user.is_authenticated }}"
+        data-question="{{ question.id }}"
+        data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
+    <div id="question-counter" class="counter" itemprop="upvoteCount">{{ question.getVoteNO }}</div>
+      <button id="question-vote-down" 
+        class="vote-btn" 
+        type="button"
+        data-href="{{ question.getVoteUrl }}"
+        data-is_authenticated="{{ request.user.is_authenticated }}"
+        data-question="{{ question.id }}" 
+        data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+    </div>
 
-      <div>
-        <div class="">
-          {% csrf_token %}
-          <button id="question-vote-up" 
-          class="button-vote" 
-          type="button"
-          data-href="{{ question.getVoteUrl }}"
-          data-is_authenticated="{{ request.user.is_authenticated }}"
-          data-question="{{ question.id }}"
-            data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
-        <div id="question-counter" class="grid--cell fc-black-500 fs-title grid fd-column ai-center" itemprop="upvoteCount">{{ question.getVoteState }}</div>
-          {% csrf_token %}
-          <button id="question-vote-down" 
-          class="button-vote"
-          type="button"
-          data-href="{{ question.getVoteUrl }}"
-          data-is_authenticated="{{ request.user.is_authenticated }}"
-          data-question="{{ question.id }}" 
-            data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+
+    {% if request.user == question.author %}
+      <div class="btns">
+        <a href="{% url 'QA:question_delete' id=question.id %}" class="fa fa-trash"></a>  
+        <a href="{% url 'QA:question_edit' id=question.id  %}" class="fa fa-edit"></a>  
       </div>
+    {% endif %}  
 
-        {% if request.user == question.author %}
-          <a href="{% url 'QA:question_edit' id=question.id  %}" class="btn btn-primary">Edit</a>  
-          <a href="{% url 'QA:question_delete' id=question.id %}" class="btn btn-danger">Delete</a>  
-        {% endif %}  
-          
+  </div>
+
+
+  <div class="details">
+    <h4>{{ question.title }}</h4>
+
+    <p>
+      {{ question.content|safe }}
+    </p>
+
+    <div class="rect">
+      <div class="tags">
+        <div class="style">
+          <a href="#">test</a>
+        </div>
+        <div class="style">
+          <a href="#">anticipation</a>
+        </div>
+
+        <div class="style">
+          <a href="#">anticipation</a>
+        </div>
+        <div class="style">
+          <a href="#">anticipation</a>
+        </div>
+        <div class="style">
+          <a href="#">anticipation</a>
+        </div>
+
+        <div class="style">
+          <a href="#">test</a>
+        </div>
+      </div>
+        <div class="contain">
+          <p><a class="anchor" href="#">sad</a> August 12 2018</p>
         </div>
       </div>
 
     </div>
-  </div> 
+
+
+
 </div>
+
+
+
+
+
+
+
+<small>جواب ها</small>
 
   {% for answer in answers %}
 
+
+  <div class="question">
+            
+    <div class="info">
+      <div class="avatar">
+        <a href="{% url 'user:user' id=answer.author.id %}" class="anchor">
+          <img width="30px" height="30px" src="{{ answer.author.avatarmodel.avatar.url }}" alt="test">
+          <p>{{ answer.author.username }}</p>
+        </a>    
+      </div>    
+
+      <div class="vote">
+        {% csrf_token %}
+        <button element-up-id="answer-vote-up-{{ answer.id }}" type="button"
+        class="vote-btn" 
+          data-href="{{ answer.getVoteUrl }}"
+          data-is_authenticated="{{ request.user.is_authenticated }}"
+          data-answer="{{ answer.id }}"
+          data-controller="s-tooltip" data-s-tooltip-placement="right"
+          title="{% if request.user.is_authenticated %}سوال مفید و واضح است{% else %}باید عضو شی!{% endif %} " 
+          aria-pressed="false" 
+          aria-label="Up vote" 
+          data-selected-classes="fc-theme-primary">
+          <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36">
+            <path d="M2 26h32L18 10 2 26z"/></svg></button>
+      
+          <div id="answer-{{ answer.id }}-counter" class="counter" itemprop="upvoteCount">{{ answer.getVoteNO }}</div>
+          {% csrf_token %}
+      
+        <button element-down-id="answer-vote-down-{{ answer.id }}" type="button"
+          class="vote-btn"
+          data-href="{{ answer.getVoteUrl }}" 
+          data-is_authenticated="{{ request.user.is_authenticated }}"
+          data-answer="{{ answer.id }}" 
+          data-controller="s-tooltip" 
+          data-s-tooltip-placement="right" 
+          title="{% if request.user.is_authenticated %}سوال مفید یا واضح نیست{% else %}باید عضو شی!{% endif %} " 
+          aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+    </div>
+
+    {% if request.user == question.author  %}
+    <div class="approved">
+      <button 
+      class="vote-btn"
+      answer-id="answer-{{ answer.id }}"
+        data-href="{{ answer.getAnswerApproveUrl }}"
+        data-answers="{{ question.getApprovedAnswerId }}"
+        data-answer-id="{{ answer.id }}" 
+        title="Accept this answer if it solved your problem or was the most helpful in finding your solution"
+        data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
+        >
+
+        <div id="answer-{{answer.id}}-approve" 
+          data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
+          data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
+        >
+          <img  width="20" height="20" src="{{ answer.isApproved }}" alt="حواب برگزیده">
+        </div>
+
+      </button>          
+
+     
+    </div>
+    {% endif %}
+
+    {% if request.user != question.author and answer == approved_answer.answer %}
+      <img class="approved"  width="20" height="20" src="{{ MEDIA_URL }}/images/green.png" alt="approved answer"">  
+    {% endif %}
+
+    {% if request.user == answer.author %}
+      <div class="btns">
+        <a href="#" class="fa fa-edit"></a>
+        <a href="#" class="fa fa-trash"></a>
+      </div>
+    {% endif %}
+    
+  </div>
+
+
+    <div class="details">
+      <p>
+        {{ answer.content|safe }}
+      </p>
+      <div class="rect">
+          <div class="contain">
+            <p><a class="anchor" href="{% url 'user:user' id=answer.author.id %}">sad</a> August 12 2018</p>
+          </div>
+        </div>
+
+      </div>
+
+  </div>
+
+
+
+
+
     <div class="card w-75" style="margin-top: 10px;">
       
-  
-  
-  
 
-      <div class="row">
-
-        <div class="card-body">
-            <p>{{ answer.content|safe }}</p>
-
-              <div class="">
-                {% csrf_token %}
-                <button element-up-id="answer-vote-up-{{ answer.id }}" type="button"
-                class="button-vote" 
-                  data-href="{{ answer.getVoteUrl }}"
-                  data-is_authenticated="{{ request.user.is_authenticated }}"
-                  data-answer="{{ answer.id }}"
-                  data-controller="s-tooltip" data-s-tooltip-placement="right"
-                  title="{% if request.user.is_authenticated %}سوال مفید و واضح است{% else %}باید عضو شی!{% endif %} " 
-                  aria-pressed="false" 
-                  aria-label="Up vote" 
-                  data-selected-classes="fc-theme-primary">
-                  <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36">
-                    <path d="M2 26h32L18 10 2 26z"/></svg></button>
-              
-                  <div id="answer-{{ answer.id }}-counter" class="" itemprop="upvoteCount">{{ answer.getVoteState }}</div>
-                  {% csrf_token %}
-              
-                <button element-down-id="answer-vote-down-{{ answer.id }}" type="button"
-                  class="button-vote"
-                  data-href="{{ answer.getVoteUrl }}" 
-                  data-is_authenticated="{{ request.user.is_authenticated }}"
-                  data-answer="{{ answer.id }}" 
-                  data-controller="s-tooltip" 
-                  data-s-tooltip-placement="right" 
-                  title="{% if request.user.is_authenticated %}سوال مفید یا واضح نیست{% else %}باید عضو شی!{% endif %} " 
-                  aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
-            </div>
-      
-          <div class="row">
-            <a href="#" class="col-md-6 text-left">{{ answer.author.username }}</a>
-            {% if request.user == answer.author %}
-              <div class="col-md-6 text-right">
-                <a href="{% url 'QA:answer_edit' q_id=question.id a_id=answer.id %}" class="btn btn-primary">Edit</a>  
-                <a href="{% url 'QA:answer_delete' q_id=question.id a_id=answer.id %}" class="btn btn-danger">Delete</a>  
-              </div>
-            {% endif %}
-          </div>
-
-          {% if request.user == question.author %}
-
-
-          <div>
-            <button 
-            class="button-vote"
-            answer-id="answer-{{ answer.id }}"
-              data-href="{{ answer.getAnswerApproveUrl }}"
-              data-answers="{{ question.getApprovedAnswerId }}"
-              data-answer-id="{{ answer.id }}" 
-              title="Accept this answer if it solved your problem or was the most helpful in finding your solution"
-              data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
-              >
-
-              <div id="answer-{{answer.id}}-approve" 
-                data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
-                data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
-              >
-                <img  width="20" height="20" src="{{ answer.isApproved }}" alt="{{ answer.isApproved }}">
-              </div>
-
-            </button>          
-  
-           
-          </div>
-          {% endif %}
-  
-              {% if request.user != question.author and answer == approved_answer.answer %}
-                <img  width="20" height="20" src="{{ MEDIA_URL }}/images/green.png" alt="approved answer"">
-                  
-              {% endif %}
-
-          </div>    
-
-        </div> 
-      </div> 
 
 
     {% empty %}
@@ -169,7 +229,6 @@
 </pre>
 
   
-
 
 
 

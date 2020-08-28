@@ -4,46 +4,38 @@
 
 
 
+<div id="has_editor">
+    <form id="post_form" method="post" action="" enctype="multipart/form-data">
 
-<form id="post_form" method="post" action="" enctype="multipart/form-data">
-
-    {% csrf_token %}
-      
-    {{ q_form.media }}
-    {{ q_form.as_p }}
-
-
-    <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
-
-
-        {% for tag in tags %}
-            {% if tag.id in selected_tags %}
-                <option value="{{ tag.id }}" selected="selected" >{{ tag.tag }}</option>
-            {% else %}
-                <option value="{{ tag.id }}">{{ tag.tag }}</option>
-            {% endif %}
-        {% endfor %}
-        
-    </select>
-
-    <input type="submit" name="Edit" value="Edit" />
-</form>
+        {% csrf_token %}
+          
+        {{ q_form.media }}
+        {{ q_form.as_p }}
+    
+    
+        <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
+    
+    
+            {% for tag in tags %}
+                {% if tag.id in selected_tags %}
+                    <option value="{{ tag.id }}" selected="selected" >{{ tag.tag }}</option>
+                {% else %}
+                    <option value="{{ tag.id }}">{{ tag.tag }}</option>
+                {% endif %}
+            {% endfor %}
+            
+        </select>
+    
+        <input type="submit" name="Edit" value="Edit" />
+    </form>
+    
+</div>
 
 <pre>
     <div id="preview" style="min-height: 60px;"></div>
 </pre>
 
 
-
-
-
-{% block scripts %}
-    {% load static %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="{% static 'script/select2.min.js' %}"></script>
-    <script src="{% static 'script/custom.js' %}"></script>
-{% endblock scripts %}
-    
 
 {% endblock content %}
     

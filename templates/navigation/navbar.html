@@ -1,12 +1,16 @@
 
 <div class="navbar">
   <div class="inner">
-    <a href="{% url 'QA:index' %}"><img width="30px" height="30px" src="{{ MEDIA_URL }}/images/porsgram.png" alt="porsgram"></a>
-    <a href="{% url 'QA:question_create' %}" 
-    title="{% if not request.user.is_authenticated %} اول باید عضو شی!{% endif %}">سوال داری؟</a>
+    <a href="{% url 'QA:question_create' %}">
+      <img width="30px" height="30px" 
+          src="{{ MEDIA_URL }}/images/new_question.png" 
+          alt="porsgram" 
+          title="سواد داری؟"></a>
+
     <a href="{% url 'QA:questions' %}">سوالها</a>
     <a href="{% url 'user:users' %}">اعضا</a>
     {% if user.is_authenticated %}
+
       <div class="dropdown">
         <button class="dropbtn">{{user.username}} 
           <i class="fa fa-caret-down"></i>

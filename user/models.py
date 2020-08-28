@@ -1,14 +1,23 @@
 from porsgram.settings import MEDIA_ROOT
+from user.statics import * 
+from QA.models import QuestionModel, AnswerModel, AnswerApproved
+
 
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
+from django import template
+
 from PIL import Image
 from pathlib import Path
 
 
 import os
 # Create your models here.
+
+register = template.Library()
+
+
 
 class UserModel(AbstractBaseUser, PermissionsMixin):
     STATUS_CHOICES = (
@@ -34,6 +43,35 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD  = 'username'
     REQUIRED_FIELDS = []
+
+
+    @register.filter(name="getReputation")
+    def getReputation(self):
+        self.setReputation()
+        return self.reputation
+
+    def setReputation(self):
+        self.reputation  = 0
+        answers          = AnswerModel.objects.filter(author=self)
+        questions_NO     = QuestionModel.objects.filter(author=self).count()
+        self.reputation += questions_NO * NEW_QUESTION
+        self.reputation += answers.count() * NEW_ANSWER
+        for answer in answers:
+            try:
+                AnswerApproved.objects.get(answer=answer)
+                self.reputation += APPROVED_ANSWER
+            except ObjectDoesNotExist:
+                pass
+        self.save()
+        
+
+
+
+
+
+
+
+
 
 
 

@@ -18,5 +18,6 @@ urlpatterns = [
     path('logout/', views.logoutView, name='logout'),
 
     path('users/', views.users, name='users'),
+    path('user/<int:id>', views.user, name='user'),
 ]
 

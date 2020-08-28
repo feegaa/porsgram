@@ -17,19 +17,70 @@
      -->
 
      {% for question in page_obj %}
-        <div class="card" style="margin-top: 10px;">
-          <div class="wrapper">
-            <div class="column">
-              <!-- <img class="rounded-circle" width="40dp" height="40dp" src="{{ question.author.avatarmodel.avatar.url }}" alt="avatar"> -->
-              <a href="#">{{ question.author.username }}</a>
-            </div>
-            <div class="row">
-              <a href="{% url 'QA:question' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
-            </div>
+     <div class="box">
+            
+      <div class="profile">
+        <a href="{% url 'user:user' id=question.author.id %}">
+          <img class="rounded-circle" width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="test">
+          {{ question.author.username }}
+        </a>    
+      </div>  
 
-          </div>  
+      <div class="state">
+        <div class="tuple">
+          <p>بازدید</p>
+          <p>{{ question.review }}</p>
         </div>
-      
+        <div class="tuple">
+          <p>جواب</p>
+          <p>{{ question.answers_NO }}</p>
+        </div>
+        <div class="tuple">
+          <p>رای</p>
+          <p>{{ question.vote }}</p>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="title">
+          <p>
+            <a href="{% url 'QA:question' id=question.id %}">{{ question.title }}</a>
+          </p>
+        </div>
+        <div class="details">
+          <div class="tags">
+            <div class="style">
+              <a href="#">test</a>
+            </div>
+            <div class="style">
+              <a href="#">anticipation</a>
+            </div>
+            <div class="style">
+              <a href="#">test</a>
+            </div>
+            <div class="style">
+              <a href="#">test</a>
+            </div>
+            <div class="style">
+              <a href="#">test</a>
+            </div>
+            <div class="style">
+              <a href="#">test</a>
+            </div>
+            <div class="style">
+              <a href="#">test</a>
+            </div>
+          </div>
+          <div class="contain">
+            <p><a href="#">{{ question.author.username }}</a>{{ question.date }}</p>
+          </div>
+        </div>
+
+      </div>
+
+  </div>
+
+
     {% endfor %}
     
 
@@ -68,4 +119,3 @@
 
 {% endblock content %}
     
-
