@@ -42,6 +42,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     objects    = UserManager()
 
     USERNAME_FIELD  = 'username'
+    PASSWORD_FIELD  = 'password'
     REQUIRED_FIELDS = []
 
 

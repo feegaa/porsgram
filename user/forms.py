@@ -8,7 +8,6 @@ class UserForm(forms.ModelForm):
         ('none', 'به تو چه'),
     )
 
-
     first_name = forms.CharField(label='Your name', max_length=30, required=True)
     last_name  = forms.CharField(label='last anme', max_length=30, required=True)
     username   = forms.CharField(label='useranme', max_length=30, required=False)
@@ -58,4 +57,36 @@ class AvatarUpdateForm(forms.ModelForm):
         fields = ['avatar']
 
 
+class ResetPasswordForm(forms.Form):
+    password       = forms.CharField(widget=forms.PasswordInput())
+    password_check = forms.CharField(widget=forms.PasswordInput())
 
+
+    def clean(self):
+        cleaned_data   = super().clean()
+        password       = cleaned_data.get('password')
+        password_check = cleaned_data.get('password_check')
+
+        if len(password) < 8:
+            raise forms.ValidationError('حداقل ۸ کاراکتر لازمه...')
+
+
+        if password != password_check:
+            raise forms.ValidationError('گذرواژه ها با هم همخوان نیست...')
+
+
+        # check for digit
+        if not any(char.isdigit() for char in password):
+            raise forms.ValidationError(('حداقل ۱ عدد باید داشته باشه...'))
+
+        # check for letter
+        if not any(char.isalpha() for char in password):
+            raise forms.ValidationError(('...حداقل ۱ حرف باید داشته باشه'))
+
+        return password
+
+        
+
+
+class ResetPasswordEmailForm(forms.Form):
+    email = forms.EmailField(required=True)
