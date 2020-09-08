@@ -23,8 +23,18 @@ class UserForm(forms.ModelForm):
 
     def clean_password(self):
         password = self.cleaned_data['password']
+
         if len(password) < 8:
-            raise forms.ValidationError('please inter 10 digits...')
+            raise forms.ValidationError('حداقل ۸ کاراکتر لازمه...')
+
+        # check for digit
+        if not any(char.isdigit() for char in password):
+            raise forms.ValidationError(('حداقل ۱ عدد باید داشته باشه...'))
+
+        # check for letter
+        if not any(char.isalpha() for char in password):
+            raise forms.ValidationError(('...حداقل ۱ حرف باید داشته باشه'))
+
         return password
 
 

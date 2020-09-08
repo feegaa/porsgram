@@ -193,15 +193,15 @@ CKEDITOR_CONFIGS = {
 EMAIL_ACTIVE_FIELD = 'is_active'
 EMAIL_SERVER = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_ADDRESS = 'mymail@gmail.com'
-EMAIL_FROM_ADDRESS = 'noreply@aliasaddress.com'
-EMAIL_PASSWORD = 'mYC00lP4ssw0rd' # os.environ['password_key'] suggested
-EMAIL_MAIL_SUBJECT = 'Confirm your email'
-EMAIL_MAIL_HTML = 'mail_body.html'
-EMAIL_MAIL_PLAIN = 'mail_body.txt'
-EMAIL_PAGE_TEMPLATE = 'confirm_template.html'
-EMAIL_PAGE_DOMAIN = 'http://mydomain.com/'
+EMAIL_ADDRESS = 'myjoinemail@gmail.com'
+EMAIL_FROM_ADDRESS = 'myjoinemail@gmail.com'
+EMAIL_PASSWORD = 'myjoinpass' # os.environ['password_key'] suggested
+EMAIL_MAIL_SUBJECT = 'پرسگرام | تایید آدرس ایمیل'
+EMAIL_MAIL_HTML = TEMPLATES_DIR + '/email' + '/confirm-email.html'
+# EMAIL_MAIL_PLAIN = 'mail_body.txt'
+EMAIL_PAGE_TEMPLATE = TEMPLATES_DIR + '/email' + '/is_confirmed-email.html'
+EMAIL_PAGE_DOMAIN = 'http://localhost:8000/user/email/'
 
 
-
-
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+AUTH_USER_EMAIL_UNIQUE = True

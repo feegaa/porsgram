@@ -10,6 +10,7 @@ from django.contrib import messages
 from user.forms import UserForm, UserUpdateForm, AvatarUpdateForm
 from user.models import UserModel
 
+from django_email_verification import sendConfirm
 # Create your views here.
 
 
@@ -18,15 +19,19 @@ def register(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
+            
+            instance           = form.save(commit=False)
+            instance.is_active = True
+            instance.set_password(request.POST['password'])
+            instance.save()
 
-            username = request.POST['username']
-            password = request.POST['password']
+            sendConfirm(instance)
 
-            user = UserModel.objects.get(username=username,
-                                         password=password,
-                                        )
-            login(request, user)
+
+            # user     = UserModel.objects.get(username=username,
+            #                              password=password,
+            #                             )
+            # login(request, user)
             # messages.success(request, 'welcome '+str(username))        
             return redirect(next_path)
 

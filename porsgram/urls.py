@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from ckeditor_uploader import views as uploader_views
 
+
 urlpatterns = [
     path('', include('QA.urls')),
     path('admin/', admin.site.urls),

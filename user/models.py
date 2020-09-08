@@ -2,7 +2,6 @@ from porsgram.settings import MEDIA_ROOT
 from user.statics import * 
 from QA.models import QuestionModel, AnswerModel, AnswerApproved
 
-
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
@@ -37,6 +36,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     reputation = models.PositiveIntegerField(default=0)
     is_staff   = models.BooleanField(default=False)
     gender     = models.CharField(max_length=6, choices=STATUS_CHOICES, default='none')
+    is_active  = models.BooleanField(default=False)
 
     # objects       = models.Manager()
     objects    = UserManager()
@@ -84,7 +84,7 @@ class AvatarModel(models.Model):
     # def save(self, is_update):
     def save(self, force_insert=False, force_update=False, using=None):
         super().save()
-        SIZE      = 200
+        SIZE       = 200
         FILE_SCALE = (SIZE, SIZE)
 
         img = Image.open(self.avatar.path)

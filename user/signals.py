@@ -30,3 +30,4 @@ def delete_file(sender, instance, *args, **kwargs):
     """ Deletes image files on `post_delete` """
     if instance.avatar:
         _delete_file(instance.avatar.path)
+
