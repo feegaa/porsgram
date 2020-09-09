@@ -2,6 +2,12 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300");
 
 
+@font-face {
+    font-family: myFont;
+    src: url(yekan-regular.ttf);
+}
+
+
 .navbar {
 	position: sticky;
 	direction: rtl;
@@ -20,6 +26,7 @@
 	z-index: 1000;
   }
   
+
   .navbar .inner {
 	display: -ms-flexbox;
 	display: flex;
@@ -34,6 +41,21 @@
 	padding: 0 10px;
   }
   
+
+  .navbar .cqbtn {
+	display: block;
+	position: absolute;
+	float: left;
+	left: 0;
+	margin-left: auto;
+	margin-right: 0;
+	background-color: lightseagreen;
+	border: 0;
+	border-radius: 0.25rem;
+	padding: 0 auto;
+	color: white;
+}
+
   .navbar a {
 	float: right;
 	font-size: 14px;
@@ -143,4 +165,69 @@
 
 }
 
+
+
+/* FOOTER */
+
+.footer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding-bottom: 1rem;
+    border-top: 3px solid #ff5000;
+    background-color: #333;
+    color: white;
+    direction: rtl;
+	text-align: center;
+  }
+  
+
+
+.footer .part {
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    padding: 4px 0;
+    margin: 0 auto;
+}
+
+
+.footer .part > p {
+    display: inline-block;
+    direction: rtl;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.tel{
+    word-spacing: 20px;
+}
+
+.url{
+    font-family: sans-serif;
+}
+
+.footer > a {
+    text-decoration-line: none;
+    text-decoration-style: none;
+    color: rgb(70, 187, 255)
+}
+
+.footer > a:hover {
+    color: #ff5000;
+}
+
+@media only screen and (max-width: 1080px){
+	.footer .part {
+		display: flex;
+		flex-direction: column;
+		width: 90%;
+	}
+
+	.footer .part > p {
+		font-size: 14px;
+	}
+}
 

@@ -172,7 +172,12 @@ STATICFILES_DIRS = [
 
 CKEDITOR_CONFIGS = {
    'default': {
-       'toolbar_Full': [
+        'height': 300,
+        'width': '120%',
+        'enterMode': 2,
+        'filebrowserWindowHeight': 648,
+        'filebrowserWindowWidth': 740,
+        'toolbar_Full': [
             ['Bold', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
             ['Link', 'Unlink'],
             ['Image', 'Table', 'HorizontalRule'],
@@ -188,23 +193,24 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': 'justify, liststyle, indent, codesnippet',
    },
 }
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+MAX_UPLOAD_SIZE = "32768"
+CKEDITOR_RESTRICT_BY_USER = True
 
+EMAIL_BACKEND      = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_ACTIVE_FIELD = 'is_active'
+EMAIL_SERVER       = 'smtp.gmail.com'
+EMAIL_PORT         = 587
+EMAIL_ADDRESS      = 'myjoinemail@gmail.com'
+EMAIL_FROM_ADDRESS = 'myjoinemail@gmail.com'
+EMAIL_PASSWORD     = 'myjoinpass' # os.environ['password_key'] suggested
+EMAIL_MAIL_SUBJECT = 'پرسگرام | تایید آدرس ایمیل'
+EMAIL_MAIL_HTML    = TEMPLATES_DIR + '/email' + '/confirmEmail.html'
+EMAIL_PAGE_DOMAIN  = 'http://localhost:8000/user/confirm-email/'
 
-EMAIL_ACTIVE_FIELD   = 'is_active'
-EMAIL_SERVER         = 'smtp.gmail.com'
-EMAIL_PORT           = 587
-EMAIL_ADDRESS        = 'myjoinemail@gmail.com'
-EMAIL_FROM_ADDRESS   = 'myjoinemail@gmail.com'
-EMAIL_PASSWORD       = 'myjoinpass' # os.environ['password_key'] suggested
-EMAIL_MAIL_SUBJECT   = 'پرسگرام | تایید آدرس ایمیل'
-EMAIL_MAIL_HTML      = TEMPLATES_DIR + '/email' + '/confirm-email.html'
-EMAIL_PAGE_TEMPLATE  = TEMPLATES_DIR + '/email' + '/is_confirmed-email.html'
-EMAIL_PAGE_DOMAIN    = 'http://localhost:8000/user/confirm-email/'
-
+EMAIL_RESET_PASSWORD_HTML    = TEMPLATES_DIR + '/email' + '/resetPassword.html'
+EMAIL_RESET_PASSWORD_DOMAIN  = 'http://localhost:8000/user/reset-password/'
+EMAIL_RESET_PASSWORD_SUBJECT = 'پرسگرام | بازیابی گذرواژه'
 EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplate.html'
-EMAIL_RESET_PASSWORD_HTML     = TEMPLATES_DIR + '/email' + '/reset-password-html.html'
-EMAIL_RESET_PASSWORD_DOMAIN   = 'http://localhost:8000/user/reset-password/'
-EMAIL_RESET_PASSWORD_SUBJECT  = 'پرسگرام | بازیابی گذرواژه'
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 AUTH_USER_EMAIL_UNIQUE = True

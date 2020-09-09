@@ -50,6 +50,8 @@
 
 
 html {
+  position: relative;
+  height: 100%;
   font-size: 80%; 
   font-family: PerForm;
 }
@@ -59,12 +61,14 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
 
-
 body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
   margin: 0;
   font-family: PerFont;
   font-size: 1.2rem;
-  /* font-weight: 400; */
   direction: rtl;
   line-height: 1.5;
   color: #212529;
@@ -84,10 +88,36 @@ a:hover {
 /* Container */
 
 .container {
+  display: flex;
+  flex-direction: row;
   position: relative;
-  width: 70%;
+  width: 80%;
   margin: 30px auto;
+
 }
+
+.container .right {
+  display: flexbox;
+  flex-direction: column;
+  float: right;
+  width: 30%;
+  margin: 20px;
+}
+
+.container .center {
+  display: block;
+  float: left;
+  width: 70%;
+}
+
+.container .right .card {
+  margin: 5px 10px;
+  padding: 4px 2px;
+  background-color: #aaa;
+  border: 0;
+  border-radius: 0.25rem;
+}
+
 
 @media only screen and (max-width: 1080px){
   .container {width: 90%;}

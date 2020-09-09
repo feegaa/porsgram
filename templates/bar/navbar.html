@@ -1,0 +1,36 @@
+
+<div class="navbar">
+
+  <div class="inner">
+    <a href="{% url 'QA:question_create' %}">
+
+      <img width="30px" height="30px" 
+          src="{{ MEDIA_URL }}/images/logo.png" 
+          alt="porsgram" 
+          title="سواد داری؟"></a>
+
+    <a href="{% url 'QA:questions' %}">سوالها</a>
+    <a href="{% url 'user:users' %}">اعضا</a>
+    {% if user.is_authenticated %}
+
+      <div class="dropdown">
+        <button class="dropbtn">{{user.username}} 
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content">
+          <a href="{% url 'user:dashboard' %}">داشبور</a>
+          <a href="{% url 'user:logout' %}">خروج</a>
+        </div>
+      </div>
+    {% else %}
+      <a href="{% url 'user:login' %}?next={{request.path}}">ورود</a>
+      <a href="{% url 'user:register'%}?next={{request.path}}">ثبت نام</a>
+    {% endif %}
+
+
+
+    </div>
+
+  </div>
+</div>
+

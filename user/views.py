@@ -14,6 +14,7 @@ from user.Confirm import verifyToken, sendConfirm
 from user.errors import NotAllFieldCompiled
 from user.reset import sendResetPasswordEmail
 
+from porsgram.path import *
 
 # Create your views here.
 
@@ -31,7 +32,7 @@ def register(request):
 
             sendConfirm(instance)
 
-            messages.success(request, 'ایمیل برای شما ارسال شد'+str(username))        
+            messages.success(request, 'ایمیل برای شما ارسال شد' + str(instance.username))        
             return redirect(next_path)
 
     elif request.user.is_authenticated:
@@ -43,7 +44,7 @@ def register(request):
 
     return render(
             request, 
-            'user/register.html', 
+            USER_REGISTER, 
             context={'form': form}
         )
 
@@ -59,7 +60,7 @@ def user(request, id):
     except ObjectDoesNotExist:
         return redirect('user:index')
 
-    return render(request, 'user/user.html', {"user": user})
+    return render(request, USER_USER, {"user": user})
 
 
 
@@ -67,7 +68,7 @@ def users(request):
     try:
         users = UserModel.objects.all()
         return render(request, 
-                    'user/users.html', 
+                    USER_USERS, 
                     context={'users': users})
 
     except ObjectDoesNotExist:
@@ -92,7 +93,7 @@ def loginView(request):
         
         except ObjectDoesNotExist:
             messages.error(request, 'نام کاربری و یا رمز عبور اشتباه است.')
-    return render(request, 'user/login.html', {})
+    return render(request, USER_LOGIN, {})
 
 
 @login_required
@@ -137,7 +138,7 @@ def dashboard(request):
 
     return render(
             request, 
-            'user/dashboard.html', 
+            USER_DASHBOARD, 
             context=context
         )
 
@@ -201,4 +202,4 @@ def getEmailForResetPassword(request):
                 return redirect('user:index')
 
     form = ResetPasswordEmailForm()
-    return render(request, 'user/getEmailResetPassword.html', {'form': form})
+    return render(request, USER_GET_EMAIL_RESET_PASSWORD, {'form': form})

@@ -13,7 +13,7 @@ from QA.forms import QuestionForm, AnswerForm
 from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote, AVote, AnswerApproved
 
 from user.models import UserModel
-
+from porsgram.path import *
 
 
 '''
@@ -25,7 +25,7 @@ from user.models import UserModel
 
 
 def index(request):
-    return render(request, 'qa/index.html', {})
+    return render(request, QA_INDEX, {})
 
 
 
@@ -70,7 +70,7 @@ def createQuestion(request):
             'tags'   : tags_list,   
         }
 
-    return render(request, 'qa/createQuestion.html', context=context)
+    return render(request, QA_CREATE_QUESTION, context=context)
 
 
 
@@ -85,7 +85,7 @@ def questions(request):
         'page_obj': page_obj,
     }
 
-    return render(request, 'qa/questions.html', context=context)
+    return render(request, QA_QUESTIONS, context=context)
         
 
 
@@ -211,7 +211,7 @@ def question(request, id):
             'approved_answer' : approved_answer,
         }
 
-    return render(request, 'qa/question.html', context=context)
+    return render(request, QA_QUESTION, context=context)
         
 
 @login_required
@@ -303,7 +303,7 @@ def editQuestion(request, id):
                 'tags'          : tags,   
             }
 
-        return render(request, 'qa/editQuestion.html', context=context)
+        return render(request, QA_EDIT_QUESTION, context=context)
 
     else:
         return redirect('QA:index')
@@ -359,7 +359,7 @@ def editAnswer(request, q_id, a_id):
                 'question'      : question,
             }
 
-        return render(request, 'qa/editAnswer.html', context=context)
+        return render(request, QA_EDIT_ANSWER, context=context)
         
     else:
         messages.error(request, 'برو بچه!')

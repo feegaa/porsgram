@@ -13,7 +13,7 @@
     href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/dracula.min.css">
     <link href="{% static 'style/custom.css' %}" rel="stylesheet" >
     <link href="{% static 'style/select2.css' %}" rel="stylesheet" >
-    <link href="{% static 'style/navbar.css' %}" rel="stylesheet" >
+    <link href="{% static 'style/bar.css' %}" rel="stylesheet" >
     <link href="{% static 'style/question.css' %}" rel="stylesheet" >
     <link href="{% static 'style/questions.css' %}" rel="stylesheet" >
 
@@ -24,7 +24,7 @@
 </head>
 <body>
 
-    {% include 'navigation/navbar.html' %}
+    {% include 'bar/navbar.html' %}
 
     <div class="container">
 
@@ -39,13 +39,45 @@
         {% endif %}
 
 
-        {% block content %}
-        {% endblock content %}    
+
+
+        <div class="right">
+            <div class="card">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+            </div>
+
+            <div class="card">
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sapiente, minima.<br/>
+            </div>
+        </div>
+    
+
+        <div class="center">
+            {% block content %}
+            {% endblock content %}        
+        </div>
 
     </div>
 
 
 
+    {% include 'bar/footer.html' %}
 
 
     <!-- script -->
@@ -61,6 +93,8 @@
     <script src="{% static 'script/custom.js' %}"></script>
     <script src="{% static 'script/vote.js' %}"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+
+
 
 </body>
 </html>
