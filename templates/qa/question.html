@@ -1,9 +1,13 @@
 {% extends 'template.html' %}
 
 
+{% block styles %}
+  {% load static %}
+  <link href="{% static 'style/question.css' %}" rel="stylesheet" >
+{% endblock styles %}
+  
+
 {% block content %}
-{% load static %}
-<link href="{% static 'style/custom.css' %}" rel="stylesheet" >
 
 
 <div class="question">

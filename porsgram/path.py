@@ -9,7 +9,7 @@ EMAIL = TEMPLATES_DIR + '/email/'
 EMAIL_RESET_PASSWORD_TEMPLATE = USER + '/resetPasswordTemplate.html'
 USER_CONFIRM_EMAIL_TEMPLATE   = USER + 'confirmEmailTemplate.html'
 
-USER_GET_EMAIL_RESET_PASSWORD = USER + 'dashboard.html'
+USER_GET_EMAIL_RESET_PASSWORD = USER + 'getEmailResetPassword.html'
 USER_DASHBOARD                = USER + 'dashboard.html'
 USER_LOGIN                    = USER + 'login.html'
 USER_LOGOUT                   = USER + 'logout.html'

@@ -1,20 +1,14 @@
 {% extends 'template.html' %}
 
 
+{% block styles %}
+  {% load static %}
+  <link href="{% static 'style/questions.css' %}?version=51" rel="stylesheet" >
+{% endblock styles %}
+  
+
 {% block content %}
     
-
-
-
-
-
-
-    <!-- 
-        TODO:
-            hit counter
-            deposit
-            approved answer
-     -->
 
      {% for question in page_obj %}
      <div class="box">

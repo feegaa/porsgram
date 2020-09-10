@@ -276,3 +276,79 @@ nav label:before {
             {% endif %}
     </div>
 
+////////////////////////////////////////////////////////////////////////
+
+.container .right {
+  display: block;
+  position: sticky;
+  width: 30%;
+  padding: 0;
+  margin: auto;
+  height: 100%;
+  border-left: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.container .right .inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .right .inner .card {
+  margin: 5px 10px;
+  padding: 4px 2px;
+  border: 0;
+  border-radius: 0.25rem;
+}
+
+.container .right .inner .card .cqbtn {
+  background-color: var(--primary);
+  width: max-content;
+  margin: 10px auto;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 0.5rem;
+  color: white;
+}
+
+
+.container .right .inner .card .cqbtn > a {
+  text-decoration-line: none;
+  list-style-type: none;
+  color: white;
+}
+
+
+/* Wrapper Grid Display */
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 10% 80%;
+  direction: rtl;	
+  text-align: right;
+  width: inherit;
+}
+
+.wrapper .column {
+  display: grid;
+  align-items: center;
+  grid-template-rows: 90% 10%;
+  margin: 0 auto;
+}
+
+.wrapper .a {
+  text-align: center;
+}
+
+.wrapper > div {
+  background-color: inherit;
+  padding: 1em;
+  margin: 0 10px;
+}
+
+.wrapper > div:nth-last-child(odd) {
+  background-color: inherit;
+}
+
+/* Wrapper */
+

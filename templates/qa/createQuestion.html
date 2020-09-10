@@ -1,23 +1,27 @@
 {% extends 'template.html' %}
 
+
+
+
 {% block content %}
 
-
+<div class="cqbox">
 
 <div id="has_editor">
     <form id="post_form" method="post" action="" enctype="multipart/form-data">
 
         {% csrf_token %}
           
-    
+        
         {{ q_form.media }}
+        
         {{ q_form.as_p }}
     
     
     
     
     
-        <select required class="js-example-tags form-control" multiple="multiple" id="tags" name="tags">
+        <select required class="js-example-tags" multiple="multiple" id="tags" name="tags">
             {% for tag in tags %}
                 <option value="{{ tag.id }}">{{ tag.tag }}</option>
             {% endfor %}
@@ -34,6 +38,7 @@
     <div id="preview">preview</div>
 </pre>
 
+</div>
 
 
 

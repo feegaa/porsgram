@@ -1,8 +1,14 @@
 {% extends 'template.html' %}
 
 
+{% block styles %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style/login.css' %}">  
+{% endblock styles %}
+  
+
 {% block content %}
-<h2>Login Form</h2>
+<!-- <h2>Login Form</h2>
 <form method="POST" id="add_form" action="">
   {% csrf_token %}
   <div class="form-group">
@@ -22,9 +28,32 @@
       <button type="submit" class="btn-primary">Login</button>
     </div>
     <div class="clear"></div> </div>
+</form> -->
+
+
+
+<form method="POST" id="add_form" action="">
+
+
+
+  <div class="container">
+    <label for="uname"><b>نام کاربری</b></label>
+    <input type="text" placeholder="نام کاربری" name="uname" required>
+
+    <label for="psw"><b>گذرواژه</b></label>
+    <input type="password" placeholder="گذرواژه" name="psw" required>
+        
+    <button type="submit">ورود</button>
+
+  </div>
+
+  <div class="container">
+    <button type="button" class="cancelbtn">لغو</button>
+    <span class="psw"><a href="{% url 'user:getEmailForResetPassword' %}">پسورد خود را فراموش کرده ام.</a></span>
+  </div>
 </form>
 
-  <a href="{% url 'user:getEmailForResetPassword' %}">پسورد خود را فراموش کرده ام.</a>
+  
 
 </div>
 {% endblock content %}
