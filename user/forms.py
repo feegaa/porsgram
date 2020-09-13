@@ -88,5 +88,5 @@ class ResetPasswordForm(forms.Form):
         
 
 
-class ResetPasswordEmailForm(forms.Form):
+class GetEmailForm(forms.Form):
     email = forms.EmailField(required=True)

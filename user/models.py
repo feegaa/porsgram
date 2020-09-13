@@ -9,9 +9,8 @@ from django import template
 
 from PIL import Image
 from pathlib import Path
-
-
 import os
+
 # Create your models here.
 
 register = template.Library()

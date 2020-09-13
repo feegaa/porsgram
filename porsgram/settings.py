@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import locale
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'django_email_verification',
+    # 'jalali_date',
 ]
 
 
@@ -172,16 +174,16 @@ STATICFILES_DIRS = [
 
 CKEDITOR_CONFIGS = {
    'default': {
-        'height': 300,
-        'width': '120%',
+        # 'height': '100%',
+        'width': '100%',
         'enterMode': 2,
-        'filebrowserWindowHeight': 648,
-        'filebrowserWindowWidth': 740,
+        'filebrowserWindowHeight': 'inherit',
+        'filebrowserWindowWidth': 'inherit',
         'toolbar_Full': [
             ['Bold', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
             ['Link', 'Unlink'],
             ['Image', 'Table', 'HorizontalRule'],
-            # ['TextColor', 'BGColor'],
+            # ['TextColor', 'BGColor', 'HorizontalRule'],
             # ['Smiley', 'SpecialChar'], 
             ['Source'],
             ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
@@ -196,17 +198,21 @@ CKEDITOR_CONFIGS = {
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 MAX_UPLOAD_SIZE = "32768"
 CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_LIMIT_UPLOADED_IMAGE_SIZE = 720, 840
 
-EMAIL_BACKEND      = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_ACTIVE_FIELD = 'is_active'
-EMAIL_SERVER       = 'smtp.gmail.com'
-EMAIL_PORT         = 587
-EMAIL_ADDRESS      = 'myjoinemail@gmail.com'
-EMAIL_FROM_ADDRESS = 'myjoinemail@gmail.com'
-EMAIL_PASSWORD     = 'myjoinpass' # os.environ['password_key'] suggested
-EMAIL_MAIL_SUBJECT = 'پرسگرام | تایید آدرس ایمیل'
-EMAIL_MAIL_HTML    = TEMPLATES_DIR + '/email' + '/confirmEmail.html'
-EMAIL_PAGE_DOMAIN  = 'http://localhost:8000/user/confirm-email/'
+
+EMAIL_BACKEND       = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_ACTIVE_FIELD  = 'is_active'
+EMAIL_SERVER        = 'smtp.gmail.com'
+EMAIL_PORT          = 587
+EMAIL_ADDRESS       = 'myjoinemail@gmail.com'
+EMAIL_FROM_ADDRESS  = 'myjoinemail@gmail.com'
+EMAIL_PASSWORD      = 'myjoinpass' # os.environ['password_key'] suggested
+EMAIL_MAIL_SUBJECT  = 'پرسگرام | تایید آدرس ایمیل'
+EMAIL_MAIL_HTML     = TEMPLATES_DIR + '/email' + '/confirmEmail.html'
+EMAIL_PAGE_DOMAIN   = 'http://localhost:8000/user/confirm-email/'
+EMAIL_PAGE_TEMPLATE = TEMPLATES_DIR + '/user' + '/confirmEmailTemplate.html'
+
 
 EMAIL_RESET_PASSWORD_HTML    = TEMPLATES_DIR + '/email' + '/resetPassword.html'
 EMAIL_RESET_PASSWORD_DOMAIN  = 'http://localhost:8000/user/reset-password/'
@@ -214,3 +220,8 @@ EMAIL_RESET_PASSWORD_SUBJECT = 'پرسگرام | بازیابی گذرواژه'
 EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplate.html'
 
 AUTH_USER_EMAIL_UNIQUE = True
+
+
+
+# SET LOCAL FOR JDT
+# locale.setlocale(locale.LC_ALL, "fa_IR")

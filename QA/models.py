@@ -33,6 +33,7 @@ class QuestionModel(models.Model):
     date       = models.DateTimeField(auto_now_add=True)
     review     = models.PositiveSmallIntegerField(default=0)
     answers_NO = models.PositiveSmallIntegerField(default=0)
+    edited     = models.BooleanField(default=False)
 
     objects      = models.Manager()
 
@@ -68,17 +69,33 @@ class QuestionModel(models.Model):
             result = None
         return result
 
+
+    @register.filter(name="getTags")
+    def getTags(self):
+        try:
+            tags_id = list(QTagModel.objects.filter(question=self).values_list('tag', flat=True))
+            tags    = list(TagListModel.objects.filter(id__in=tags_id))
+        except ObjectDoesNotExist:
+            tags    = None
+        return tags
+        
+
+
 class AnswerModel(models.Model):
     content      = RichTextUploadingField()
     vote         = models.SmallIntegerField(default=0)
     question     = models.ForeignKey(QuestionModel, on_delete=models.CASCADE, related_name='question')
     author       = models.ForeignKey(to="user.UserModel", on_delete=models.DO_NOTHING, related_name='author')    
     is_approved  = models.BooleanField(default=False)
+    edited       = models.BooleanField(default=False)
+    date         = models.DateTimeField(auto_now_add=True)
 
     objects      = models.Manager()
 
     class Meta:
-        unique_together = ['author', 'question']
+        constraints = [
+            models.UniqueConstraint(fields=['question', 'author'], name='answer')
+        ]
 
 
     def delete(self, force_insert=False, force_update=False, using=None):
@@ -113,6 +130,7 @@ class AnswerModel(models.Model):
     @register.filter(name="getVoteNO")
     def getVoteNO(self):
         self.setVoteNO()
+        print(self.vote)
         return self.vote
 
 
@@ -126,7 +144,9 @@ class QTagModel(models.Model):
     objects  = models.Manager()
 
     class Meta:
-        unique_together = ['tag', 'question']
+        constraints = [
+            models.UniqueConstraint(fields=['question', 'tag'], name='qtag')
+        ]
 
 
 class QVote(models.Model):
@@ -141,7 +161,6 @@ class QVote(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['question', 'user'], name='qvote')
         ]
-        # unique_together = ['user', 'question']    
 
 
 
@@ -154,7 +173,9 @@ class AVote(models.Model):
     objects         = models.Manager()
 
     class Meta:
-        unique_together = ['user', 'answer']
+        constraints = [
+            models.UniqueConstraint(fields=['answer', 'user'], name='avote')
+        ]
 
 
 class AnswerApproved(models.Model):

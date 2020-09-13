@@ -3,13 +3,14 @@
 
 {% block content %}
 
-    
-    {% for user in users %}
-        {{ user.id }}
-        {{ user.email}}
-        {{ user.username }}
-        {{ user.password }}
-    {% endfor %}
+    <div>
+        {% for user in users %}
+        <p>{{ user.username }}</p>
+        <p>{{ user.email }}</p>
+        <p>{{ user.reputation }}</p>
+        <p>{{ user.join_date }} </p>
+        {% endfor %}
+    </div>
         
 
 

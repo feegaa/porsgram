@@ -51,7 +51,7 @@ $(document).ready(function(){
     
     
     
-    //    $('#answer-vote-up').click(function(event){
+    // $('#answer-vote-up').click(function(event){
     $(document).on('click', '[element-up-id]', function( event ) {   
         event.preventDefault();
         var is_authenticated = $(this).attr("data-is_authenticated");
@@ -74,7 +74,7 @@ $(document).ready(function(){
             console.log("sssssssssssss");
             var _url   = $(this).attr("data-href");
             var _id    = $(this).attr("data-answer");
-            var _state = "True";
+            var _state = "False";
             setAnswerVote(_url, _id, _state)
         }
     });

@@ -37,36 +37,23 @@
 
       <div class="content">
         <div class="title">
-          <p>
+          <h4>
             <a href="{% url 'QA:question' id=question.id %}">{{ question.title }}</a>
-          </p>
+		  </h4>
         </div>
         <div class="details">
           <div class="tags">
-            <div class="style">
-              <a href="#">test</a>
-            </div>
-            <div class="style">
-              <a href="#">anticipation</a>
-            </div>
-            <div class="style">
-              <a href="#">test</a>
-            </div>
-            <div class="style">
-              <a href="#">test</a>
-            </div>
-            <div class="style">
-              <a href="#">test</a>
-            </div>
-            <div class="style">
-              <a href="#">test</a>
-            </div>
-            <div class="style">
-              <a href="#">test</a>
-            </div>
+          
+          {% for tag in question.getTags %}
+			<div class="style">
+				<a href="{{ tag.id }}">{{ tag.tag }}</a>
+			</div>
+          {% endfor %}
+        
           </div>
           <div class="contain">
-            <p><a href="#">{{ question.author.username }}</a>{{ question.date }}</p>
+			<p><a href="#">{{ question.author.username }}</a>
+				{% if question.edited %}ویرایش شده {% endif %} {{ question.date }}</p>
           </div>
         </div>
 
@@ -76,7 +63,6 @@
 
 
     {% endfor %}
-    
 
       <nav aria-label="...">
         {% if page_obj.has_other_pages %}

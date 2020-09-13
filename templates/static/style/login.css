@@ -9,13 +9,13 @@ input[type=text], input[type=password] {
   }
   
   button {
-    background-color: #4CAF50;
+    background-color: #00976a;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
-    width: 100%;
+    width: inherit;
   }
   
   button:hover {
@@ -38,7 +38,7 @@ input[type=text], input[type=password] {
     border-radius: 50%;
   }
   
-  .container {
+  .login-box {
     padding: 16px;
   }
   
@@ -47,6 +47,14 @@ input[type=text], input[type=password] {
     padding-top: 16px;
   }
   
+
+  .doac {
+    display: flexbox;
+    flex-direction: column;
+    width: max-content;
+  }
+
+
   /* Change styles for span and cancel button on extra small screens */
   @media screen and (max-width: 300px) {
     span.psw {

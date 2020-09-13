@@ -14,7 +14,7 @@ from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote
 
 from user.models import UserModel
 from porsgram.path import *
-
+import datetime
 
 '''
     TODO:
@@ -285,10 +285,13 @@ def editQuestion(request, id):
             new_tags = request.POST.getlist('tags')
 
             if q_form.is_valid():
-                content  = q_form.cleaned_data['content']
-                print(content)
-                instance        = q_form.save(commit=False)
-                instance.author = request.user
+                content          = q_form.cleaned_data['content']
+                title            = q_form.cleaned_data['title']
+                instance         = q_form.save(commit=False)
+                instance.edited  = True           
+                instance.title   = title           
+                instance.content = content
+                instance.date    = datetime.datetime.now()       
                 instance.save()
                 QTagModel.objects.filter(question_id=question).delete()
                 setQTags(new_tags, instance)
@@ -346,9 +349,9 @@ def editAnswer(request, q_id, a_id):
             answer_form = AnswerForm(request.POST, instance=answer)
 
             if answer_form.is_valid():
-                instance          = answer_form.save(commit=False)
-                instance.author   = request.user
-                instance.question = question
+                instance        = answer_form.save(commit=False)
+                instance.edited = True
+                instance.date   = datetime.datetime.now()
                 instance.save()
                 return redirect('QA:question', id=q_id)
 

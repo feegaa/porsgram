@@ -352,3 +352,13 @@ nav label:before {
 
 /* Wrapper */
 
+
+
+        // // console.log($(window).height());
+        // var height_preview = Math.ceil($('#pre-view').height());
+        // // console.log(heghit_preview)
+        // var element = document.querySelector('#footer');
+        // var height_footer = element.style.marginTop;
+        // height_footer = height_footer.substring(0, height_footer.length - 2);
+        // height_footer = Number(height_footer) + height_preview;
+        // console.log(height_footer);

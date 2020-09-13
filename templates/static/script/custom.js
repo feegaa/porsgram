@@ -7,15 +7,22 @@ $(document).ready(function(){
     })
 
 
+
+    // function autoHeight() {
+    //     $('#footer').css('height', $(document).height()+200);
+    // }
+
+
+    
     if($('#has_editor').length) {
-        console.log("yoyoyoyo");
         var content = CKEDITOR.instances['id_content'];
         content.on('contentDom', function(event){
             content.on('change', function(event){
-                console.log(this.getData());
                 document.getElementById('preview').innerHTML = this.getData();
             });
         });        
+    } else {
+        $('#pre-view').css('display', 'none');
     }
 
 
@@ -46,6 +53,8 @@ $(document).ready(function(){
     setTimeout(function() {
         $('#alert').fadeOut('fast');
     }, 2000);        
+
+
 
 
 });

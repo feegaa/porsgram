@@ -169,8 +169,11 @@
 
 /* FOOTER */
 
+
 .footer {
 	position: absolute;
+	height: auto !important;
+	width: 100%;
 	right: 0;
 	bottom: 0;
 	left: 0;
@@ -180,6 +183,7 @@
     color: white;
     direction: rtl;
 	text-align: center;
+	margin-top: 100%;
   }
   
 

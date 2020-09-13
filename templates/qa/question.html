@@ -3,7 +3,7 @@
 
 {% block styles %}
   {% load static %}
-  <link href="{% static 'style/question.css' %}" rel="stylesheet" >
+  <link href="{% static 'style/question.css' %}?version=70" rel="stylesheet" >
 {% endblock styles %}
   
 
@@ -26,7 +26,7 @@
         data-href="{{ question.getVoteUrl }}"
         data-is_authenticated="{{ request.user.is_authenticated }}"
         data-question="{{ question.id }}"
-        data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
+        data-controller="s-tooltip" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
     <div id="question-counter" class="counter" itemprop="upvoteCount">{{ question.getVoteNO }}</div>
       <button id="question-vote-down" 
         class="vote-btn" 
@@ -34,16 +34,9 @@
         data-href="{{ question.getVoteUrl }}"
         data-is_authenticated="{{ request.user.is_authenticated }}"
         data-question="{{ question.id }}" 
-        data-controller="s-tooltip" data-s-tooltip-placement="right" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+        data-controller="s-tooltip" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
     </div>
 
-
-    {% if request.user == question.author %}
-      <div class="btns">
-        <a href="{% url 'QA:question_delete' id=question.id %}" class="fa fa-trash"></a>  
-        <a href="{% url 'QA:question_edit' id=question.id  %}" class="fa fa-edit"></a>  
-      </div>
-    {% endif %}  
 
   </div>
 
@@ -51,35 +44,29 @@
   <div class="details">
     <h4>{{ question.title }}</h4>
 
-    <p>
-      {{ question.content|safe }}
-    </p>
+	<p>
+		{{ question.content|safe }}
+	</p>
+
+
+	<!-- <img alt="" src="/media/QAImage/sad/2020/09/13/fafea86f551aab3fd93f586d98ba7997.jpg" style="height:405px; width:720px" /> -->
 
     <div class="rect">
       <div class="tags">
-        <div class="style">
-          <a href="#">test</a>
-        </div>
-        <div class="style">
-          <a href="#">anticipation</a>
-        </div>
-
-        <div class="style">
-          <a href="#">anticipation</a>
-        </div>
-        <div class="style">
-          <a href="#">anticipation</a>
-        </div>
-        <div class="style">
-          <a href="#">anticipation</a>
-        </div>
-
-        <div class="style">
-          <a href="#">test</a>
-        </div>
+		{% for tag in question.getTags %}
+		<div class="style">
+			<a href="{{ tag.id }}">{{ tag.tag }}</a>
+		</div>
+	  {% endfor %}
       </div>
         <div class="contain">
-          <p><a class="anchor" href="#">sad</a> August 12 2018</p>
+          <p><a class="anchor" href="#">sad</a> {{ question.date }}&nbsp;&nbsp; {% if question.edited %}ویرایش شده {% endif %}</p>
+    	{% if request.user == question.author %}  
+			<div class="edel">
+				<a href="{% url 'QA:question_edit' id=question.id %}">ویرایش</a>
+				<a style="color: red;" href="{% url 'QA:question_delete' id=question.id %}">حذف</a>
+			</div>  
+        {% endif %}
         </div>
       </div>
 
@@ -94,10 +81,10 @@
 
 
 
+<h3>جواب ها</h3>
+<hr >
 
-<small>جواب ها</small>
-
-  {% for answer in answers %}
+{% for answer in answers %}
 
 
   <div class="question">
@@ -117,7 +104,7 @@
           data-href="{{ answer.getVoteUrl }}"
           data-is_authenticated="{{ request.user.is_authenticated }}"
           data-answer="{{ answer.id }}"
-          data-controller="s-tooltip" data-s-tooltip-placement="right"
+          data-controller="s-tooltip" 
           title="{% if request.user.is_authenticated %}سوال مفید و واضح است{% else %}باید عضو شی!{% endif %} " 
           aria-pressed="false" 
           aria-label="Up vote" 
@@ -136,7 +123,7 @@
           data-controller="s-tooltip" 
           data-s-tooltip-placement="right" 
           title="{% if request.user.is_authenticated %}سوال مفید یا واضح نیست{% else %}باید عضو شی!{% endif %} " 
-          aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+          aria-pressed="false" aria-label="Down vote"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
     </div>
 
     {% if request.user == question.author  %}
@@ -168,69 +155,78 @@
       <img class="approved"  width="20" height="20" src="{{ MEDIA_URL }}/images/green.png" alt="approved answer"">  
     {% endif %}
 
-    {% if request.user == answer.author %}
-      <div class="btns">
-        <a href="#" class="fa fa-edit"></a>
-        <a href="#" class="fa fa-trash"></a>
-      </div>
-    {% endif %}
+
     
   </div>
 
 
     <div class="details">
-      <p>
-        {{ answer.content|safe }}
-      </p>
-      <div class="rect">
-          <div class="contain">
-            <p><a class="anchor" href="{% url 'user:user' id=answer.author.id %}">sad</a> August 12 2018</p>
-          </div>
-        </div>
+		<p>
+			{{ answer.content|safe }}
+		</p>
+		<div class="rect">
+			<div class="contain">
+				<p> {{ answer.date }}&nbsp; &nbsp;{% if answer.edited %}ویرایش شده {% endif %}</p>
+				{% if request.user == answer.author %}
+        <div class="edel">
+          	<a href="{% url 'QA:answer_edit' q_id=question.id  a_id=answer.id %}">ویرایش</a>
+			<a style="color: red;" href="{% url 'QA:answer_delete' q_id=question.id  a_id=answer.id %}">حذف</a>
+        </div>  
+					<!-- <a href="#" class="fa fa-edit"></a>
+					<a href="#" class="fa fa-trash"></a> -->
+				{% endif %}
+			</div>
 
-      </div>
+		</div>
 
   </div>
 
 
+</div>
 
 
-
-    <div class="card w-75" style="margin-top: 10px;">
       
 
 
 
     {% empty %}
 
-        <p>There is no answer for this question</p>
+        <p>هنوز کسی به این سوال جواب نداده.</p>
 
     {% endfor %}
 
 
     {% if user.is_authenticated and not user_answered %}
-        <h3>Write answer to this question</h3>
-        <div id="has_editor">
-          <form method="post" action="" enctype="multipart/form-data">
-        
-            {% csrf_token %}
-            {{ answer_form.media }}
-            {{ answer_form.as_p }}
+		<h3>می تونید به این سوال جواب بدید.</h3>
+			
+			<div class="cq">
+			<div id="has_editor">
+				<form id="post_form" method="post" action="" enctype="multipart/form-data">
+
+						{% csrf_token %}
+						{{ answer_form.media }}
+					
+				<p><label for="id_content">جواب</label>
+				<div>
+					{{ answer_form.content }}
+				</div>
+
+				<div>
+					<input type="submit" name="submit" value="ارسال" />
+				</div>
+				</form>    
+
+			<div class="preview-box">
+				<div id="preview">پیش نمایش</div>
+			</div>
+
+			</div>
+		</div>
 
 
-            <input type="submit" name="submit" value="Submit" />
-
-        </form>
-
-        </div>
-
-    {% endif %}
+	{% endif %}
 
     
-
-<pre class="conf">
-  <div id="preview" style="min-height: 60px;"></div>
-</pre>
 
   
 

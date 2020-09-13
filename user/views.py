@@ -8,13 +8,17 @@ from django.contrib import messages
 from django.conf import settings
 from django.views.generic import View
 
-from user.forms import UserForm, UserUpdateForm, AvatarUpdateForm, ResetPasswordForm, ResetPasswordEmailForm
+from user.forms import UserForm, UserUpdateForm, AvatarUpdateForm, ResetPasswordForm, GetEmailForm
 from user.models import UserModel
-from user.Confirm import verifyToken, sendConfirm
+from user.confirm import verifyToken, sendConfirm
 from user.errors import NotAllFieldCompiled
 from user.reset import sendResetPasswordEmail
 
 from porsgram.path import *
+
+import jdatetime as jdt
+
+jdt.set_locale('fa_IR.UTF-8')
 
 # Create your views here.
 
@@ -27,6 +31,7 @@ def register(request):
             
             instance           = form.save(commit=False)
             instance.is_active = False
+            instance.join_date = jdt.datetime.now().strftime('%H:%M %d %Y %B')
             instance.set_password(request.POST['password'])
             instance.save()
 
@@ -78,6 +83,10 @@ def users(request):
 
 def loginView(request):
     next_path = request.GET.get('next', '/')
+
+    if request.user.is_authenticated:
+        return redirect('user:logout')
+
     if request.POST:
         username = request.POST['username']
         password = request.POST['password']
@@ -85,12 +94,15 @@ def loginView(request):
         try:
             user = authenticate(username=username, 
                                 password=password)
-            if user is not None:
+            if (user is not None and
+                user.is_active) :
                 login(request, user)
                 request.session['id'] = user.id
-                messages.success(request, 'welcome '+str(user.username))        
+                messages.success(request, 'سلام '+str(user.username))        
                 return redirect(next_path)
-        
+            else:
+                messages.info(request, "احتمالا ایمیل شما فعال نشده")        
+
         except ObjectDoesNotExist:
             messages.error(request, 'نام کاربری و یا رمز عبور اشتباه است.')
     return render(request, USER_LOGIN, {})
@@ -188,8 +200,9 @@ class ResetPasswordView(View):
 
 def getEmailForResetPassword(request):
     
-    if request.POST :
-        form = ResetPasswordEmailForm(request.POST)
+
+    if request.POST:
+        form = GetEmailForm(request.POST)
 
         if form.is_valid():
             try:
@@ -201,5 +214,28 @@ def getEmailForResetPassword(request):
                 messages.error(request, ('there is no such email.'))
                 return redirect('user:index')
 
-    form = ResetPasswordEmailForm()
-    return render(request, USER_GET_EMAIL_RESET_PASSWORD, {'form': form})
+    form = GetEmailForm()
+    return render(request, USER_GET_EMAIL, {'form': form})
+
+
+
+def getEmailForActivate(request):
+    
+    if request.user.is_authenticated:
+        messages.error(request, ('حساب شما در حال حاضر فعال است'))
+        return redirect('user:dasboard')
+
+    if request.POST:
+        form = GetEmailForm(request.POST)
+
+        if form.is_valid():
+            try:
+                user = UserModel.objects.get(email=form.cleaned_data['email'])
+                sendConfirm(user)
+                messages.success(request, ('ایمیل فعالسازی برای شما ارسال شد'))
+                return redirect('user:login')
+            except ObjectDoesNotExist:
+                messages.error(request, ('اول باید حساب باز کنید، ایمیل موجود نیست.'))
+
+    form = GetEmailForm()
+    return render(request, USER_GET_EMAIL, {'form': form})

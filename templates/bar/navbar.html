@@ -1,4 +1,11 @@
 
+
+
+{% block styles %}
+  {% load static %}
+  <link href="{% static 'style/bar.css' %}?version=51" rel="stylesheet" >
+{% endblock styles %}
+  
 <div class="navbar">
 
   <div class="inner">
@@ -11,10 +18,10 @@
 
     <a href="{% url 'QA:questions' %}">سوالها</a>
     <a href="{% url 'user:users' %}">اعضا</a>
-    {% if user.is_authenticated %}
+    {% if request.user.is_authenticated %}
 
       <div class="dropdown">
-        <button class="dropbtn">{{user.username}} 
+        <button class="dropbtn">{{ request.user.username }} 
           <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
