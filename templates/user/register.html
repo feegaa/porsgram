@@ -1,16 +1,39 @@
 {% extends 'template.html' %}
 
+{% block styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style/login.css' %}?version=68">
+{% endblock styles %}
 
 {% block content %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="hidden" name="next" value="{{ request.path }}">
-    <input type="submit" value="register">
-    <div class="clear"></div> </div>
+<div class="regin">
 
-</form>
+    <form method="post">
+    
+        {% csrf_token %}
+
+
+        <input type="text" placeholder="نام " name="first_name" required>
+        
+        <input type="text" placeholder="نام خانوادگی" name="last_name" required>
+
+        <input type="text" placeholder="نام کاربری" name="username" required>
+    
+        <input type="email" placeholder="آدرس ایمیل" name="email" required>
+
+        <input type="password" placeholder="گذرواژه" name="password" required>
+
+
+            {{ form.gender }}
+
+
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button type="submit">ثبت نام</button>
+
+    </form>
+    
+</div>
 
     
 {% endblock content %}

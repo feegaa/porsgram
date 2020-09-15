@@ -11,9 +11,9 @@ from django.apps import apps
 from porsgram.settings import TEMPLATES_DIR, MEDIA_URL
 
 from ckeditor_uploader.fields import RichTextUploadingField 
+import jdatetime as jdt
 import re 
 import os
-
 
 
 '''
@@ -80,15 +80,20 @@ class QuestionModel(models.Model):
         return tags
         
 
+    @register.filter(name="getDate")
+    def getDate(self):
+        jdt.set_locale('fa_IR')
+        return jdt.datetime.fromgregorian(date=self.date).strftime('%H:%M %Y %B %d')
+
 
 class AnswerModel(models.Model):
-    content      = RichTextUploadingField()
-    vote         = models.SmallIntegerField(default=0)
-    question     = models.ForeignKey(QuestionModel, on_delete=models.CASCADE, related_name='question')
-    author       = models.ForeignKey(to="user.UserModel", on_delete=models.DO_NOTHING, related_name='author')    
-    is_approved  = models.BooleanField(default=False)
-    edited       = models.BooleanField(default=False)
-    date         = models.DateTimeField(auto_now_add=True)
+    content     = RichTextUploadingField()
+    vote        = models.SmallIntegerField(default=0)
+    question    = models.ForeignKey(QuestionModel, on_delete=models.CASCADE, related_name='question')
+    author      = models.ForeignKey(to="user.UserModel", on_delete=models.DO_NOTHING, related_name='author')    
+    is_approved = models.BooleanField(default=False)
+    edited      = models.BooleanField(default=False)
+    date        = models.DateTimeField(auto_now_add=True)
 
     objects      = models.Manager()
 
@@ -130,8 +135,14 @@ class AnswerModel(models.Model):
     @register.filter(name="getVoteNO")
     def getVoteNO(self):
         self.setVoteNO()
-        print(self.vote)
         return self.vote
+
+
+    @register.filter(name="getDate")
+    def getDate(self):
+        jdt.set_locale('fa_IR')
+        return jdt.datetime.fromgregorian(date=self.date).strftime('%H:%M %Y %B %d')
+
 
 
 class TagListModel(models.Model):

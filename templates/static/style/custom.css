@@ -52,7 +52,7 @@
 html {
   position: relative;
   height: 100%;
-  font-size: 80%; 
+  font-size: 90%; 
   font-family: PerForm;
   writing-mode: horizontal-tb;
   direction: rtl;
@@ -86,13 +86,14 @@ a:hover {
 
 /* Container */
 
+
 .wrapper {
   display: block;
   position: relative;
   width: 70%;
   min-height: 100%;
   height: auto !important;
-  margin: auto;
+  margin: auto auto 100px auto;
 }
 
 .wrapper .container {
@@ -752,3 +753,11 @@ hr {
 h3 {
   margin: 20px auto 10px auto;
 }
+
+.confirm-box {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  padding: 10px 20px;
+}
+

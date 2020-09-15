@@ -26,3 +26,11 @@ QA_INDEX           = QA + 'index.html'
 
 
 EMAIL_PAGE_TEMPLATE  = EMAIL + '/is_confirmed-email.html'
+
+
+PAGE_400 = TEMPLATES_DIR + '/400.html'
+PAGE_403 = TEMPLATES_DIR + '/403.html'
+PAGE_404 = TEMPLATES_DIR + '/404.html'
+PAGE_500 = TEMPLATES_DIR + '/500.html'
+
+

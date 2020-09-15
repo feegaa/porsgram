@@ -8,10 +8,10 @@ class UserForm(forms.ModelForm):
         ('none', 'به تو چه'),
     )
 
-    first_name = forms.CharField(label='Your name', max_length=30, required=True)
-    last_name  = forms.CharField(label='last anme', max_length=30, required=True)
-    username   = forms.CharField(label='useranme', max_length=30, required=False)
-    email      = forms.EmailField(label_suffix='email', required=True)
+    first_name = forms.CharField(label='نام', max_length=30, required=True)
+    last_name  = forms.CharField(label='نام خانوادگی', max_length=30, required=True)
+    username   = forms.CharField(label='نام کاربری', max_length=30, required=False)
+    email      = forms.EmailField(label='ایمیل', required=True)
     password   = forms.PasswordInput()
     gender     = forms.ChoiceField(choices=STATUS_CHOICES, widget=forms.RadioSelect)
     
@@ -48,8 +48,7 @@ class UserUpdateForm(UserForm):
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
         self.fields['email'].disabled = True
-        self.fields['password'].disabled = True
-
+        self.fields.pop('password')
 
 class AvatarUpdateForm(forms.ModelForm):
     class Meta:

@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from ckeditor_uploader import views as uploader_views
-
+from porsgram import views
 
 urlpatterns = [
     path('', include('QA.urls')),
@@ -29,3 +29,14 @@ urlpatterns = [
     path('ckeditor/upload', uploader_views.upload, name='ckeditor_upload'),
     path('ckeditor/browse', uploader_views.browse, name='ckeditor_browse'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# handler400 = 'porsgram.views.bad_request'
+# handler403 = 'porsgram.views.permission_denied'
+handler404 = views.handler404
+handler400 = views.handler400
+handler403 = views.handler403
+handler500 = views.handler500
+# handler404 = 'porsgram.views.handler404'
+# handler500 = 'porsgram.views.handler500'
+

@@ -14,10 +14,10 @@
      <div class="box">
             
       <div class="profile">
-        <a href="{% url 'user:user' id=question.author.id %}">
-          <img class="rounded-circle" width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="test">
-          {{ question.author.username }}
-        </a>    
+		<a href="{% url 'user:user' id=question.author.id %}">
+			<img class="rounded-circle" width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="{{ question.author.username }}'s avatar'">
+			{{ question.author.username }}
+		</a>    
       </div>  
 
       <div class="state">
@@ -37,24 +37,24 @@
 
       <div class="content">
         <div class="title">
-          <h4>
+          <h3>
             <a href="{% url 'QA:question' id=question.id %}">{{ question.title }}</a>
-		  </h4>
+		  </h3>
         </div>
         <div class="details">
           <div class="tags">
           
           {% for tag in question.getTags %}
-			<div class="style">
+            <div class="style">
 				<a href="{{ tag.id }}">{{ tag.tag }}</a>
-			</div>
+            </div>
           {% endfor %}
         
           </div>
-          <div class="contain">
-			<p><a href="#">{{ question.author.username }}</a>
-				{% if question.edited %}ویرایش شده {% endif %} {{ question.date }}</p>
-          </div>
+		<div class="contain">
+      		<p><a href="#">{{ question.author.username }}</a>
+			{% if question.edited %}ویرایش شده در&nbsp;&nbsp; {% endif %} {{ question.getDate }}</p>
+		</div>
         </div>
 
       </div>
@@ -74,13 +74,13 @@
           {% endif %}
           {% for i in page_obj.paginator.page_range %}
             {% if page_obj.number == i %}
-              <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+				<li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
             {% else %}
-              <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+				<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
             {% endif %}
           {% endfor %}
           {% if page_obj.has_next %}
-            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a></li>
+			<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a></li>
           {% else %}
             <li class="page-item disabled"><span class="page-link">بعدی</span></li>
           {% endif %}

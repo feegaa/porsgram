@@ -248,7 +248,7 @@ def approveAnswer(request):
                 pass
 
         elif approved_answer.answer == answer:
-            answer.is_approved        = False
+            answer.is_approved       = False
             approved_answer.delete()
         else:
             approved_answer.answer.is_approved = False

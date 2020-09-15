@@ -9,7 +9,10 @@ from django import template
 
 from PIL import Image
 from pathlib import Path
+import jdatetime as jdt
+
 import os
+
 
 # Create your models here.
 
@@ -45,6 +48,14 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
 
+    @register.filter(name="getDate")
+    def getDate(self):
+        jdt.set_locale('fa_IR')
+        jd    = jdt.date.fromgregorian(date=self.join_date).strftime('%d %B  %Y')
+        ls    = jdt.datetime.fromgregorian(date=self.last_seen).strftime('%H:%M %Y %B %d')
+        dates = {'jd': jd, 'ls': ls}
+        return dates
+
     @register.filter(name="getReputation")
     def getReputation(self):
         self.setReputation()
@@ -65,9 +76,25 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
         self.save()
         
 
+    @register.filter(name='getQuestions')
+    def getQuestions(self):
+        print("get questions >>>>>>>>>>>>>>>>")
+        print(self.username)
+        try:
+            questions = QuestionModel.objects.filter(author=self)
+        except ObjectDoesNotExist:
+            questions = None
+        return questions
 
 
 
+    @register.filter(name='getAnswers')
+    def getAnswers(self):
+        try:
+            answers = AnswerModel.objects.filter(author=self)
+        except ObjectDoesNotExist:
+            answers = None
+        return answers
 
 
 

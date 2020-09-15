@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-import locale
+# import locale
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,7 +29,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['127.0.0.1:8000']
 
 
 # Application definition
@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'rest_framework',
     'django_email_verification',
-    # 'jalali_date',
 ]
 
 
@@ -168,6 +167,7 @@ CKEDITOR_UPLOAD_PATH = 'QAImage/'
 
 STATICFILES_DIRS = [
     os.path.join(TEMPLATES_DIR, "static"),
+    '/var/www/static/',
 ]
 
 # print(TEMPLATES_DIR, STATICFILES_DIRS)
@@ -221,6 +221,10 @@ EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplat
 
 AUTH_USER_EMAIL_UNIQUE = True
 
+try:
+    from local_settings import *
+except ImportError as e:
+    pass
 
 
 # SET LOCAL FOR JDT

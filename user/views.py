@@ -16,10 +16,6 @@ from user.reset import sendResetPasswordEmail
 
 from porsgram.path import *
 
-import jdatetime as jdt
-
-jdt.set_locale('fa_IR.UTF-8')
-
 # Create your views here.
 
 
@@ -31,7 +27,6 @@ def register(request):
             
             instance           = form.save(commit=False)
             instance.is_active = False
-            instance.join_date = jdt.datetime.now().strftime('%H:%M %d %Y %B')
             instance.set_password(request.POST['password'])
             instance.save()
 
@@ -135,7 +130,7 @@ def dashboard(request):
             update_avatar_form.save()
             update_user_form.save()
 
-            messages.success(request, 'update')        
+            messages.success(request, 'صفحه شما بروزرسانی شد.')        
             return redirect('user:dashboard')
 
     else:

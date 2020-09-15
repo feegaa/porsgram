@@ -1,17 +1,49 @@
 {% extends 'template.html' %}
 
 
+{% block styles %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'style/users.css' %}?version=59">    
+<link rel="stylesheet" href="{% static 'style/modal.css' %}?version=60">    
+{% endblock styles %}
+    
+
+
 {% block content %}
 
-    <div>
-        {% for user in users %}
-        <p>{{ user.username }}</p>
-        <p>{{ user.email }}</p>
-        <p>{{ user.reputation }}</p>
-        <p>{{ user.join_date }} </p>
-        {% endfor %}
+
+
+<div class="board">
+
+{% for user in users %}
+
+
+    <div class="procard">
+        <div class="inner">
+            <img class="avatar" src="{{ user.avatarmodel.avatar.url }}" alt="leo">
+            <div class="sec">
+
+                <p>
+                    {{ user.username }}
+                </p> 
+                
+                <p>
+                    <span class="qas" >سوال&nbsp;&nbsp;{{ user.reputation }}</span>
+                    <span class="qas" >جواب&nbsp;&nbsp;{{ user.reputation }}</span>
+                    <span class="repu">امتیاز ۱۲۳۴&nbsp;</span>
+                    <!-- <span class="qas" button-id="{{ user.username }}" >سوال&nbsp;&nbsp;{{ user.reputation }}</span>
+                    <span class="qas" button-id="{{ user.username }}" >جواب&nbsp;&nbsp;{{ user.reputation }}</span>
+                    <span class="repu">امتیاز ۱۲۳۴&nbsp;</span> -->
+                </p> 
+            </div>    
+        </div>
     </div>
-        
+
+
+{% endfor %}
+    
+
+    </div>
 
 
 {% endblock content %}

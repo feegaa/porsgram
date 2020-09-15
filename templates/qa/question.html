@@ -60,7 +60,7 @@
 	  {% endfor %}
       </div>
         <div class="contain">
-          <p><a class="anchor" href="#">sad</a> {{ question.date }}&nbsp;&nbsp; {% if question.edited %}ویرایش شده {% endif %}</p>
+          <p><a class="anchor" href="#">sad</a> {{ question.getDate }}&nbsp;&nbsp; {% if question.edited %}ویرایش شده {% endif %} </p>
     	{% if request.user == question.author %}  
 			<div class="edel">
 				<a href="{% url 'QA:question_edit' id=question.id %}">ویرایش</a>
@@ -166,7 +166,7 @@
 		</p>
 		<div class="rect">
 			<div class="contain">
-				<p> {{ answer.date }}&nbsp; &nbsp;{% if answer.edited %}ویرایش شده {% endif %}</p>
+				<p> {{ answer.getDate }}&nbsp; &nbsp;{% if answer.edited %}ویرایش شده {% endif %} </p>
 				{% if request.user == answer.author %}
         <div class="edel">
           	<a href="{% url 'QA:answer_edit' q_id=question.id  a_id=answer.id %}">ویرایش</a>
