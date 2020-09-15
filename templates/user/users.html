@@ -3,7 +3,7 @@
 
 {% block styles %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'style/users.css' %}?version=59">    
+<link rel="stylesheet" href="{% static 'style/users.css' %}?version=69">    
 <link rel="stylesheet" href="{% static 'style/modal.css' %}?version=60">    
 {% endblock styles %}
     
@@ -20,7 +20,7 @@
 
     <div class="procard">
         <div class="inner">
-            <img class="avatar" src="{{ user.avatarmodel.avatar.url }}" alt="leo">
+            <img class="avatar" src="{{ user.avatarmodel.avatar.url }}" alt="{{ user.username }}'s avatar'">
             <div class="sec">
 
                 <p>

@@ -13,7 +13,7 @@ class UserForm(forms.ModelForm):
     username   = forms.CharField(label='نام کاربری', max_length=30, required=False)
     email      = forms.EmailField(label='ایمیل', required=True)
     password   = forms.PasswordInput()
-    gender     = forms.ChoiceField(choices=STATUS_CHOICES, widget=forms.RadioSelect)
+    gender     = forms.ChoiceField(choices=STATUS_CHOICES, label="جنسیت", widget=forms.RadioSelect)
     
     class Meta:
         model = UserModel

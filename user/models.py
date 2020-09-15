@@ -111,7 +111,7 @@ class AvatarModel(models.Model):
     # def save(self, is_update):
     def save(self, force_insert=False, force_update=False, using=None):
         super().save()
-        SIZE       = 200
+        SIZE       = 225
         FILE_SCALE = (SIZE, SIZE)
 
         img = Image.open(self.avatar.path)
