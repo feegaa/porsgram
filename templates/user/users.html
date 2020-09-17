@@ -15,7 +15,7 @@
 
 <div class="board">
 
-{% for user in users %}
+{% for user in page_obj %}
 
 
     <div class="procard">
@@ -24,13 +24,15 @@
             <div class="sec">
 
                 <p>
-                    {{ user.username }}
+                    <a href="{% url 'user:user' username=user.username %}">
+                        {{ user.username }}
+                    </a>
                 </p> 
                 
                 <p>
-                    <span class="qas" >سوال&nbsp;&nbsp;{{ user.reputation }}</span>
-                    <span class="qas" >جواب&nbsp;&nbsp;{{ user.reputation }}</span>
-                    <span class="repu">امتیاز ۱۲۳۴&nbsp;</span>
+                    <span class="qas" >سوال&nbsp;&nbsp;{{ user.questions_no }}</span>
+                    <span class="qas" >جواب&nbsp;&nbsp;{{ user.answers_no }}</span>
+                    <span class="repu">امتیاز&nbsp;&nbsp;{{ user.reputation }}</span>
                     <!-- <span class="qas" button-id="{{ user.username }}" >سوال&nbsp;&nbsp;{{ user.reputation }}</span>
                     <span class="qas" button-id="{{ user.username }}" >جواب&nbsp;&nbsp;{{ user.reputation }}</span>
                     <span class="repu">امتیاز ۱۲۳۴&nbsp;</span> -->
@@ -44,6 +46,34 @@
     
 
     </div>
+
+
+    <nav aria-label="...">
+        {% if page_obj.has_other_pages %}
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">قبلی</span></li>
+          {% endif %}
+          {% for i in page_obj.paginator.page_range %}
+            {% if page_obj.number == i %}
+				<li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+				<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+			<li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a></li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">بعدی</span></li>
+          {% endif %}
+        </ul>
+      {% endif %}
+    
+      </nav>
+    
+
 
 
 {% endblock content %}

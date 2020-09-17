@@ -1,364 +1,79 @@
-/***************** FONTS ********************/
-
-@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,300");
-html {font-size: 62.5%; font-family: 'Open Sans', sans-serif;}
-body {font-size: 1.6rem; min-height: 100vh;}
-h1 {font-size: 3rem; margin-bottom: 1rem;}
-h2 {font-size: 1.6rem;}
-header {
-    position: sticky; 
-    border-bottom: 5px solid #ff5000;
-    width: 100%;
-    background-color: #333;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    -ms-flex-align: center;
-    align-items: center;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    z-index: 9;
-    margin-bottom: 30px;
-
-}
-
-.outer {
-	width: 100%;
-	margin: 0 auto;
-}
-
-.inner {
-	width: 40%;
-	margin: 0 auto;
-	direction: rtl;
-}
 
 
-/************** NAVIGATION ***************/
-
-nav ul {
-    list-style-type: none;
-    display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-    background: #333;
-}
-nav ul,
-nav li {
-	flex: 1;	
-}
-nav li:last-child {
-   border-bottom: none;
-}
-nav a {
-	text-decoration: none;
-	color: inherit;
-	display: block;
-	font-size: 1.8rem;
-}
-nav a:hover {
-    text-decoration: none;
-	background: #333;
-	color: #ff5000;
-}
-nav li {
-	position: relative;
-	line-height: 50px;
-	color: #fff;
-    text-align: center;
-    list-style: none;
-}  
-nav input,
-nav label {
-	display: none;
-	width: 36px; 
-	height: 36px; 
-	background: #ff5000; 
-	color: #fff; 
-	text-align: center; 
-	line-height: 36px;
-	font-size: 1.6rem;
-	border-radius: 2px;
-} 
-nav label {
-   position: absolute; 
-   top: 8px; 
-   right: 8px; 
-   transition: .4s;
-}
+<!-- 
+{% block content %}
 
 
-
-nav label:hover {cursor:pointer;}
-nav label:before {
-	font-family: FontAwesome;
-	font-size: 24px;
-	content: "\f0c9";
-	text-align: center;
-}
-
-/************* MEDIA QUERIES **************/
-
-
-
-@media only screen and (max-width: 1080px){
-	nav {
-	   position: relative;
-	}
-	 nav ul {
-		 transform: translateY(0);
-		 box-shadow: 0 0 5px rgba(0,0,0, .7);
-	   transition: all .5s;
-	   position: absolute;
-	   width: 100%;
-	 }
-	 nav li {
-		 flex: none; 
-		 width: 100%;
-		 border-bottom: solid 1px #777;
-	 } 
-	 nav input[type="checkbox"]:checked + ul  {
-		 transform: translateY(-100%);
-		 width: 100%;
-		 background: #999;   
-	   transition: all .5s;
-	 }
-	 nav label{
-	   display: block;
-	}  
-	 nav input[type="checkbox"]:checked + ul li:nth-child(1){
-		 background: #777; 
-		 color: #fff;
-	 }  
- }
-
-
-
-
-
-
-
-@media only screen and (max-width: 1080px){
-	nav {
-	   position: sticky;
-	}
-	 nav ul {
-		 transform: translateY(0);
-		 box-shadow: 0 0 5px rgba(0,0,0, .7);
-	   transition: all .5s;
-	   position: absolute;
-	   width: 100%;
-	 }
-	 nav li {
-		 flex: none; 
-		 width: 100%;
-		 border-bottom: solid 1px #777;
-	 } 
-	 nav input[type="checkbox"]:checked + ul  {
-		 transform: translateY(-100%);
-		 width: 100%;
-		 background: #999;   
-	   transition: all .5s;
-	 }
-	 nav label{
-	   display: block;
-	}  
-	 nav input[type="checkbox"]:checked + ul li:nth-child(1){
-		 background: #777; 
-		 color: #fff;
-	 }  
- }
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////
-
-.navbar {
-	position: sticky;
-	direction: rtl;
-	width: 100%;
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-ms-flex-align: center;
-	align-items: center;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	background-color: #333;
-	border-bottom: 5px solid #ff5000;
-  }
-  
-  .navbar .inner {
-	display: -ms-flexbox;
-	display: flex;
-	width: 40%;
-	margin: 0 auto;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-ms-flex-align: center;
-	align-items: center;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-  }
-  
-  .navbar a {
-	float: center;
-	font-size: 14px;
-	color: white;
-	text-align: center;
-	padding: 14px 16px;
-	text-decoration: none;
-  }
-  
-  .dropdown {
-	position: relative;
-	overflow: hidden;
-  }
-
-  .dropdown .dropbtn {
-	font-size: 14px;  
-	border: none;
-	outline: none;
-	color: white;
-	padding: 14px 16px;
-	background-color: #333;
-	font-family: inherit;
-	margin: 0;
-  }
-  
-  .navbar a:hover, .dropdown:hover .dropbtn {
-	color: #ff5000;
-  }
-  
-  .dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #333;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
-  }
-
-
-  .dropdown-content a {
-	float: none;
-	color: #ddd;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: none;
-	text-align: right;
-  }
-  
-  .dropdown-content a:hover {
-	background-color: #ddd;
-  }
-  
-  .dropdown:hover .dropdown-content {
-	display: block;
-  }
-
-
-    <div class="pagination">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo;</a>
-                <!-- <a href="?page={{ page_obj.previous_page_number }}">previous</a> -->
-            {% endif %}
-    
-            <a href="#" class="active">{{ page_obj.number }}</a>
-    
-            {% if page_obj.has_next %}
-                <!-- <a href="?page={{ page_obj.next_page_number }}">next</a> -->
-                <a href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
-            {% endif %}
+<div class="ubox">
+    <div class="infobox">
+        <div class="acc">
+            <img src="{{ user.avatarmodel.avatar.url }}" alt="{{ user.username }}'s avatar'">
+            <div class="det">
+                <p>{{ user.username }}</p>
+                <p>امتیاز {{ user.reputation }} </p>
+                <p>در <small>{{ user.getDate.jd }} </small> عضو شده</p>
+                <p>در <small>{{ user.getDate.ls }} </small> اینجا بوده </p>
+            </div>
+        </div>
+        <div class="aboute_me">
+            <h4>درباره من</h4>
+            <p>
+                {{ user.about_me }}
+            </p>
+        </div>
     </div>
 
-////////////////////////////////////////////////////////////////////////
+    <div class="qas">
 
-.container .right {
-  display: block;
-  position: sticky;
-  width: 30%;
-  padding: 0;
-  margin: auto;
-  height: 100%;
-  border-left: 1px solid rgba(0, 0, 0, 0.5);
-}
+        <h4>سوال های علی</h4>
+        <hr>
 
-.container .right .inner {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
+        {% for question in user.getQuestions %}
+        <div class="qbox">
+            <a href="#">{{ question.title }}</a>
+            <div class="datag">
+            {% for tag in question.getTags %}
+                <div class="style">
+                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
+                </div>
+            {% endfor %}
 
-.container .right .inner .card {
-  margin: 5px 10px;
-  padding: 4px 2px;
-  border: 0;
-  border-radius: 0.25rem;
-}
+                <div class="date">
+                    {{ question.getDate }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
 
-.container .right .inner .card .cqbtn {
-  background-color: var(--primary);
-  width: max-content;
-  margin: 10px auto;
-  padding: 8px 16px;
-  border: 0;
-  border-radius: 0.5rem;
-  color: white;
-}
+    </div>
 
+    <div class="qas">
+        <h4>سوال هایی که علی جواب داده</h4>
+        <hr>
 
-.container .right .inner .card .cqbtn > a {
-  text-decoration-line: none;
-  list-style-type: none;
-  color: white;
-}
+        {% for answer in user.getAnswers %}
+        <div class="qbox">
+            <a href="#">{{ answer.question.title }}</a>
+            <div class="datag">
+            {% for tag in answer.question.getTags %}
+                <div class="style">
+                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
+                </div>
+            {% endfor %}
 
-
-/* Wrapper Grid Display */
-
-.wrapper {
-  display: grid;
-  grid-template-columns: 10% 80%;
-  direction: rtl;	
-  text-align: right;
-  width: inherit;
-}
-
-.wrapper .column {
-  display: grid;
-  align-items: center;
-  grid-template-rows: 90% 10%;
-  margin: 0 auto;
-}
-
-.wrapper .a {
-  text-align: center;
-}
-
-.wrapper > div {
-  background-color: inherit;
-  padding: 1em;
-  margin: 0 10px;
-}
-
-.wrapper > div:nth-last-child(odd) {
-  background-color: inherit;
-}
-
-/* Wrapper */
+                <div class="date">
+                    {{ answer.question.getDate }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
 
 
+    </div>
 
-        // // console.log($(window).height());
-        // var height_preview = Math.ceil($('#pre-view').height());
-        // // console.log(heghit_preview)
-        // var element = document.querySelector('#footer');
-        // var height_footer = element.style.marginTop;
-        // height_footer = height_footer.substring(0, height_footer.length - 2);
-        // height_footer = Number(height_footer) + height_preview;
-        // console.log(height_footer);
+
+</div>
+
+{% endblock content %}
+    
+ -->

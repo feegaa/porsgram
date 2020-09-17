@@ -31,7 +31,7 @@
       </div>
     {% else %}
       <a href="{% url 'user:login' %}?next={{request.path}}">ورود</a>
-      <a href="{% url 'user:register'%}?next={{request.path}}">ثبت نام</a>
+      <a href="{% url 'user:register' %}?next={{request.path}}">ثبت نام</a>
     {% endif %}
 
 

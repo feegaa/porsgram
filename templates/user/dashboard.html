@@ -5,7 +5,8 @@
 
 {% block styles %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'style/login.css' %}?version=68">
+    <link rel="stylesheet" href="{% static 'style/login.css' %}?version=47">
+    <link rel="stylesheet" href="{% static 'style/custom.css' %}?version=47">
 {% endblock styles %}
     
 
@@ -28,8 +29,44 @@
             <input type="file" name="avatar" accept="image/*" id="id_avatar">
         </p>
         
-        {{ user_form.as_p }}
+        {{ user_form.media }}
+        <p> {{ user_form.first_name }} </p>
+        <p> {{ user_form.last_name }} </p>
+        <p> {{ user_form.username }} </p>
+        <p> {{ user_form.email }} </p>
+        <p> {{ user_form.gender }} </p>
+        <div id="has_editor">
+            <p><label for="has_editor">درباره من</label></p>
+            <textarea   
+                data-field-id="id_about_me" style="display: inline-block; width: 100%;" 
+                maxlength="300"
+                cols="50" 
+                id="id_about_me" 
+                name="about_me" 
+                rows="10" 
+                required data-processed="0" 
+                data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Bold&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;Smiley&quot;, &quot;SpecialChar&quot;], [&quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;]], &quot;toolbar&quot;: &quot;Full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 740, &quot;filebrowserWindowHeight&quot;: 648, &quot;enterMode&quot;: 2, &quot;extraPlugins&quot;: &quot;justify, liststyle, indent&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[]" data-id="id_about_me" data-type="ckeditortype">
+                {{ user.about_me }}
+            </textarea>
+    
+        </div>
+    
         
+        <div class="preview-box">
+            <p id="preview">پیش نمایش</p>
+        </div>
+        <p>
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <input type="submit" value="تغییر" name="Submit">
+        </p>
+    </form>
+    
+</div>
+
+{% endblock content %}
+    
+
+
         <!-- <label for="first_name">نام</label>
         <input type="text" value="{{ user.first_name }}" placeholder="نام " name="first_name" required>
         
@@ -43,15 +80,3 @@
         <input type="email" value="{{ user.email }}" placeholder="آدرس ایمیل" name="email" required> -->
 
         <!-- {{ avatar_form.as_p }} -->
-
-        <p>
-            <input type="hidden" name="next" value="{{ request.path }}">
-            <input type="submit" value="تغییر" name="Submit">
-        </p>
-    </form>
-    
-</div>
-
-{% endblock content %}
-    
-

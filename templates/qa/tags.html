@@ -1,0 +1,23 @@
+{% extends 'template.html' %}
+
+
+{% block styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style/custom.css' %}">
+{% endblock styles %}
+    
+
+{% block content %}
+    
+    <div class="tbox">
+        {% for tag in tags %}
+            <a href="{% url 'QA:tag' id=tag.id %}">{{ tag.tag }}</a>        
+        {% endfor %}
+    
+    </div>
+        
+
+
+{% endblock content %}
+    
+

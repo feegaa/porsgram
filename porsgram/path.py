@@ -20,9 +20,11 @@ USER_USER      = USER + 'user.html'
 QA_CREATE_QUESTION = QA + 'createQuestion.html'
 QA_QUESTION        = QA + 'question.html'
 QA_QUESTIONS       = QA + 'questions.html'
+QA_QUESTIONS_TAGED = QA + 'questionsTaged.html'
 QA_EDIT_QUESTION   = QA + 'editQuestion.html'
 QA_EDIT_ANSWER     = QA + 'editAnswer.html'
 QA_INDEX           = QA + 'index.html'
+QA_TAGS            = QA + 'tags.html'
 
 
 EMAIL_PAGE_TEMPLATE  = EMAIL + '/is_confirmed-email.html'

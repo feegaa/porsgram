@@ -16,6 +16,8 @@ $(document).ready(function(){
     
     if($('#has_editor').length) {
         var content = CKEDITOR.instances['id_content'];
+        if (content == null) 
+            var content = CKEDITOR.instances['id_about_me'];
         content.on('contentDom', function(event){
             content.on('change', function(event){
                 document.getElementById('preview').innerHTML = this.getData();
@@ -55,6 +57,12 @@ $(document).ready(function(){
     }, 2000);        
 
 
+    // var content = CKEDITOR.instances['id_about_me'];
+    //     content.on('contentDom', function(event){
+    //         content.on('change', function(event){
+    //             document.getElementById('preview').innerHTML = this.getData();
+    //         });
+    //     });        
 
 
 });

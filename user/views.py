@@ -7,6 +7,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.conf import settings
 from django.views.generic import View
+from django.core.paginator import Paginator
+
+
 
 from user.forms import UserForm, UserUpdateForm, AvatarUpdateForm, ResetPasswordForm, GetEmailForm
 from user.models import UserModel
@@ -14,7 +17,10 @@ from user.confirm import verifyToken, sendConfirm
 from user.errors import NotAllFieldCompiled
 from user.reset import sendResetPasswordEmail
 
+from QA.models import QuestionModel, AnswerModel
+
 from porsgram.path import *
+import time
 
 # Create your views here.
 
@@ -54,26 +60,29 @@ def index(request):
     return render(request, 'qa/index.html', context=None)
 
 
-def user(request, id):
+
+def user(request, username):
     try:
-        user = UserModel.objects.get(id=id)
+        user      = UserModel.objects.get(username=username)
     except ObjectDoesNotExist:
         return redirect('user:index')
+    return render(request, USER_USER, {'user': user})
 
-    return render(request, USER_USER, {"user": user})
 
 
 
 def users(request):
-    try:
-        users = UserModel.objects.all()
-        return render(request, 
-                    USER_USERS, 
-                    context={'users': users})
+    users       = UserModel.objects.all()    
+    paginator   = Paginator(users, 21)
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
 
-    except ObjectDoesNotExist:
-        return HttpResponseRedirect('/qlog')
+    context     = {
+        'page_obj': page_obj,
+    }
 
+    return render(request, USER_USERS, context=context)
+        
 
 
 def loginView(request):

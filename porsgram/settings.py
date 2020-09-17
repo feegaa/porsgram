@@ -29,7 +29,7 @@ DEBUG = True
 
 
 
-# ALLOWED_HOSTS = ['127.0.0.1:8000']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -221,10 +221,10 @@ EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplat
 
 AUTH_USER_EMAIL_UNIQUE = True
 
-try:
-    from local_settings import *
-except ImportError as e:
-    pass
+# try:
+#     from local_settings import *
+# except ImportError as e:
+#     pass
 
 
 # SET LOCAL FOR JDT

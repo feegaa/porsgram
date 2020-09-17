@@ -7,6 +7,9 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('questions/', views.questions, name='questions'),
     path('question/<int:id>', views.question, name='question'),
+    path('tags/', views.tags, name='tags'),
+    path('questions/taged/<int:id>/', views.tag, name='tag'),
+
 
     # question CRUD
     path('question/create/', views.createQuestion, name='question_create'),

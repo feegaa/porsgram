@@ -53,8 +53,10 @@ hr {
 }
 
 .question .info .avatar > a > img {
-  width: "20px";
-  height: "20px"; 
+  width: "40px";
+  height: "40px";
+  border: none;
+  border-radius: 0.5rem; 
 }
 
 
@@ -90,24 +92,27 @@ hr {
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 100%;
+    width: 90%;
     height: 100%;
     border-right: 1px solid rgba(0, 0, 0, 0.125);
     padding: 0 10px;
     margin: auto;
     top: 0;
+	line-break: loose;
+
 }
 
 .question .details > h4 {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .question .details > p {
-  float: right;
-    font-size: inherit;
+  	float: right;
+    font-size: 1rem;
     text-align: right;
-    word-wrap: break-word;
-
+	word-wrap: break-word;
+	line-break: loose;
+	box-sizing: border-box;
 }
 
 
@@ -120,7 +125,7 @@ hr {
 }
 
 .question .details > p {
-  width: 100% !important;
+  width: 90% !important;
 }
 
 .question .details .rect {

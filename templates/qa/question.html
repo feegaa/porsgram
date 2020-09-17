@@ -3,7 +3,9 @@
 
 {% block styles %}
   {% load static %}
-  <link href="{% static 'style/question.css' %}?version=70" rel="stylesheet" >
+  <link href="{% static 'style/question.css' %}?version=49" rel="stylesheet" >
+  <link href="{% static 'style/custom.css' %}?version=47" rel="stylesheet" >
+
 {% endblock styles %}
   
 
@@ -14,7 +16,7 @@
             
   <div class="info">
     <div class="avatar">
-      <a href="{% url 'user:user' id=question.author.id %}" class="anchor">
+      <a href="{% url 'user:user' username=question.author.username %}" class="anchor">
         <img width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="test">
         <p>{{ question.author.username }}</p>
       </a>    
@@ -91,7 +93,7 @@
             
     <div class="info">
       <div class="avatar">
-        <a href="{% url 'user:user' id=answer.author.id %}" class="anchor">
+        <a href="{% url 'user:user' username=answer.author.username %}" class="anchor">
           <img width="30px" height="30px" src="{{ answer.author.avatarmodel.avatar.url }}" alt="test">
           <p>{{ answer.author.username }}</p>
         </a>    
@@ -207,9 +209,15 @@
 						{{ answer_form.media }}
 					
 				<p><label for="id_content">جواب</label>
-				<div>
-					{{ answer_form.content }}
-				</div>
+		<div class="django-ckeditor-widget" data-field-id="id_content" style="display: inline-block; width: 100%;">
+            <textarea   cols="50" 
+                        id="id_content" 
+                        name="content" 
+                        rows="10" 
+                        required data-processed="0" 
+                        data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Bold&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;Image&quot;, &quot;Table&quot;], [&quot;Source&quot;], [&quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;CodeSnippet&quot;]], &quot;toolbar&quot;: &quot;Full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 740, &quot;filebrowserWindowHeight&quot;: 648, &quot;enterMode&quot;: 2, &quot;extraPlugins&quot;: &quot;justify, liststyle, indent, codesnippet&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[]" data-id="id_content" data-type="ckeditortype">
+            </textarea>
+        </div>
 
 				<div>
 					<input type="submit" name="submit" value="ارسال" />
@@ -217,7 +225,7 @@
 				</form>    
 
 			<div class="preview-box">
-				<div id="preview">پیش نمایش</div>
+				<p id="preview">پیش نمایش</p>
 			</div>
 
 			</div>

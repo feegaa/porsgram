@@ -1,5 +1,6 @@
 from django import forms
 from user.models import UserModel, AvatarModel
+from ckeditor.fields import RichTextFormField
 
 class UserForm(forms.ModelForm):
     STATUS_CHOICES = (
@@ -15,6 +16,7 @@ class UserForm(forms.ModelForm):
     password   = forms.PasswordInput()
     gender     = forms.ChoiceField(choices=STATUS_CHOICES, label="جنسیت", widget=forms.RadioSelect)
     
+
     class Meta:
         model = UserModel
         fields = ['first_name', 'last_name', 'username', 'email', 'password', 'gender']
@@ -45,10 +47,15 @@ class UserForm(forms.ModelForm):
         return username
 
 class UserUpdateForm(UserForm):
+    about_me = RichTextFormField(max_length=700)
+
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
         self.fields['email'].disabled = True
-        self.fields.pop('password')
+        # self.fields.pop('password')
+
+    class Meta(UserForm.Meta):
+        fields = ['about_me', 'first_name', 'last_name', 'username', 'email', 'gender']
 
 class AvatarUpdateForm(forms.ModelForm):
     class Meta:

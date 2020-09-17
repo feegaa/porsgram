@@ -58,6 +58,8 @@ def createQuestion(request):
         if q_form.is_valid():
             instance        = q_form.save(commit=False)    
             instance.author = request.user
+            instance.author.questions_no += 1
+            instance.author.save()
             instance.save()
             setQTags(tags, instance)
 
@@ -191,6 +193,8 @@ def question(request, id):
         if answer_form.is_valid():
             instance             = answer_form.save(commit=False)
             instance.author      = request.user
+            instance.author.answers_no += 1
+            instance.author.save()
             question.answers_NO += 1
             question.save()
             instance.question    = question
@@ -323,6 +327,8 @@ def deleteQuestion(request, id):
         return redirect('QA:index')
         
     if request.user == question.author:
+        question.author.questions_no -= 1
+        question.author.save()
         question.delete()        
         messages.warning(request, 'سوال شما حذف شد!')
         return redirect('QA:questions')
@@ -330,6 +336,30 @@ def deleteQuestion(request, id):
     else:
         return redirect('QA:dashboard')
 
+
+def tags(request):
+    try:
+        tags = TagListModel.objects.all()
+    except ObjectDoesNotExist:
+        tags = None
+    return render(request, QA_TAGS, {'tags': tags})
+
+
+
+def tag(request, id):
+    _tag        = TagListModel.objects.get(id=id)
+    tags        = QTagModel.objects.filter(tag=_tag)
+    questions   = [i.question for i in tags]
+    paginator   = Paginator(questions, 5)
+    page_number = request.GET.get('page')
+    page_obj    = paginator.get_page(page_number)
+
+    context     = {
+        'page_obj': page_obj,
+    }
+
+    return render(request, QA_QUESTIONS_TAGED, context=context)
+        
 
 
 @login_required
@@ -374,15 +404,17 @@ def editAnswer(request, q_id, a_id):
 def deleteAnswer(request, q_id, a_id):
     try:
         answer   = AnswerModel.objects.get(id=a_id)
-
+        question = QuestionModel.objects.get(id=q_id)
     except ObjectDoesNotExist:
         return HttpResponseRedirect('QA:index')
 
     if request.user == answer.author:
-        question       = QuestionModel.objects.get(id=q_id)
-        question.vote -= 1
-        question.save()
+        question.answers_NO      -= 1
+        answer.author.answers_no -= 1
+        answer.author.save()
         answer.delete()
+        question.save()
+
         return redirect('QA:question', id=q_id)
 
     else:

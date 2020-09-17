@@ -1,12 +1,90 @@
 {% extends 'template.html' %}
 
 
-{% block content %}
-    <p>{{ user.username }}</p>
-    <p>{{ user.getReputation }}</p>
-    <p>{{ user.first_name }}</p>
-    <p>{{ user.last_name }}</p>
-    <p>{{ user.reputation }}</p>
-{% endblock content %}
+{% block styles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style/user.css' %}?version=47">
+{% endblock styles %}
     
 
+
+
+
+
+{% block content %}
+
+
+<div class="ubox">
+    <div class="infobox">
+        <div class="acc">
+            <img src="{{ user.avatarmodel.avatar.url }}" alt="{{ user.username }}'s avatar'">
+            <div class="det">
+                <p>{{ user.username }}</p>
+                <p>امتیاز {{ user.getReputation }} </p>
+                <p>در <small>{{ user.getDate.jd }} </small> عضو شده</p>
+                <p>در <small>{{ user.getDate.ls }} </small> اینجا بوده </p>
+            </div>
+        </div>
+        <div class="aboute_me">
+            <h4>درباره من</h4>
+            <p>
+                {{ user.about_me|safe }}
+            </p>
+        </div>
+    </div>
+
+    <button onclick="{{ user.getDat }}">test</button>
+
+    <div class="qas">
+
+        <h4>سوال های علی</h4>
+        <hr>
+
+        {% for question in user.getQuestions %}
+        <div class="qbox">
+            <a href="#">{{ question.title }}</a>
+            <div class="datag">
+            {% for tag in question.getTags %}
+                <div class="style">
+                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
+                </div>
+            {% endfor %}
+
+                <div class="date">
+                    {{ question.getDate }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="qas">
+        <h4>سوال هایی که علی جواب داده</h4>
+        <hr>
+
+        {% for answer in user.getAnswers %}
+        <div class="qbox">
+            <a href="#">{{ answer.question.title }}</a>
+            <div class="datag">
+            {% for tag in answer.question.getTags %}
+                <div class="style">
+                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
+                </div>
+            {% endfor %}
+
+                <div class="date">
+                    {{ answer.question.getDate }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+{% endblock content %}
+    

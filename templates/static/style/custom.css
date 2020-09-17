@@ -238,7 +238,7 @@ a:hover {
 
 
 
-@media only screen and (max-width: 1110px){
+@media only screen and (max-width: 1200px){
   .wrapper {
     display: block;
     position: relative;
@@ -693,7 +693,7 @@ input[type=submit] {
 }
 
 .cq > select {
-  display: block;
+  display: inline-block;
   position: relative;
   padding: 12px 20px;
   width: 40%;
@@ -705,6 +705,42 @@ input[type=submit] {
 
 
 /* CKEDITOR */
+
+/* TAGS */
+
+.tbox {
+	display: block;
+	position: relative;
+	width: 60%;
+	margin: 20px auto;
+}
+
+.tbox > a {
+	display: inline-block;
+	background-color: #ccc;
+	color: blue;
+	padding: 5px;
+	margin: 4px auto;
+	text-decoration: none;
+	border: none;
+	border-radius: 0.25rem;
+	font-size: 1rem;
+}
+
+.tbox > a:hover , a:focus {
+	cursor: pointer;
+	color: #555;
+}
+
+@media only screen and (max-width: 1080px) {
+  .tbox {
+    width: 90%;
+  }
+}
+
+
+
+/* TAGS */
 
 
 
@@ -728,22 +764,27 @@ input[type=submit] {
   margin-left: -15px;
 }
 
-
 .preview-box {
   display: block;
   position: relative;
-  width: inherit;
-  max-width: inherit;
-  min-height: 100px;
-  border: 1px solid rgba(0, 0, 0, 0.4);
-  text-overflow: hidden;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: none;
+  width: 100%;
+  max-width: 100%;
+  min-height: 200px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  margin-top: 10px;
+}
+
+.preview-box > p {
   word-break: break-all;
   word-wrap: break-word;
   overflow-wrap: break-word;
   padding: 4px 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  line-break: loose;
+  white-space: pre-wrap;
+  text-size-adjust: 80%;
 }
 
 hr {

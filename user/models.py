@@ -7,9 +7,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
 from django import template
 
+
 from PIL import Image
 from pathlib import Path
 import jdatetime as jdt
+from ckeditor.fields import RichTextField 
+
 
 import os
 
@@ -27,18 +30,21 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
         ('none', 'به تو چه'),
     )
 
-    id         = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=20, blank=False)
-    last_name  = models.CharField(max_length=20, blank=True)
-    password   = models.CharField(max_length=100)
-    username   = models.CharField(max_length=30, unique=True, blank=False)
-    email      = models.EmailField(unique=True, blank=False)
-    join_date  = models.DateField(auto_now_add=True)
-    last_seen  = models.DateTimeField(auto_now_add=True)
-    reputation = models.PositiveIntegerField(default=0)
-    is_staff   = models.BooleanField(default=False)
-    gender     = models.CharField(max_length=6, choices=STATUS_CHOICES, default='none')
-    is_active  = models.BooleanField(default=False)
+    id           = models.AutoField(primary_key=True)
+    first_name   = models.CharField(max_length=20, blank=False)
+    last_name    = models.CharField(max_length=20, blank=True)
+    password     = models.CharField(max_length=100)
+    username     = models.CharField(max_length=30, unique=True, blank=False)
+    email        = models.EmailField(unique=True, blank=False)
+    join_date    = models.DateField(auto_now_add=True)
+    last_seen    = models.DateTimeField(auto_now_add=True)
+    reputation   = models.PositiveIntegerField(default=0)
+    is_staff     = models.BooleanField(default=False)
+    gender       = models.CharField(max_length=6, choices=STATUS_CHOICES, default='none')
+    is_active    = models.BooleanField(default=False)
+    about_me     = RichTextField(null=True, blank=True, max_length=700)
+    answers_no   = models.PositiveSmallIntegerField(default=0)
+    questions_no = models.PositiveSmallIntegerField(default=0)
 
     # objects       = models.Manager()
     objects    = UserManager()
@@ -47,12 +53,15 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     PASSWORD_FIELD  = 'password'
     REQUIRED_FIELDS = []
 
+    class Meta:
+        ordering = ['-reputation']
+
 
     @register.filter(name="getDate")
     def getDate(self):
         jdt.set_locale('fa_IR')
         jd    = jdt.date.fromgregorian(date=self.join_date).strftime('%d %B  %Y')
-        ls    = jdt.datetime.fromgregorian(date=self.last_seen).strftime('%H:%M %Y %B %d')
+        ls    = jdt.datetime.fromgregorian(date=self.last_seen).strftime('%H:%M %d %B  %Y')
         dates = {'jd': jd, 'ls': ls}
         return dates
 
@@ -78,10 +87,10 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
     @register.filter(name='getQuestions')
     def getQuestions(self):
-        print("get questions >>>>>>>>>>>>>>>>")
-        print(self.username)
         try:
-            questions = QuestionModel.objects.filter(author=self)
+            questions         = QuestionModel.objects.filter(author=self)
+            self.questions_no = questions.count()
+            self.save()
         except ObjectDoesNotExist:
             questions = None
         return questions
@@ -91,7 +100,9 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     @register.filter(name='getAnswers')
     def getAnswers(self):
         try:
-            answers = AnswerModel.objects.filter(author=self)
+            answers         = AnswerModel.objects.filter(author=self)
+            self.answers_no = answers.count()
+            self.save()
         except ObjectDoesNotExist:
             answers = None
         return answers
