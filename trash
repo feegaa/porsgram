@@ -1,79 +1,234 @@
 
 
-<!-- 
-{% block content %}
 
 
-<div class="ubox">
-    <div class="infobox">
-        <div class="acc">
-            <img src="{{ user.avatarmodel.avatar.url }}" alt="{{ user.username }}'s avatar'">
-            <div class="det">
-                <p>{{ user.username }}</p>
-                <p>امتیاز {{ user.reputation }} </p>
-                <p>در <small>{{ user.getDate.jd }} </small> عضو شده</p>
-                <p>در <small>{{ user.getDate.ls }} </small> اینجا بوده </p>
+.box {
+  position: static;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  min-width: 0;
+  overflow: visible;
+  word-wrap: break-word;
+  background-color: inherit;
+  background-clip: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  direction: rtl;
+  margin: 10px 0 10px 0;
+  padding: 5px 10px;
+  font-size: 1.2rem;
+}
+
+
+
+
+.box .profile {
+  display: flexbox;
+  flex-direction: row;
+  position: relative;
+  right: 0;
+  margin: auto 0;
+  min-width: 50px;
+}
+
+.box .profile a {
+  text-decoration: none;
+}
+
+.box .state {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  right: 0;
+  margin-right: 10px;
+  margin: auto 0;
+  background-color: #eee;
+}
+
+.box .state .tuple {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0 10px;
+}
+
+.box .state .tuple > p {
+  font-size: 0.8rem;
+}
+
+.box .content {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 80% !important;
+  padding: 0;
+  margin: auto 0;
+}
+
+.box .content .title {
+  display: block;
+  position: relative;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.box .content .title > p > a { text-decoration: none; }
+
+
+.box .content .details {
+  display: flexbox;
+  position: relative;
+  padding: 0;
+}
+
+.box .content .details .tags {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  float: right;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.box .content .details .tags .style {
+  position: relative;
+  border: 0;
+  border-radius: 0.25rem;
+  background-color: #ddd;
+  padding: 0 4px;
+  margin: 0 5px;
+}
+
+.box .content .details .tags .style > a {
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+.box .content .details .contain {
+  position: relative;
+  float: left;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 0;
+}
+
+.box .content .details .contain > p {
+  font-size: 0.7rem;
+}
+
+.box .content .details .contain > p > a {
+  display: none;
+  text-decoration: none;
+  font-size: 0.7rem;
+}
+
+@media only screen and (max-width: 1080px){
+
+  .box {
+      width: 100%;
+      overflow: hidden;
+  }
+
+  .box .profile {
+    display: none;
+  }
+
+
+  .box .state {
+    margin: auto 0;
+  }
+
+  .box .state .tuple {
+    margin: 0 5px;
+  }
+
+  .box .state .tuple > p {
+    font-size: 0.6rem;
+  }
+
+
+  .box .content .title {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+
+  .box .content .details .tags .style > a {
+    font-size: 0.6rem;
+  }
+
+  .box .content .details .contain > p {
+    font-size: 0.6rem;
+  }
+
+  .box .content .details .contain > p > a {
+    display: inline;
+  }
+
+}
+
+
+/* NAVBAR */
+
+
+
+
+
+
+
+    <div class="box">
+            
+      <div class="profile">
+		<a href="{% url 'user:user' username=question.author.username %}">
+			<img class="rounded-circle" width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="{{ question.author.username }}'s avatar'">
+			{{ question.author.username }}
+		</a>    
+      </div>  
+
+      <div class="state">
+        <div class="tuple">
+          <p>بازدید</p>
+          <p>{{ question.review }}</p>
+        </div>
+        <div class="tuple">
+          <p>جواب</p>
+          <p>{{ question.answers_NO }}</p>
+        </div>
+        <div class="tuple">
+          <p>رای</p>
+          <p>{{ question.vote }}</p>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="title">
+          <h3>
+            <a href="{% url 'QA:question' id=question.id %}">{{ question.title }}</a>
+		  </h3>
+        </div>
+        <div class="details">
+          <div class="tags">
+          
+          {% for tag in question.getTags %}
+            <div class="style">
+				<a href="{{ tag.id }}">{{ tag.tag }}</a>
             </div>
+          {% endfor %}
+        
+          </div>
+		<div class="contain">
+      		<p><a href="#">{{ question.author.username }}</a>
+			{% if question.edited %}ویرایش شده در&nbsp;&nbsp; {% endif %} {{ question.getDate }}</p>
+		</div>
         </div>
-        <div class="aboute_me">
-            <h4>درباره من</h4>
-            <p>
-                {{ user.about_me }}
-            </p>
-        </div>
-    </div>
 
-    <div class="qas">
+      </div>
 
-        <h4>سوال های علی</h4>
-        <hr>
-
-        {% for question in user.getQuestions %}
-        <div class="qbox">
-            <a href="#">{{ question.title }}</a>
-            <div class="datag">
-            {% for tag in question.getTags %}
-                <div class="style">
-                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
-                </div>
-            {% endfor %}
-
-                <div class="date">
-                    {{ question.getDate }}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
-    </div>
-
-    <div class="qas">
-        <h4>سوال هایی که علی جواب داده</h4>
-        <hr>
-
-        {% for answer in user.getAnswers %}
-        <div class="qbox">
-            <a href="#">{{ answer.question.title }}</a>
-            <div class="datag">
-            {% for tag in answer.question.getTags %}
-                <div class="style">
-                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
-                </div>
-            {% endfor %}
-
-                <div class="date">
-                    {{ answer.question.getDate }}
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
-
-    </div>
-
-
-</div>
-
-{% endblock content %}
-    
- -->
+  </div>

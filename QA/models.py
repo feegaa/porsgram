@@ -73,8 +73,9 @@ class QuestionModel(models.Model):
     @register.filter(name="getTags")
     def getTags(self):
         try:
-            tags_id = list(QTagModel.objects.filter(question=self).values_list('tag', flat=True))
-            tags    = list(TagListModel.objects.filter(id__in=tags_id))
+            tags = QTagModel.objects.filter(question=self)
+            tags = [i.tag for i in tags]
+            # tags    = list(TagListModel.objects.filter(id__in=tags_id))
         except ObjectDoesNotExist:
             tags    = None
         return tags

@@ -39,7 +39,7 @@
             <!-- {{ q_form.content }} -->
         </div>
 
-        <p><label for="tags">تگ ها</label> </p>
+        <p><label for="tags">برچسب ها</label> </p>
         <select required multiple="multiple" id="tags" name="tags">
             {% for tag in tags %}
                 <option style="width: max-content;" value="{{ tag.id }}">{{ tag.tag }}</option>

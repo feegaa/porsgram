@@ -276,7 +276,7 @@ def editQuestion(request, id):
 
     try:
         question      = QuestionModel.objects.get(id=id)
-        selected_tags = QTagModel.objects.filter(question_id=question).values_list('tag', flat=True)
+        selected_tags = QTagModel.objects.filter(question=question).values_list('tag', flat=True)
         tags          = TagListModel.objects.all()
     except ObjectDoesNotExist:
         return redirect('QA:index')

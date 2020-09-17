@@ -136,7 +136,7 @@ a:hover {
 .wrapper .container .right .rect .card .cqbtn {
   background-color: var(--primary);
   width: max-content;
-  padding: 8px 16px;
+  padding: 4px 8px;
   border: 0;
   border-radius: 0.5rem;
 }
@@ -146,7 +146,7 @@ a:hover {
 .wrapper .container .right .rect .card .donate {
   background-color: #ff5000;
   width: max-content;
-  padding: 8px 16px;
+  padding: 4px 8px;
   border: 0;
   border-radius: 0.5rem;
 }
@@ -200,8 +200,18 @@ a:hover {
  
 .topbar .btns  .cqbtn {
   background-color: var(--primary);
-  width: 50%;
-  padding: 8px 16px;
+  width: 40%;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.topbar .btns  .tagsbtn {
+  background-color: var(--primary);
+  width: 30%;
+  padding: 4px 8px;
   border: 0;
   border-radius: 0.5rem;
   text-align: center;
@@ -209,11 +219,10 @@ a:hover {
 }
 
 
-
 .topbar .btns  .donate {
   background-color: #ff5000;
-  width: 50%;
-  padding: 8px 16px;
+  width: 30%;
+  padding: 4px 8px;
   border: 0;
   border-radius: 0.5rem;
   text-align: center;
@@ -226,6 +235,12 @@ a:hover {
   color: white;
 }
 
+
+.topbar .btns  .tagsbtn > a {
+  list-style-type: none;
+  text-decoration-style: none;
+  color: white;
+}
 
 .topbar .btns .donate > a {
   list-style-type: none;
@@ -684,12 +699,13 @@ input[type=text] {
 
 
 input[type=submit] {
-  padding: 5px 8px;
+  padding: 8px 12px;
   margin: 8px auto;
   display: inline-block;
   background-color: var(--primary);
   color: white;
   border: none;
+  border-radius: 0.25rem;
 }
 
 .cq > select {

@@ -3,7 +3,7 @@
 
 {% block styles %}
   {% load static %}
-  <link href="{% static 'style/questions.css' %}?version=51" rel="stylesheet" >
+  <link href="{% static 'style/questions.css' %}?version=57" rel="stylesheet" >
 {% endblock styles %}
   
 
@@ -11,55 +11,72 @@
     
 
   {% for question in page_obj %}
-    <div class="box">
-            
-      <div class="profile">
-		<a href="{% url 'user:user' username=question.author.username %}">
-			<img class="rounded-circle" width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="{{ question.author.username }}'s avatar'">
-			{{ question.author.username }}
-		</a>    
-      </div>  
 
-      <div class="state">
-        <div class="tuple">
-          <p>بازدید</p>
-          <p>{{ question.review }}</p>
-        </div>
-        <div class="tuple">
-          <p>جواب</p>
-          <p>{{ question.answers_NO }}</p>
-        </div>
-        <div class="tuple">
-          <p>رای</p>
-          <p>{{ question.vote }}</p>
-        </div>
-      </div>
 
-      <div class="content">
-        <div class="title">
-          <h3>
-            <a href="{% url 'QA:question' id=question.id %}">{{ question.title }}</a>
-		  </h3>
-        </div>
-        <div class="details">
-          <div class="tags">
-          
-          {% for tag in question.getTags %}
-            <div class="style">
-				<a href="{{ tag.id }}">{{ tag.tag }}</a>
+    <div class="qbox">
+        <div class="inner">
+            <div class="acc">
+              <a href="{% url 'user:user' username=question.author.username %}">
+                <img src="{{ question.author.avatarmodel.avatar.url }}" alt="avatar">
+                    <p>{{ question.author.username }}</p>
+                </a>
             </div>
-          {% endfor %}
-        
-          </div>
-		<div class="contain">
-      		<p><a href="#">{{ question.author.username }}</a>
-			{% if question.edited %}ویرایش شده در&nbsp;&nbsp; {% endif %} {{ question.getDate }}</p>
-		</div>
+            <div class="state">
+              	<div class="tuple">
+                	<small>جواب ها</small>
+                	<p>{{ question.answers_NO }}</p>
+            	</div>
+            	<div class="tuple">
+					<small>رای</small>
+					<p>{{ question.vote }}</p>
+				</div>
+				<div class="tuple">
+					<small>بازدید</small>
+					<p>{{ question.review }}</p>
+				</div>
+          	</div>
+            <div class="deti">
+                <div class="state-after">
+                  	<div class="tuple">
+						<small>جواب ها</small>
+						<p>{{ question.answers_NO }}</p>
+					</div>
+					<div class="tuple">
+						<small>رای</small>
+						<p>{{ question.vote }}</p>
+					</div>
+					<div class="tuple">
+						<small>بازدید</small>
+						<p>{{ question.review }}</p>
+					</div>
+                </div>
+
+				<a href="{% url 'QA:question' id=question.id %}" >{{ question.title }}</a>
+                
+                <div class="datag">
+
+                    <div class="date">
+						<a href="#">{{ question.author.username }}</a>
+						 <small> {{ question.getDate }}</small>
+                    </div>
+
+					
+					{% for tag in question.getTags %}
+						<div class="style">
+							<a href="{% url 'QA:tag' id=tag.id %}">{{ tag.tag }}</a>
+						</div>
+					{% endfor %}
+
+
+
+
+                </div>
+            </div>
         </div>
+    </div>
 
-      </div>
 
-  </div>
+
 
 
     {% endfor %}

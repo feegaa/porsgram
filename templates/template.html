@@ -12,7 +12,7 @@
     <link rel="stylesheet"
     href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/dracula.min.css">
 
-    <link href="{% static 'style/custom.css' %}?version=59" rel="stylesheet" >
+    <link href="{% static 'style/custom.css' %}?version=47" rel="stylesheet" >
     <link href="{% static 'style/select2.css' %}?version=59" rel="stylesheet" >
     <link href="{% static 'style/bar.css' %}?version=58" rel="stylesheet" >
     {% block styles %}
@@ -38,9 +38,15 @@
             <div class="cqbtn">
                 <a href="{% url 'QA:question_create' %}">سوال داری؟</a>
             </div>
+
+            <div class="tagsbtn">
+                <a href="{% url 'QA:tags' %}">برچسب ها</a>
+            </div>
+
             <div class="donate">
                 <a href="{% url 'QA:question_create' %}" title="اگر مایل باشید می توانید در تامین هزینه سرور های پرسگرام کمک کنید.">دونیت</a>
-            </div>
+            </div>            
+
         </div> 
 
         <div class="about">
@@ -59,6 +65,11 @@
                 <div class="card">
                     <div class="cqbtn">
                         <a href="{% url 'QA:question_create' %}">سوال داری؟</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="cqbtn">
+                        <a href="{% url 'QA:tags' %}">برچسب ها</a>
                     </div>
                 </div>
                 <div class="card">
