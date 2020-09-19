@@ -1,50 +1,40 @@
 {% extends 'template.html' %}
 
 
-{% block styles %}
-  {% load static %}
-  <link href="{% static 'style/question.css' %}?version=49" rel="stylesheet" >
-  <link href="{% static 'style/custom.css' %}?version=47" rel="stylesheet" >
-
-{% endblock styles %}
-  
-
 {% block content %}
 
 
 <div class="question">
-            
+			
   <div class="info">
-    <div class="avatar">
-      <a href="{% url 'user:user' username=question.author.username %}" class="anchor">
-        <img width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="test">
-        <p>{{ question.author.username }}</p>
-      </a>    
-    </div>    
-    <div class="vote">
-      <button id="question-vote-up" 
-        class="vote-btn" 
-        type="button"
-        data-href="{{ question.getVoteUrl }}"
-        data-is_authenticated="{{ request.user.is_authenticated }}"
-        data-question="{{ question.id }}"
-        data-controller="s-tooltip" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
-    <div id="question-counter" class="counter" itemprop="upvoteCount">{{ question.getVoteNO }}</div>
-      <button id="question-vote-down" 
-        class="vote-btn" 
-        type="button"
-        data-href="{{ question.getVoteUrl }}"
-        data-is_authenticated="{{ request.user.is_authenticated }}"
-        data-question="{{ question.id }}" 
-        data-controller="s-tooltip" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
-    </div>
+	  <a href="{% url 'user:user' username=question.author.username %}" class="anchor">
+		<img width="30px" height="30px" src="{{ question.author.avatarmodel.avatar.url }}" alt="test">
+		<p>{{ question.author.username }}</p>
+	  </a>    
+	<div class="vote">
+	  <button id="question-vote-up" 
+		class="vote-btn" 
+		type="button"
+		data-href="{{ question.getVoteUrl }}"
+		data-is_authenticated="{{ request.user.is_authenticated }}"
+		data-question="{{ question.id }}"
+		data-controller="s-tooltip" title="سوال مفید و واضح است" aria-pressed="True" aria-label="Up vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 26h32L18 10 2 26z"/></svg></button>
+	<div id="question-counter" class="counter" itemprop="upvoteCount">{{ question.getVoteNO }}</div>
+	  <button id="question-vote-down" 
+		class="vote-btn" 
+		type="button"
+		data-href="{{ question.getVoteUrl }}"
+		data-is_authenticated="{{ request.user.is_authenticated }}"
+		data-question="{{ question.id }}" 
+		data-controller="s-tooltip" title="سوال مفید یا واضح نیست" aria-pressed="false" aria-label="Down vote" data-selected-classes="fc-theme-primary"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+	</div>
 
 
   </div>
 
 
   <div class="details">
-    <h4>{{ question.title }}</h4>
+	<h4>{{ question.title }}</h4>
 
 	<p>
 		{{ question.content|safe }}
@@ -53,33 +43,80 @@
 
 	<!-- <img alt="" src="/media/QAImage/sad/2020/09/13/fafea86f551aab3fd93f586d98ba7997.jpg" style="height:405px; width:720px" /> -->
 
-    <div class="rect">
-      <div class="tags">
+	<div class="rect">
+	  <div class="tags">
 		{% for tag in question.getTags %}
 		<div class="style">
 			<a href="{{ tag.id }}">{{ tag.tag }}</a>
 		</div>
 	  {% endfor %}
-      </div>
-        <div class="contain">
-          <p><a class="anchor" href="#">sad</a> {{ question.getDate }}&nbsp;&nbsp; {% if question.edited %}ویرایش شده {% endif %} </p>
-    	{% if request.user == question.author %}  
+	  </div>
+		<div class="contain">
+		  <p><a class="anchor" href="#">sad</a> {{ question.getDate }}&nbsp;&nbsp; {% if question.edited %}ویرایش شده {% endif %} </p>
+		{% if request.user == question.author %}  
 			<div class="edel">
 				<a href="{% url 'QA:question_edit' id=question.id %}">ویرایش</a>
 				<a style="color: red;" href="{% url 'QA:question_delete' id=question.id %}">حذف</a>
 			</div>  
-        {% endif %}
-        </div>
-      </div>
+		{% endif %}
+		</div>
+	  </div>
 
-    </div>
+	</div>
 
 
 
 </div>
 
+<h3>نظرات</h3>
+<hr >
+
+	<div class="comments">
+
+	{% for comment in comments %}
+	<div id='each-{{ comment.id }}' class="each">
+		<p>{{ comment.comment }}</p>
+		<a href="{% url 'user:user' username=comment.author.username %}">{{ comment.author.username }}</a>
+
+		
+		{% if request.user == comment.author %}
 
 
+		<a comment-id="comment-{{ comment.id }}" data-id="{{ comment.id }}" href="#">ویرایش</a>
+		<a id='delete-{{ comment.id }}' href="{% url 'QA:delete_comment' q_id=question.id c_id=comment.id %}">حذف</a>
+			
+		{% endif %}
+	</div>
+
+		<div id="incbox-{{ comment.id }}" class="incbox">
+			<div class="inin">
+				<form method="POST" action="{% url 'QA:edit_comment' q_id=question.id c_id=comment.id  %}" id="post_form">
+					{% csrf_token %}
+					<textarea class="tacomment" name="comment" id="id-comment-{{ comment.id }}" rows="1" cols="auto" maxlength="500">{{ comment.comment }}</textarea>
+					<button type="submit" class="ccbtn" value="Submit">ویرایش</button>
+					<button type="button" class="ccbtn" cancel-btn="cancel-{{ comment.id }}" data-id="{{ comment.id }}" >لغو</button>
+				</form>
+			</div>
+			</div>
+	{% endfor %}
+</div>
+	
+
+{% if request.user.is_authenticated %}
+<div id="cbox" class="cbox">
+	<div class="inner" id="comment-box">
+		<form method="POST" action="{% url 'QA:create_comment' id=question.id %}" id="post_form">
+			{% csrf_token %}
+			<textarea class="tacomment" name="comment" id="id_comment" rows="1" cols="auto" maxlength="500"></textarea>
+			<button type="submit" class="ccbtn" value="Submit">ارسال</button>
+			<button type="button" class="ccbtn" id="cancel" onclick="getComment()" >لغو</button>
+		</form>
+	</div>
+<small id="ccomment" onclick="getComment()">ارسال نظر</small>
+
+</div>
+
+{% endif %}
 
 
 
@@ -90,79 +127,79 @@
 
 
   <div class="question">
-            
-    <div class="info">
-      <div class="avatar">
-        <a href="{% url 'user:user' username=answer.author.username %}" class="anchor">
-          <img width="30px" height="30px" src="{{ answer.author.avatarmodel.avatar.url }}" alt="test">
-          <p>{{ answer.author.username }}</p>
-        </a>    
-      </div>    
+			
+	<div class="info">
+	  <div class="avatar">
+		<a href="{% url 'user:user' username=answer.author.username %}" class="anchor">
+		  <img width="30px" height="30px" src="{{ answer.author.avatarmodel.avatar.url }}" alt="test">
+		  <p>{{ answer.author.username }}</p>
+		</a>    
+	  </div>    
 
-      <div class="vote">
-        {% csrf_token %}
-        <button element-up-id="answer-vote-up-{{ answer.id }}" type="button"
-        class="vote-btn" 
-          data-href="{{ answer.getVoteUrl }}"
-          data-is_authenticated="{{ request.user.is_authenticated }}"
-          data-answer="{{ answer.id }}"
-          data-controller="s-tooltip" 
-          title="{% if request.user.is_authenticated %}سوال مفید و واضح است{% else %}باید عضو شی!{% endif %} " 
-          aria-pressed="false" 
-          aria-label="Up vote" 
-          data-selected-classes="fc-theme-primary">
-          <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36">
-            <path d="M2 26h32L18 10 2 26z"/></svg></button>
-      
-          <div id="answer-{{ answer.id }}-counter" class="counter" itemprop="upvoteCount">{{ answer.getVoteNO }}</div>
-          {% csrf_token %}
-      
-        <button element-down-id="answer-vote-down-{{ answer.id }}" type="button"
-          class="vote-btn"
-          data-href="{{ answer.getVoteUrl }}" 
-          data-is_authenticated="{{ request.user.is_authenticated }}"
-          data-answer="{{ answer.id }}" 
-          data-controller="s-tooltip" 
-          data-s-tooltip-placement="right" 
-          title="{% if request.user.is_authenticated %}سوال مفید یا واضح نیست{% else %}باید عضو شی!{% endif %} " 
-          aria-pressed="false" aria-label="Down vote"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
-    </div>
+	  <div class="vote">
+		{% csrf_token %}
+		<button element-up-id="answer-vote-up-{{ answer.id }}" type="button"
+		class="vote-btn" 
+		  data-href="{{ answer.getVoteUrl }}"
+		  data-is_authenticated="{{ request.user.is_authenticated }}"
+		  data-answer="{{ answer.id }}"
+		  data-controller="s-tooltip" 
+		  title="{% if request.user.is_authenticated %}سوال مفید و واضح است{% else %}باید عضو شی!{% endif %} " 
+		  aria-pressed="false" 
+		  aria-label="Up vote" 
+		  data-selected-classes="fc-theme-primary">
+		  <svg aria-hidden="true" class="m0 svg-icon iconArrowUpLg" width="20" height="20" viewBox="0 0 36 36">
+			<path d="M2 26h32L18 10 2 26z"/></svg></button>
+	  
+		  <div id="answer-{{ answer.id }}-counter" class="counter" itemprop="upvoteCount">{{ answer.getVoteNO }}</div>
+		  {% csrf_token %}
+	  
+		<button element-down-id="answer-vote-down-{{ answer.id }}" type="button"
+		  class="vote-btn"
+		  data-href="{{ answer.getVoteUrl }}" 
+		  data-is_authenticated="{{ request.user.is_authenticated }}"
+		  data-answer="{{ answer.id }}" 
+		  data-controller="s-tooltip" 
+		  data-s-tooltip-placement="right" 
+		  title="{% if request.user.is_authenticated %}سوال مفید یا واضح نیست{% else %}باید عضو شی!{% endif %} " 
+		  aria-pressed="false" aria-label="Down vote"><svg aria-hidden="true" class="m0 svg-icon iconArrowDownLg" width="20" height="20" viewBox="0 0 36 36"><path d="M2 10h32L18 26 2 10z"/></svg></button>
+	</div>
 
-    {% if request.user == question.author  %}
-    <div class="approved">
-      <button 
-      class="vote-btn"
-      answer-id="answer-{{ answer.id }}"
-        data-href="{{ answer.getAnswerApproveUrl }}"
-        data-answers="{{ question.getApprovedAnswerId }}"
-        data-answer-id="{{ answer.id }}" 
-        title="Accept this answer if it solved your problem or was the most helpful in finding your solution"
-        data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
-        >
+	{% if request.user == question.author  %}
+	<div class="approved">
+	  <button 
+	  class="vote-btn"
+	  answer-id="answer-{{ answer.id }}"
+		data-href="{{ answer.getAnswerApproveUrl }}"
+		data-answers="{{ question.getApprovedAnswerId }}"
+		data-answer-id="{{ answer.id }}" 
+		title="Accept this answer if it solved your problem or was the most helpful in finding your solution"
+		data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
+		>
 
-        <div id="answer-{{answer.id}}-approve" 
-          data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
-          data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
-        >
-          <img  width="20" height="20" src="{{ answer.isApproved }}" alt="حواب برگزیده">
-        </div>
+		<div id="answer-{{answer.id}}-approve" 
+		  data-title-accept="Accept this answer if it solved your problem or was the most helpful in finding your solution"
+		  data-title-unaccept="You accepted this answer 19 hours ago (select to undo)"
+		>
+		  <img  width="20" height="20" src="{{ answer.isApproved }}" alt="حواب برگزیده">
+		</div>
 
-      </button>          
+	  </button>          
 
-     
-    </div>
-    {% endif %}
+	 
+	</div>
+	{% endif %}
 
-    {% if request.user != question.author and answer == approved_answer.answer %}
-      <img class="approved"  width="20" height="20" src="{{ MEDIA_URL }}/images/green.png" alt="approved answer"">  
-    {% endif %}
+	{% if request.user != question.author and answer == approved_answer.answer %}
+	  <img class="approved"  width="20" height="20" src="{{ MEDIA_URL }}/images/green.png" alt="approved answer"">  
+	{% endif %}
 
 
-    
+	
   </div>
 
 
-    <div class="details">
+	<div class="details">
 		<p>
 			{{ answer.content|safe }}
 		</p>
@@ -170,10 +207,10 @@
 			<div class="contain">
 				<p> {{ answer.getDate }}&nbsp; &nbsp;{% if answer.edited %}ویرایش شده {% endif %} </p>
 				{% if request.user == answer.author %}
-        <div class="edel">
-          	<a href="{% url 'QA:answer_edit' q_id=question.id  a_id=answer.id %}">ویرایش</a>
+		<div class="edel">
+		  	<a href="{% url 'QA:answer_edit' q_id=question.id  a_id=answer.id %}">ویرایش</a>
 			<a style="color: red;" href="{% url 'QA:answer_delete' q_id=question.id  a_id=answer.id %}">حذف</a>
-        </div>  
+		</div>  
 					<!-- <a href="#" class="fa fa-edit"></a>
 					<a href="#" class="fa fa-trash"></a> -->
 				{% endif %}
@@ -187,18 +224,18 @@
 </div>
 
 
-      
+	  
 
 
 
-    {% empty %}
+	{% empty %}
 
-        <p>هنوز کسی به این سوال جواب نداده.</p>
+		<p>هنوز کسی به این سوال جواب نداده.</p>
 
-    {% endfor %}
+	{% endfor %}
 
 
-    {% if user.is_authenticated and not user_answered %}
+	{% if user.is_authenticated and not user_answered %}
 		<h3>می تونید به این سوال جواب بدید.</h3>
 			
 			<div class="cq">
@@ -210,14 +247,14 @@
 					
 				<p><label for="id_content">جواب</label>
 		<div class="django-ckeditor-widget" data-field-id="id_content" style="display: inline-block; width: 100%;">
-            <textarea   cols="50" 
-                        id="id_content" 
-                        name="content" 
-                        rows="10" 
-                        required data-processed="0" 
-                        data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Bold&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;Image&quot;, &quot;Table&quot;], [&quot;Source&quot;], [&quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;CodeSnippet&quot;]], &quot;toolbar&quot;: &quot;Full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 740, &quot;filebrowserWindowHeight&quot;: 648, &quot;enterMode&quot;: 2, &quot;extraPlugins&quot;: &quot;justify, liststyle, indent, codesnippet&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[]" data-id="id_content" data-type="ckeditortype">
-            </textarea>
-        </div>
+			<textarea   cols="50" 
+						id="id_content" 
+						name="content" 
+						rows="10" 
+						required data-processed="0" 
+						data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Bold&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;Image&quot;, &quot;Table&quot;], [&quot;Source&quot;], [&quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;CodeSnippet&quot;]], &quot;toolbar&quot;: &quot;Full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 740, &quot;filebrowserWindowHeight&quot;: 648, &quot;enterMode&quot;: 2, &quot;extraPlugins&quot;: &quot;justify, liststyle, indent, codesnippet&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[]" data-id="id_content" data-type="ckeditortype">
+			</textarea>
+		</div>
 
 				<div>
 					<input type="submit" name="submit" value="ارسال" />
@@ -234,7 +271,7 @@
 
 	{% endif %}
 
-    
+	
 
   
 
@@ -244,6 +281,6 @@
 
 
 {% endblock content %}
-    
+	
 
 

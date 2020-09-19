@@ -1,11 +1,6 @@
 {% extends 'template.html' %}
 
 
-{% block styles %}
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style/user.css' %}?version=47">
-{% endblock styles %}
-    
 
 
 
@@ -22,7 +17,6 @@
                 <p>{{ user.username }}</p>
                 <p>امتیاز {{ user.getReputation }} </p>
                 <p>در <small>{{ user.getDate.jd }} </small> عضو شده</p>
-                <p>در <small>{{ user.getDate.ls }} </small> اینجا بوده </p>
             </div>
         </div>
         <div class="aboute_me">
@@ -36,7 +30,7 @@
 
     <div class="qas">
 
-        <h4>سوال های علی</h4>
+        <h4>سوال های <small style="color: #ff5000;">{{ user.username }} </small></h4>
         <hr>
 
         {% for question in user.getQuestions %}
@@ -59,7 +53,7 @@
     </div>
 
     <div class="qas">
-        <h4>سوال هایی که علی جواب داده</h4>
+        <h4>سوال هایی که <small style="color: #ff5000;">{{ user.username }} </small> جواب داده</h4>
         <hr>
 
         {% for answer in user.getAnswers %}

@@ -9,8 +9,8 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from django.core.paginator import Paginator
 
-from QA.forms import QuestionForm, AnswerForm
-from QA.models import QuestionModel, AnswerModel, TagListModel, QTagModel, QVote, AVote, AnswerApproved
+from QA.forms import QuestionForm, AnswerForm, CommentForm
+from QA.models import QuestionModel, CommentModel, AnswerModel, TagListModel, QTagModel, QVote, AVote, AnswerApproved
 
 from user.models import UserModel
 from porsgram.path import *
@@ -24,8 +24,8 @@ import datetime
 
 
 
-def index(request):
-    return render(request, QA_INDEX, {})
+# def index(request):
+#     return render(request, QA_INDEX, {})
 
 
 
@@ -128,7 +128,8 @@ def voteQuestion(request):
 
     else:
         # EXCEPTION PAGE
-        return redirect('QA:index')
+        return HttpResponse(status=403)
+
 
 
 
@@ -165,8 +166,8 @@ def voteAnswer(request):
         return HttpResponse(status=204)
 
     else:
-        # EXCEPTION PAGE
-        return redirect('QA:index')
+        return HttpResponse(status=403)
+
 
 
 def question(request, id):
@@ -174,13 +175,15 @@ def question(request, id):
         question        = QuestionModel.objects.get(id=id)
         answers         = AnswerModel.objects.filter(question=question)
         user_answered   = answers.filter(author=request.user) if request.user.is_authenticated else None
+        comments        = CommentModel.objects.filter(question=question)
 
         if question.author is not request.user :
             question.review += 1
             question.save()
 
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('QA:index')
+        messages.warning(request, 'سوال پیدا نشد!')
+        return HttpResponseRedirect('QA:questions')
 
 
 
@@ -206,17 +209,95 @@ def question(request, id):
             approved_answer = AnswerApproved.objects.get(question=question)
         except ObjectDoesNotExist:
             approved_answer = None
-        answer_form = AnswerForm(request.POST)
+        answer_form  = AnswerForm(request.POST)
+        comment_form = CommentForm(request.POST)
         context = {
             'answer_form'     : answer_form,
             'question'        : question,
             'answers'         : answers,
             'user_answered'   : user_answered,
             'approved_answer' : approved_answer,
+            'comments'        : comments,
+            'comment_form'    : comment_form,
         }
 
     return render(request, QA_QUESTION, context=context)
         
+@login_required
+def createComment(request, id):
+    try:
+        question = QuestionModel.objects.get(id=id)
+    except:
+        messages.warning(request, 'همچین سوالی نداریم')
+        return redirect('QA:questions')
+
+    if (request.method == "POST" and 
+        request.user.is_authenticated) :
+        # request.user.reputation >= 30):
+        form = CommentForm(request.POST)
+        if form.is_valid:
+            comment          = form.save(commit=False)
+            comment.author   = request.user
+            comment.question = question
+            comment.save()
+            return redirect('QA:question', id=id)
+
+        else:
+            messages.warning(request, 'ایراد در ارسال نظر')
+            return redirect('QA:question', id=id)
+
+    else:
+        return redirect('QA:question', id=id)
+
+
+@login_required
+def editComment(request, q_id, c_id):
+
+    try:
+        question = QuestionModel.objects.get(id=q_id)
+        comment  = CommentModel.objects.get(id=c_id)
+    except:
+        messages.warning(request, 'همچین سوالی نداریم')
+        return redirect('QA:questions')
+
+    if (request.method == "POST" and 
+        request.user.is_authenticated) :
+        # request.user.reputation >= 30):
+        form = CommentForm(request.POST)
+        if form.is_valid:
+            content         = request.POST.get('comment')
+            comment.comment = content
+            comment.date    = datetime.datetime.now() 
+            comment.save()
+            return redirect('QA:question', id=q_id)
+
+        else:
+            messages.warning(request, 'ایراد در ارسال نظر')
+            return redirect('QA:question', id=q_id)
+
+    else:
+        return redirect('QA:question', id=q_id)
+
+
+
+@login_required
+def deleteComment(request, q_id, c_id):
+
+    try:
+        comment  = CommentModel.objects.get(id=c_id)
+    except:
+        messages.warning(request, 'همچین سوالی نداریم')
+        return redirect('QA:questions')
+
+    if (request.user == comment.author and
+        request.user.is_authenticated) :
+        comment.delete()
+        return redirect('QA:question', id=q_id)
+
+    else:
+        messages.warning(request, 'ایراد در حذف نظر')
+        return redirect('QA:question', id=q_id)
+
 
 @login_required
 def approveAnswer(request):
@@ -279,7 +360,8 @@ def editQuestion(request, id):
         selected_tags = QTagModel.objects.filter(question=question).values_list('tag', flat=True)
         tags          = TagListModel.objects.all()
     except ObjectDoesNotExist:
-        return redirect('QA:index')
+        messages.warning(request, 'سوال پیدا نشد!')
+        return HttpResponseRedirect('QA:questions')
         
 
     if request.user == question.author:
@@ -297,7 +379,7 @@ def editQuestion(request, id):
                 instance.content = content
                 instance.date    = datetime.datetime.now()       
                 instance.save()
-                QTagModel.objects.filter(question_id=question).delete()
+                QTagModel.objects.filter(question=question).delete()
                 setQTags(new_tags, instance)
 
             return redirect('QA:question', id=id)
@@ -313,7 +395,9 @@ def editQuestion(request, id):
         return render(request, QA_EDIT_QUESTION, context=context)
 
     else:
-        return redirect('QA:index')
+        messages.warning(request, 'سوال پیدا نشد!')
+        return HttpResponseRedirect('QA:questions')
+
 
 
 
@@ -324,7 +408,8 @@ def deleteQuestion(request, id):
     try:
         question = QuestionModel.objects.get(id=id)
     except ObjectDoesNotExist:
-        return redirect('QA:index')
+        messages.warning(request, 'سوال پیدا نشد!')
+        return HttpResponseRedirect('QA:questions')
         
     if request.user == question.author:
         question.author.questions_no -= 1
@@ -334,8 +419,8 @@ def deleteQuestion(request, id):
         return redirect('QA:questions')
 
     else:
-        return redirect('QA:dashboard')
-
+        messages.warning(request, 'شما اجازه ندارید')
+        return HttpResponseRedirect('QA:questions')
 
 def tags(request):
     try:
@@ -369,7 +454,10 @@ def editAnswer(request, q_id, a_id):
         answer   = AnswerModel.objects.get(id=a_id)
 
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('QA:index')
+        messages.warning(request, 'پیدا نشد!')
+        return redirect('QA:question', id=q_id)
+
+
 
     if request.user == answer.author:
 
@@ -395,6 +483,7 @@ def editAnswer(request, q_id, a_id):
         return render(request, QA_EDIT_ANSWER, context=context)
         
     else:
+        
         messages.error(request, 'برو بچه!')
         return redirect('QA:question', id=q_id)
 
@@ -406,7 +495,10 @@ def deleteAnswer(request, q_id, a_id):
         answer   = AnswerModel.objects.get(id=a_id)
         question = QuestionModel.objects.get(id=q_id)
     except ObjectDoesNotExist:
-        return HttpResponseRedirect('QA:index')
+        messages.warning(request, 'پیدا نشد!')
+        return redirect('QA:question', id=q_id)
+
+
 
     if request.user == answer.author:
         question.answers_NO      -= 1

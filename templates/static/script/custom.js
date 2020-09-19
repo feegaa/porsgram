@@ -7,12 +7,6 @@ $(document).ready(function(){
     })
 
 
-
-    // function autoHeight() {
-    //     $('#footer').css('height', $(document).height()+200);
-    // }
-
-
     
     if($('#has_editor').length) {
         var content = CKEDITOR.instances['id_content'];
@@ -55,14 +49,113 @@ $(document).ready(function(){
     setTimeout(function() {
         $('#alert').fadeOut('fast');
     }, 2000);        
-
-
-    // var content = CKEDITOR.instances['id_about_me'];
-    //     content.on('contentDom', function(event){
-    //         content.on('change', function(event){
-    //             document.getElementById('preview').innerHTML = this.getData();
-    //         });
-    //     });        
+    
+    
 
 
 });
+
+
+$(document).on('click', '[comment-id]', function( event ) {   
+    event.preventDefault();
+
+    var ccomment   = document.getElementById('cbox');
+    var comment_id = $(this).attr("data-id");
+    var each       = document.getElementById('each-'+comment_id);
+    var ta_comment = document.getElementById('id-comment-'+comment_id);
+    var incbox     = document.getElementById("incbox-"+comment_id);
+    initEditTextArea(ta_comment);
+
+
+    if (incbox.style.display == 'none' || incbox.style.display.length == 0 ) {
+        ccomment.style.display = 'none';
+        each.style.display     = 'none';   
+        incbox.style.display   = 'block';
+    }
+});
+    
+$(document).on('click', '[cancel-btn]', function( event ) {   
+    event.preventDefault();
+    var comment    = document.getElementById('cbox');
+    var comment_id = $(this).attr("data-id");
+    var incbox     = document.getElementById("incbox-"+comment_id);
+    var each       = document.getElementById('each-'+comment_id);
+
+    if (comment.style.display == 'none' || comment.style.display.length == 0 ) {
+        comment.style.display = 'block';
+        each.style.display    = 'block';   
+        incbox.style.display  = 'none';
+    }
+});
+
+function getComment() {
+    var comment  = document.getElementById('comment-box');
+    var ccomment = document.getElementById('ccomment');
+    console.log(comment.style.display);
+
+    if (comment.style.display == 'none' || comment.style.display.length == 0 ) {
+        comment.style.display = 'block';
+        ccomment.style.display  = 'none';
+        initTextArea();
+    }
+    else {
+        comment.style.display  = 'none';
+        ccomment.style.display = 'block';
+    }
+}
+
+
+var observe;
+if (window.attachEvent) {
+    observe = function (element, event, handler) {
+        element.attachEvent('on'+event, handler);
+    };
+}
+else {
+    observe = function (element, event, handler) {
+        element.addEventListener(event, handler, false);
+    };
+}
+
+function initTextArea () {
+    var text = document.getElementById('id_comment');
+    function resize () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResize () {
+        window.setTimeout(resize, 0);
+    }
+    observe(text, 'change',  resize);
+    observe(text, 'cut',     delayedResize);
+    observe(text, 'paste',   delayedResize);
+    observe(text, 'drop',    delayedResize);
+    observe(text, 'keydown', delayedResize);
+
+    text.focus();
+    text.select();
+    resize();
+}
+
+
+function initEditTextArea (text) {
+    function resize () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResize () {
+        window.setTimeout(resize, 0);
+    }
+    observe(text, 'change',  resize);
+    observe(text, 'cut',     delayedResize);
+    observe(text, 'paste',   delayedResize);
+    observe(text, 'drop',    delayedResize);
+    observe(text, 'keydown', delayedResize);
+
+    text.focus();
+    text.select();
+    resize();
+}
+

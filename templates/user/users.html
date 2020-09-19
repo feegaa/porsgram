@@ -1,12 +1,6 @@
 {% extends 'template.html' %}
 
 
-{% block styles %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'style/users.css' %}?version=69">    
-<link rel="stylesheet" href="{% static 'style/modal.css' %}?version=60">    
-{% endblock styles %}
-    
 
 
 {% block content %}
@@ -29,14 +23,9 @@
                     </a>
                 </p> 
                 
-                <p>
-                    <span class="qas" >سوال&nbsp;&nbsp;{{ user.questions_no }}</span>
-                    <span class="qas" >جواب&nbsp;&nbsp;{{ user.answers_no }}</span>
+                    <span class="qa" >سوال&nbsp;&nbsp;{{ user.questions_no }}</span>
+                    <span class="qa" >جواب&nbsp;&nbsp;{{ user.answers_no }}</span>
                     <span class="repu">امتیاز&nbsp;&nbsp;{{ user.reputation }}</span>
-                    <!-- <span class="qas" button-id="{{ user.username }}" >سوال&nbsp;&nbsp;{{ user.reputation }}</span>
-                    <span class="qas" button-id="{{ user.username }}" >جواب&nbsp;&nbsp;{{ user.reputation }}</span>
-                    <span class="repu">امتیاز ۱۲۳۴&nbsp;</span> -->
-                </p> 
             </div>    
         </div>
     </div>

@@ -6,6 +6,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
 from django import template
+from django.utils.timezone import now
 
 
 from PIL import Image
@@ -37,7 +38,7 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     username     = models.CharField(max_length=30, unique=True, blank=False)
     email        = models.EmailField(unique=True, blank=False)
     join_date    = models.DateField(auto_now_add=True)
-    last_seen    = models.DateTimeField(auto_now_add=True)
+    last_visit   = models.DateTimeField(auto_now_add=True)
     reputation   = models.PositiveIntegerField(default=0)
     is_staff     = models.BooleanField(default=False)
     gender       = models.CharField(max_length=6, choices=STATUS_CHOICES, default='none')
@@ -61,8 +62,8 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
     def getDate(self):
         jdt.set_locale('fa_IR')
         jd    = jdt.date.fromgregorian(date=self.join_date).strftime('%d %B  %Y')
-        ls    = jdt.datetime.fromgregorian(date=self.last_seen).strftime('%H:%M %d %B  %Y')
-        dates = {'jd': jd, 'ls': ls}
+        lv    = jdt.datetime.fromgregorian(date=self.last_visit).strftime('%H:%M %d %B  %Y')
+        dates = {'jd': jd, 'lv': lv}
         return dates
 
     @register.filter(name="getReputation")
@@ -133,3 +134,10 @@ class AvatarModel(models.Model):
 
 
 
+
+class SetLastVisitMiddleware(object):
+    def process_response(self, request, response):
+        if request.user.is_authenticated():
+            # Update last visit time after request finished processing.
+            UserModel.objects.filter(id=request.user.id).update(last_visit=now())
+        return response

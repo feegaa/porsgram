@@ -10,7 +10,6 @@ app_name = 'user'
 
 urlpatterns = [
     path('register/', views.register, name='register'),
-    path('', views.index, name='index'),
     path('dashboard/', views.dashboard, name='dashboard'),
 
     path('confirm-email/<str:email>/<str:email_token>', views.confirmEmail, name='confirmation'),

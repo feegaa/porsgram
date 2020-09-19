@@ -9,11 +9,17 @@ hr {
 }
 
 .vote-btn {
+	display: block;
     background-color: inherit;
-    border: 0;
+	border: 0;
+	margin: 0 auto;
 }
 
-.counter { text-align: center; }
+.counter { 
+	text-align: center;
+	padding: 0;
+	margin: 0;
+}
 
 .question {
   position: relative;
@@ -45,27 +51,39 @@ hr {
 }
 
 .question .info .avatar {
-    display: flex;
-    flex-direction: column;
+	display: block;
     align-items: center;
     align-content: center;
-    padding: 10px;
+	margin: 0 auto 10px auto;
 }
 
-.question .info .avatar > a > img {
-  width: "40px";
-  height: "40px";
-  border: none;
-  border-radius: 0.5rem; 
+
+
+.question .info  > a > img {
+	display: block;
+	margin: 4px auto;
+	border: none;
+	border-radius: 50%; 
+	width: 60px;
+	height: 60px;
+}  
+
+.question .info > a > p {
+	display: block;
+	margin: 0 auto;
 }
 
+
+/* .vbox {
+  display: block;
+  height: min-content;
+} */
 
 .question .info .vote {
-    display: flex;
-    flex-direction: column;
     float: center;
     align-content: center;
-    margin: auto 0;
+	margin: 0 auto;
+	padding:0;
 }
 
 
@@ -93,7 +111,7 @@ hr {
     flex-direction: column;
     position: relative;
     width: 90%;
-    height: 100%;
+	height: 100%;
     border-right: 1px solid rgba(0, 0, 0, 0.125);
     padding: 0 10px;
     margin: auto;
@@ -113,6 +131,7 @@ hr {
 	word-wrap: break-word;
 	line-break: loose;
 	box-sizing: border-box;
+	margin-bottom: 20px;
 }
 
 
@@ -206,4 +225,159 @@ hr {
     font-size: 0.8rem;
   }
 
+}
+
+
+
+.incbox {
+	display: none;
+	width: 100%;
+	margin: auto;
+  direction: rtl;
+  animation-name: openModal;
+	animation-duration: 1s;
+}
+
+.incbox .inin {
+  display: block;
+}
+
+@keyframes openModal {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.incbox small {
+	width: fit-content;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+small:hover, small:focus {
+  	color: black;
+	cursor: pointer;
+}
+
+.inin > form > button {
+	display: inline-block;
+	border: none;
+	color: rgba(0, 0, 0, 0.5);
+	padding: 2px;
+	background-color: inherit;
+}
+
+.tacomment {
+  display: block;
+  font-family: inherit;
+	width: 100%;
+  min-height: 40px;
+  padding: 2px 4px;
+	line-break: loose;
+	border: 1px solid rgba(0, 0, 0, 0.4);
+	border-radius: 0.5rem;
+  resize: none;
+  font-size: 0.9rem;
+}
+
+
+
+.inin > form > button:hover , .button:focus {
+	color: black;
+	cursor: pointer;
+}
+
+
+
+
+
+
+.cbox {
+	display: block;
+	width: 100%;
+	margin: auto;
+	direction: rtl;
+}
+
+.cbox .inner {
+	display: none;
+	animation-name: openModal;
+	animation-duration: 1s;
+}
+
+@keyframes openModal {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.cbox small {
+	width: fit-content;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+small:hover, small:focus {
+  	color: black;
+	cursor: pointer;
+}
+
+.inner > form > button {
+	display: inline-block;
+	border: none;
+	color: rgba(0, 0, 0, 0.5);
+	padding: 2px;
+	background-color: inherit;
+}
+
+.tacomment {
+  display: block;
+  font-family: inherit;
+	width: 100%;
+  height: auto;
+  padding: 2px 4px;
+	line-break: loose;
+	border: 1px solid rgba(0, 0, 0, 0.4);
+	border-radius: 0.5rem;
+  resize: none;
+  font-size: 0.9rem;
+}
+
+/* .ccbox {
+	display: inline-block;
+	border: none;
+	color: rgba(0, 0, 0, 0.5);
+	background-color: inherit;
+} */
+
+.inner > form > button:hover , .button:focus {
+	color: black;
+	cursor: pointer;
+}
+
+
+.comments {
+	display: block;
+	width: 100%;
+}
+
+.comments .each {
+	display: block;
+	width: 100%;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+	direction: rtl;
+}
+
+.comments .each > a {
+	display: inline;
+	font-size: 1rem;
+	text-decoration: none;
+	margin-left: 4px;
+}
+
+.comments .each > p {
+	display: inline;
+	font-size: 1rem;
+}
+
+.comments .each > small {
+	display: inline;
+	font-size: 0.6rem;
+	line-break: loose;
 }

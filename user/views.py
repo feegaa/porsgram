@@ -56,8 +56,8 @@ def register(request):
 
 
 
-def index(request):
-    return render(request, 'qa/index.html', context=None)
+# def index(request):
+#     return render(request, 'qa/index.html', context=None)
 
 
 
@@ -65,7 +65,8 @@ def user(request, username):
     try:
         user      = UserModel.objects.get(username=username)
     except ObjectDoesNotExist:
-        return redirect('user:index')
+        messages.warning(request, 'همچین کاربری نداریم')
+        return redirect('user:users')
     return render(request, USER_USER, {'user': user})
 
 

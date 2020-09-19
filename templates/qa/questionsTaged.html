@@ -1,17 +1,12 @@
 {% extends 'template.html' %}
 
 
-{% block styles %}
-  {% load static %}
-  <link href="{% static 'style/questions.css' %}?version=67" rel="stylesheet" >
-{% endblock styles %}
-  
-
 {% block content %}
     
 
 
 {% for question in page_obj %}
+
 
 
 <div class="qbox">
@@ -58,7 +53,8 @@
 
                 <div class="date">
         <a href="#">{{ question.author.username }}</a>
-         <small> {{ question.getDate }}</small>
+        <small> {{ question.getDate }}&nbsp; &nbsp;{% if question.edited %}ویرایش شده {% endif %} </small>
+
                 </div>
 
       

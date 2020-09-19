@@ -72,6 +72,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+MIDDLEWARE_CLASSES = (
+    'QA.models.SetLastVisitMiddleware',
+)
+
+
 ROOT_URLCONF = 'porsgram.urls'
 
 TEMPLATES = [

@@ -145,6 +145,19 @@ class AnswerModel(models.Model):
         return jdt.datetime.fromgregorian(date=self.date).strftime('%H:%M %Y %B %d')
 
 
+class CommentModel(models.Model):
+    comment  = models.CharField(max_length=500)
+    question = models.ForeignKey(QuestionModel, on_delete=models.CASCADE)
+    author   = models.ForeignKey(to='user.UserModel', on_delete=models.CASCADE)
+    date     = models.DateTimeField(auto_now_add=True)
+    
+    objects  = models.Manager()
+
+    @register.filter(name="getDate")
+    def getDate(self):
+        jdt.set_locale('fa_IR')
+        return jdt.datetime.fromgregorian(date=self.date).strftime('%H:%M %Y %B %d')
+
 
 class TagListModel(models.Model):
     tag     = models.CharField(max_length=30, unique=True)
