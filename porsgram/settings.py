@@ -48,8 +48,6 @@ INSTALLED_APPS = [
     'django_cleanup',
     'ckeditor',
     'ckeditor_uploader',
-    'rest_framework',
-    'django_email_verification',
 ]
 
 
