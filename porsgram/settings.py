@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import psycopg2.extensions
 # import locale
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -27,11 +28,12 @@ TEMPLATES_DIR = BASE_DIR + '/templates'
 # SECURITY WARNING: don't run with debug turned on in production!
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG_VALUE')
+# DEBUG = os.environ.get('DEBUG_VALUE')
+DEBUG = True
 
+ALLOWED_HOSTS = []
 
-
-ALLOWED_HOSTS = ['porsgram.herokuapp.com']
+# ALLOWED_HOSTS = ['porsgram.herokuapp.com']
 
 
 # Application definition
@@ -103,15 +105,38 @@ WSGI_APPLICATION = 'porsgram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE'   : 'django.db.backends.mysql',
+#         'NAME'     : 'porsgram',
+#         'USER'     : 'porsgram',
+#         'PASSWORD' : '6464mysql@Porsgram',
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE'   : 'django.db.backends.mysql',
+        'ENGINE'   : 'django.db.backends.postgresql_psycopg2',
         'NAME'     : 'porsgram',
         'USER'     : 'porsgram',
-        'PASSWORD' : '6464mysql@Porsgram',
+        'HOST'     : 'localhost',
+        'PASSWORD' : '6464psql@Porsgram',
+        'TEST': {
+            'NAME': 'porsgram',
+        },
     }
+    # 'OPTIONS': {
+    #     'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
+    # },
 }
 
+
+# DATABASES = {
+#     'OPTIONS': {
+#         'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
