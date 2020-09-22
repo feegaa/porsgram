@@ -31,7 +31,7 @@ DEBUG = os.environ.get('DEBUG_VALUE')
 
 
 
-ALLOWED_HOSTS = ['porsgram.heroku.com']
+ALLOWED_HOSTS = ['porsgram.herokuapp.com']
 
 
 # Application definition
