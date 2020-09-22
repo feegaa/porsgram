@@ -1,1 +1,1 @@
-web: gunicorn porsgram.wsgi
+web: gunicorn porsgram.wsgi --log-file -
