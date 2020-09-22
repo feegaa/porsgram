@@ -122,8 +122,9 @@ DATABASES = {
         'ENGINE'   : 'django.db.backends.postgresql_psycopg2',
         'NAME'     : 'porsgram',
         'USER'     : 'porsgram',
-        'HOST'     : 'localhost',
+        'HOST'     : 'porsgram.herokuapp.com',
         'PASSWORD' : '6464psql@Porsgram',
+        'PORT'     : 5432,
         'TEST': {
             'NAME': 'porsgram',
         },
