@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import psycopg2.extensions
-# import django_heroku
+import django_heroku
 
 # import locale
 
@@ -254,7 +254,7 @@ EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplat
 
 AUTH_USER_EMAIL_UNIQUE = True
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
 
 print(STATIC_ROOT, STATIC_URL)
 
