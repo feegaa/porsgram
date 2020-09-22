@@ -33,7 +33,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # DEBUG = os.environ.get('DEBUG_VALUE')
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost',]
+ALLOWED_HOSTS = ['porsgram.herokuapp.com',]
 
 # ALLOWED_HOSTS = ['porsgram.herokuapp.com']
 
@@ -122,7 +122,7 @@ DATABASES = {
         'ENGINE'   : 'django.db.backends.postgresql_psycopg2',
         'NAME'     : 'porsgram',
         'USER'     : 'porsgram',
-        'HOST'     : 'localhost',
+        'HOST'     : 'porsgram.herokuapp.com',
         'PASSWORD' : '6464psql@Porsgram',
         'PORT'     : 5432,
         'TEST': {
