@@ -22,14 +22,16 @@ TEMPLATES_DIR = BASE_DIR + '/templates'
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '&h^6rh4eal$5(q(a)-kr22^3(5bakf$6sn40sex64#^v@1g95i'
+# SECRET_KEY = '&h^6rh4eal$5(q(a)-kr22^3(5bakf$6sn40sex64#^v@1g95i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get('DEBUG_VALUE')
 
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['porsgram.heroku.com']
 
 
 # Application definition
@@ -148,6 +150,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# a9c198a4f874bcb3be25451abcf6bfa83d5eb4ab58a052be
 
 # config auth user model
 AUTH_USER_MODEL = 'user.UserModel'
