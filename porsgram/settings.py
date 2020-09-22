@@ -170,7 +170,6 @@ CKEDITOR_UPLOAD_PATH = 'QAImage/'
 
 STATICFILES_DIRS = [
     os.path.join(TEMPLATES_DIR, "static"),
-    '/var/www/static/',
 ]
 
 # print(TEMPLATES_DIR, STATICFILES_DIRS)
