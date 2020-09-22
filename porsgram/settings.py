@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import psycopg2.extensions
+import django_heroku
+
 # import locale
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -250,6 +252,10 @@ EMAIL_RESET_PASSWORD_SUBJECT = 'پرسگرام | بازیابی گذرواژه'
 EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplate.html'
 
 AUTH_USER_EMAIL_UNIQUE = True
+
+django_heroku.settings(locals())
+
+
 
 # try:
 #     from local_settings import *
