@@ -4,8 +4,6 @@ asgiref==3.2.10
 astroid==2.4.2
 bcrypt==3.1.7
 blinker==1.4
-certifi==2019.11.28
-command-not-found==0.3
 cryptography==2.8
 cupshelpers==1.0
 dbus-python==1.2.16
