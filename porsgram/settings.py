@@ -31,7 +31,7 @@ TEMPLATES_DIR = BASE_DIR + '/templates'
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # DEBUG = os.environ.get('DEBUG_VALUE')
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['porsgram.herokuapp.com',]
 
@@ -101,7 +101,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'porsgram.wsgi.application'
+# WSGI_APPLICATION = 'porsgram.wsgi.application'
 
 
 # Database
