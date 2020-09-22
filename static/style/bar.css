@@ -4,7 +4,8 @@
 
 @font-face {
     font-family: myFont;
-    src: url(yekan-regular.ttf);
+	/* src: url(yekan-regular.ttf); */
+	src: url(../fonts/yekan-regular.ttf);
 }
 
 
