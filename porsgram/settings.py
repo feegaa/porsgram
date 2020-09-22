@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import psycopg2.extensions
-import django_heroku
+# import django_heroku
 
 # import locale
 
@@ -31,11 +31,11 @@ TEMPLATES_DIR = BASE_DIR + '/templates'
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # DEBUG = os.environ.get('DEBUG_VALUE')
-DEBUG = True
+DEBUG = False
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost',]
 
-ALLOWED_HOSTS = ['porsgram.herokuapp.com']
+# ALLOWED_HOSTS = ['porsgram.herokuapp.com']
 
 
 # Application definition
@@ -122,7 +122,7 @@ DATABASES = {
         'ENGINE'   : 'django.db.backends.postgresql_psycopg2',
         'NAME'     : 'porsgram',
         'USER'     : 'porsgram',
-        'HOST'     : 'porsgram.herokuapp.com',
+        'HOST'     : 'localhost',
         'PASSWORD' : '6464psql@Porsgram',
         'PORT'     : 5432,
         'TEST': {
@@ -191,7 +191,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'user:login'
 
 
-STATIC_ROOT = BASE_DIR 
+STATIC_ROOT = TEMPLATES_DIR 
 STATIC_URL  = '/static/'
 
 MEDIA_ROOT = TEMPLATES_DIR + '/media'
@@ -254,9 +254,9 @@ EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplat
 
 AUTH_USER_EMAIL_UNIQUE = True
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
-
+print(STATIC_ROOT, STATIC_URL)
 
 # try:
 #     from local_settings import *
