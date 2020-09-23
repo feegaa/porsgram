@@ -193,9 +193,9 @@ MEDIA_URL  = '/media/'
 # print(STATIC_ROOT)
 # print(STATIC_URL)
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
 
 
 CKEDITOR_UPLOAD_PATH = MEDIA_ROOT + 'QAImage/'
