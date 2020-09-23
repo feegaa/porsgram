@@ -246,7 +246,7 @@ EMAIL_RESET_PASSWORD_TEMPLATE = BASE_DIR + '/user/templates/user/resetPasswordTe
 
 AUTH_USER_EMAIL_UNIQUE = True
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
 
 
 # try:
