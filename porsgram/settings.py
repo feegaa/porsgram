@@ -257,6 +257,8 @@ AUTH_USER_EMAIL_UNIQUE = True
 django_heroku.settings(locals())
 
 print(STATIC_ROOT, STATIC_URL)
+print(BASE_DIR)
+print(TEMPLATES_DIR)
 
 # try:
 #     from local_settings import *
