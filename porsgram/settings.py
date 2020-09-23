@@ -19,10 +19,6 @@ import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# TEMPLATES_DIR = BASE_DIR + '/templates'
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = '&h^6rh4eal$5(q(a)-kr22^3(5bakf$6sn40sex64#^v@1g95i'
@@ -36,7 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['porsgram.herokuapp.com',]
 
 # ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['localhost:8088',]
+# ALLOWED_HOSTS = ['localhost',]
 
 
 # Application definition
@@ -75,12 +71,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 MIDDLEWARE_CLASSES = (
     'QA.models.SetLastVisitMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'porsgram.urls'
 
@@ -102,7 +101,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'porsgram.wsgi.application'
+WSGI_APPLICATION = 'porsgram.wsgi.application'
 
 
 # Database
@@ -193,6 +192,10 @@ MEDIA_URL  = '/media/'
 
 # print(STATIC_ROOT)
 # print(STATIC_URL)
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 
 CKEDITOR_UPLOAD_PATH = MEDIA_ROOT + 'QAImage/'
