@@ -130,7 +130,7 @@ def dashboard(request):
     try:
         user = UserModel.objects.get(id=request.user.id)
     except ObjectDoesNotExist:
-        return HttpResponse("invalid user_profile!")
+        return HttpResponse("چنین کاربری نداریم")
 
     if request.method == "POST" :
         update_user_form   = UserUpdateForm(data=request.POST, instance=user)
@@ -166,7 +166,7 @@ def confirmEmail(request, email, email_token):
         template = settings.EMAIL_PAGE_TEMPLATE
         return render(request, template, {'success': verifyToken(email, email_token)})
     except AttributeError:
-        raise NotAllFieldCompiled('EMAIL_PAGE_TEMPLATE field not found')
+        raise NotAllFieldCompiled('با عرض معذرت احتمالا مشکلی رخ داده ')
 
 
 
@@ -181,7 +181,8 @@ class ResetPasswordView(View):
         if verifyToken(email, email_token):
             form = self.form_class()
             return render(request, self.template, {'form': form})
-
+        else:
+            return redirect('user:login')
 
     def post(self, request, *args, **kwargs):
         form     = self.form_class(request.POST)
@@ -193,11 +194,11 @@ class ResetPasswordView(View):
                 user.set_password(form.cleaned_data) # Deactivate account till it is confirmed
                 user.save()
 
-                messages.success(request, ('Please Confirm your email to complete registration.'))
+                messages.success(request, ('لطفا برای تکمیل ثبت نام ایمیل خودتون رو تایید کنید.'))
                 return redirect('user:login')
 
             except ObjectDoesNotExist:
-                return redirect('user:index')
+                return redirect('user:login')
 
         else:
             return render(request, self.template, {'form': form})
@@ -213,11 +214,11 @@ def getEmailForResetPassword(request):
             try:
                 user = UserModel.objects.get(email=form.cleaned_data['email'])
                 sendResetPasswordEmail(user)
-                messages.success(request, ('reset password email sent.'))
-                return redirect('user:index')
+                messages.success(request, ('ایمیل تغییر گذرواژه برای شما ارسال شد.'))
+                return redirect('user:login')
             except ObjectDoesNotExist:
-                messages.error(request, ('there is no such email.'))
-                return redirect('user:index')
+                messages.error(request, ('آدرس ایمیل اشتباه است.'))
+                return redirect('user:getEmailForResetPassword')
 
     form = GetEmailForm()
     return render(request, 'user/getEmail.html', {'form': form})
@@ -226,11 +227,11 @@ def getEmailForResetPassword(request):
 
 def getEmailForActivate(request):
     
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.is_active:
         messages.error(request, ('حساب شما در حال حاضر فعال است'))
         return redirect('user:dasboard')
 
-    if request.POST:
+    if request.method == "POST" and not request.user.is_active:
         form = GetEmailForm(request.POST)
 
         if form.is_valid():

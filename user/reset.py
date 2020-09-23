@@ -17,10 +17,7 @@ from user.errors import InvalidUserModel, EmailTemplateNotFound, NotAllFieldComp
 
 
 def sendResetPasswordEmail(user, **kwargs):
-    # active_field = validateAndGetField('EMAIL_ACTIVE_FIELD')
     try:
-        # setattr(user, active_field, False)
-        # user.save()
 
         try:
             token = kwargs['token']
@@ -28,37 +25,36 @@ def sendResetPasswordEmail(user, **kwargs):
             token = default_token_generator.make_token(user)
 
         email = urlsafe_b64encode(str(user.email).encode('utf-8'))
-        domain = validateAndGetField('EMAIL_RESET_PASSWORD_DOMAIN')
-        print(domain + user.username + '/' + f'{email.decode("utf-8")}/{token}')
 
-        # t = Thread(target=resetPasswordThread, args=(user.email, f'{email.decode("utf-8")}/{token}'))
-        # t.start()
+        t = Thread(target=resetPasswordThread, args=(user.username, user.email, f'/{email.decode("utf-8")}/{token}'))
+        t.start()
     except AttributeError:
         raise InvalidUserModel('The user model you provided is invalid')
 
 
-def resetPasswordThread(email, token):
+def resetPasswordThread(username, email, token):
     email_server = validateAndGetField('EMAIL_SERVER')
-    sender = validateAndGetField('EMAIL_FROM_ADDRESS')
-    domain = validateAndGetField('EMAIL_RESET_PASSWORD_DOMAIN')
-    subject = validateAndGetField('EMAIL_RESET_PASSWORD_SUBJECT')
-    address = validateAndGetField('EMAIL_ADDRESS')
-    port = validateAndGetField('EMAIL_PORT', default_type=int)
-    password = validateAndGetField('EMAIL_PASSWORD')
-    mail_html = validateAndGetField('EMAIL_RESET_PASSWORD_TEMPLATE', raise_error=False)
+    sender       = validateAndGetField('EMAIL_FROM_ADDRESS')
+    domain       = validateAndGetField('EMAIL_RESET_PASSWORD_DOMAIN')
+    subject      = validateAndGetField('EMAIL_RESET_PASSWORD_SUBJECT')
+    address      = validateAndGetField('EMAIL_ADDRESS')
+    port         = validateAndGetField('EMAIL_PORT', default_type=int)
+    password     = validateAndGetField('EMAIL_PASSWORD')
+    mail_html    = validateAndGetField('EMAIL_RESET_PASSWORD_HTML', raise_error=False)
 
     if not (mail_html):  # Validation for mail_plain and mail_html as both of them have raise_error=False
         raise NotAllFieldCompiled(f"Both EMAIL_MAIL_PLAIN and EMAIL_MAIL_HTML missing from settings.py, at least one of them is required.")
 
     domain += '/' if not domain.endswith('/') else ''
 
-    msg = MIMEMultipart('alternative')
+    msg            = MIMEMultipart('alternative')
     msg['Subject'] = subject
-    msg['From'] = sender
-    msg['To'] = email
+    msg['From']    = sender
+    msg['To']      = email
 
     from .views import confirmEmail
-    link = ''
+    link = domain + username + token
+    print(link)
     for k, v in get_resolver(None).reverse_dict.items():
         if k is confirmEmail and v[0][0][1][0]:
             addr = str(v[0][0][0])

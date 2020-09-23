@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # DEBUG = os.environ.get('DEBUG_VALUE')
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['porsgram.herokuapp.com',]
 
@@ -223,6 +223,7 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': 'justify, liststyle, indent, codesnippet',
    },
 }
+
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
 MAX_UPLOAD_SIZE = "32768"
 CKEDITOR_RESTRICT_BY_USER = True
@@ -233,19 +234,20 @@ EMAIL_BACKEND       = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_ACTIVE_FIELD  = 'is_active'
 EMAIL_SERVER        = 'smtp.gmail.com'
 EMAIL_PORT          = 587
-EMAIL_ADDRESS       = 'myjoinemail@gmail.com'
-EMAIL_FROM_ADDRESS  = 'myjoinemail@gmail.com'
-EMAIL_PASSWORD      = 'myjoinpass' # os.environ['password_key'] suggested
+EMAIL_USE_TLS       = True
+EMAIL_ADDRESS       = os.environ.get('EMAIL_ADDRESS')
+EMAIL_FROM_ADDRESS  = os.environ.get('EMAIL_FROM_ADDRESS')
+EMAIL_PASSWORD      = os.environ.get('EMAIL_PASSWORD') # os.environ['password_key'] suggested
 EMAIL_MAIL_SUBJECT  = 'پرسگرام | تایید آدرس ایمیل'
 EMAIL_MAIL_HTML     = BASE_DIR + '/user/templates/email/confirmEmail.html'
 EMAIL_PAGE_DOMAIN   = 'http://localhost:8000/user/confirm-email/'
 EMAIL_PAGE_TEMPLATE = BASE_DIR + '/user/templates/user/confirmEmailTemplate.html'
 
 
-EMAIL_RESET_PASSWORD_HTML     = BASE_DIR + '/user/templates/email/resetPassword.html'
+EMAIL_RESET_PASSWORD_TEMPLATE = BASE_DIR + '/user/templates/user/resetPasswordTemplate.html'
 EMAIL_RESET_PASSWORD_DOMAIN   = 'http://localhost:8000/user/reset-password/'
 EMAIL_RESET_PASSWORD_SUBJECT  = 'پرسگرام | بازیابی گذرواژه'
-EMAIL_RESET_PASSWORD_TEMPLATE = BASE_DIR + '/user/templates/user/resetPasswordTemplate.html'
+EMAIL_RESET_PASSWORD_HTML     = BASE_DIR + '/user/templates/email/resetPassword.html' 
 
 AUTH_USER_EMAIL_UNIQUE = True
 

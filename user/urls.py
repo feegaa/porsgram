@@ -15,7 +15,7 @@ urlpatterns = [
     path('confirm-email/<str:email>/<str:email_token>', views.confirmEmail, name='confirmation'),
     path('reset-password-email/', views.getEmailForResetPassword, name='getEmailForResetPassword'),
     path('activate-email/', views.getEmailForActivate, name='getEmailForActivate'),
-    path('reset-password/<str:username>/<str:email>/<str:email_token>', views.ResetPasswordView.as_view(), name='resetPasswordVerifyToken'),
+    path('reset-password/<slug:username>/<slug:email>/<slug:email_token>', views.ResetPasswordView.as_view(), name='resetPasswordVerifyToken'),
 
     # path('login/', auth_views.LoginView.as_view(template_name='user/login.html'), name='login'),
     # path('logout/', auth_views.LogoutView.as_view(template_name='user/logout.html'), name='logout'),
