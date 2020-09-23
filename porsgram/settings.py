@@ -101,7 +101,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'porsgram.wsgi.application'
+# WSGI_APPLICATION = 'porsgram.wsgi.application'
 
 
 # Database
@@ -173,8 +173,12 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'user:login'
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
 STATIC_URL  = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media/')
@@ -236,9 +240,3 @@ AUTH_USER_EMAIL_UNIQUE = True
 
 django_heroku.settings(locals())
 
-
-# try:
-#     from local_settings import *
-# except ImportError as e:
-#     pass
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
