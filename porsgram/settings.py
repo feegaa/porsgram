@@ -107,14 +107,7 @@ WSGI_APPLICATION = 'porsgram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE'   : 'django.db.backends.mysql',
-#         'NAME'     : 'porsgram',
-#         'USER'     : 'porsgram',
-#         'PASSWORD' : '6464mysql@Porsgram',
-#     }
-# }
+
 
 
 DATABASES = {
@@ -123,16 +116,13 @@ DATABASES = {
         'NAME'     : 'porsgram',
         'USER'     : 'porsgram',
         'HOST'     : 'porsgram.herokuapp.com',
-        # 'HOST'     : 'localhost',
         'PASSWORD' : '6464psql@Porsgram',
         'PORT'     : 5432,
         'TEST': {
             'NAME': 'porsgram',
         },
     }
-    # 'OPTIONS': {
-    #     'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
-    # },
+
 }
 
 
@@ -189,13 +179,6 @@ STATIC_URL  = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR , 'media/')
 MEDIA_URL  = '/media/'
-
-# print(STATIC_ROOT)
-# print(STATIC_URL)
-
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
 
 
 CKEDITOR_UPLOAD_PATH = MEDIA_ROOT + 'QAImage/'
