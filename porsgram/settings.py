@@ -191,7 +191,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'user:login'
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = os.path.join(TEMPLATES_DIR, "static")
 STATIC_URL  = '/static/'
 
 MEDIA_ROOT = TEMPLATES_DIR + '/media'
@@ -200,7 +200,7 @@ MEDIA_URL  = '/media/'
 CKEDITOR_UPLOAD_PATH = 'QAImage/'
 
 # STATICFILES_DIRS = [
-#     os.path.join(TEMPLATES_DIR, "static"),
+#     os.path.join(BASE_DIR, "staticfiles"),
 # ]
 
 # print(TEMPLATES_DIR, STATICFILES_DIRS)
