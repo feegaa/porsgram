@@ -1,8 +1,8 @@
-from porsgram.settings import TEMPLATES_DIR
+# from porsgram.settings import TEMPLATES_DIR
 
-USER  = TEMPLATES_DIR + '/user/'
-QA    = TEMPLATES_DIR + '/qa/'
-EMAIL = TEMPLATES_DIR + '/email/'
+USER  = 'user/'
+QA    = 'QA/'
+EMAIL = 'email/'
 
 
 
@@ -30,9 +30,9 @@ QA_TAGS            = QA + 'tags.html'
 EMAIL_PAGE_TEMPLATE  = EMAIL + '/is_confirmed-email.html'
 
 
-PAGE_400 = TEMPLATES_DIR + '/400.html'
-PAGE_403 = TEMPLATES_DIR + '/403.html'
-PAGE_404 = TEMPLATES_DIR + '/404.html'
-PAGE_500 = TEMPLATES_DIR + '/500.html'
+PAGE_400 = '400.html'
+PAGE_403 = '403.html'
+PAGE_404 = '404.html'
+PAGE_500 = '500.html'
 
 

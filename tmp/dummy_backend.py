@@ -16,27 +16,13 @@ class DummyBackend(object):
     def __init__(self, storage_engine, file_object):
         self.file_object    = file_object
         self.storage_engine = storage_engine
-        self.SIZE           = 720, 980
+        self.SIZE           = settings.CKEDITOR_LIMIT_UPLOADED_IMAGE_SIZE
 
 
     def save_as(self, filepath):
         return self.checkSize(self.storage_engine.save(filepath, self.file_object))
         
 
-
-    # def checkSize(self, filepath):
-    #     img  = Image.open(self.file_object)
-    #     name = self.file_object.name
-    #     if img.size > self.SIZE:        
-    #         try:
-    #             print(self.file_object.size)
-    #             img.thumbnail(self.SIZE, Image.ANTIALIAS)
-    #             print(img.size)
-    #             self.file_object = InMemoryUploadedFile(File(img, name), None, name, 'image/jpeg', img.size, None)
-    #             # self.file_object = File(img, name)
-    #             print(self.file_object.size)
-    #         except IOError:
-    #             pass
 
     def checkSize(self, filepath):
         try:

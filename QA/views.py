@@ -13,7 +13,7 @@ from QA.forms import QuestionForm, AnswerForm, CommentForm
 from QA.models import QuestionModel, CommentModel, AnswerModel, TagListModel, QTagModel, QVote, AVote, AnswerApproved
 
 from user.models import UserModel
-from porsgram.path import *
+# from porsgram.path import *
 import datetime
 
 '''
@@ -72,7 +72,7 @@ def createQuestion(request):
             'tags'   : tags_list,   
         }
 
-    return render(request, QA_CREATE_QUESTION, context=context)
+    return render(request, 'QA/createQuestion.html', context=context)
 
 
 
@@ -87,7 +87,7 @@ def questions(request):
         'page_obj': page_obj,
     }
 
-    return render(request, QA_QUESTIONS, context=context)
+    return render(request, 'QA/questions.html', context=context)
         
 
 
@@ -221,7 +221,7 @@ def question(request, id):
             'comment_form'    : comment_form,
         }
 
-    return render(request, QA_QUESTION, context=context)
+    return render(request, 'QA/question.html', context=context)
         
 @login_required
 def createComment(request, id):
@@ -254,7 +254,7 @@ def createComment(request, id):
 def editComment(request, q_id, c_id):
 
     try:
-        question = QuestionModel.objects.get(id=q_id)
+        # question = QuestionModel.objects.get(id=q_id)
         comment  = CommentModel.objects.get(id=c_id)
     except:
         messages.warning(request, 'همچین سوالی نداریم')
@@ -392,7 +392,7 @@ def editQuestion(request, id):
                 'tags'          : tags,   
             }
 
-        return render(request, QA_EDIT_QUESTION, context=context)
+        return render(request, 'QA/editQuestion.html', context=context)
 
     else:
         messages.warning(request, 'سوال پیدا نشد!')
@@ -427,7 +427,7 @@ def tags(request):
         tags = TagListModel.objects.all()
     except ObjectDoesNotExist:
         tags = None
-    return render(request, QA_TAGS, {'tags': tags})
+    return render(request, 'QA/tags.html', {'tags': tags})
 
 
 
@@ -443,7 +443,7 @@ def tag(request, id):
         'page_obj': page_obj,
     }
 
-    return render(request, QA_QUESTIONS_TAGED, context=context)
+    return render(request, 'QA/questionsTaged.html', context=context)
         
 
 
@@ -480,7 +480,7 @@ def editAnswer(request, q_id, a_id):
                 'question'      : question,
             }
 
-        return render(request, QA_EDIT_ANSWER, context=context)
+        return render(request, 'QA/editAnswer.html', context=context)
         
     else:
         

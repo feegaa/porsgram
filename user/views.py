@@ -19,7 +19,7 @@ from user.reset import sendResetPasswordEmail
 
 from QA.models import QuestionModel, AnswerModel
 
-from porsgram.path import *
+# from porsgram.path import *
 import time
 
 # Create your views here.
@@ -50,7 +50,7 @@ def register(request):
 
     return render(
             request, 
-            USER_REGISTER, 
+            'user/register.html', 
             context={'form': form}
         )
 
@@ -67,7 +67,7 @@ def user(request, username):
     except ObjectDoesNotExist:
         messages.warning(request, 'همچین کاربری نداریم')
         return redirect('user:users')
-    return render(request, USER_USER, {'user': user})
+    return render(request, 'user/user.html', {'user': user})
 
 
 
@@ -82,7 +82,7 @@ def users(request):
         'page_obj': page_obj,
     }
 
-    return render(request, USER_USERS, context=context)
+    return render(request, 'user/users.html', context=context)
         
 
 
@@ -110,7 +110,7 @@ def loginView(request):
 
         except ObjectDoesNotExist:
             messages.error(request, 'نام کاربری و یا رمز عبور اشتباه است.')
-    return render(request, USER_LOGIN, {})
+    return render(request, 'user/login.html', {})
 
 
 @login_required
@@ -155,7 +155,7 @@ def dashboard(request):
 
     return render(
             request, 
-            USER_DASHBOARD, 
+            'user/dashboard.html', 
             context=context
         )
 
@@ -220,7 +220,7 @@ def getEmailForResetPassword(request):
                 return redirect('user:index')
 
     form = GetEmailForm()
-    return render(request, USER_GET_EMAIL, {'form': form})
+    return render(request, 'user/getEmail.html', {'form': form})
 
 
 
@@ -243,4 +243,4 @@ def getEmailForActivate(request):
                 messages.error(request, ('اول باید حساب باز کنید، ایمیل موجود نیست.'))
 
     form = GetEmailForm()
-    return render(request, USER_GET_EMAIL, {'form': form})
+    return render(request, 'user/getEmail.html', {'form': form})

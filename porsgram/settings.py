@@ -19,7 +19,7 @@ import django_heroku
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-TEMPLATES_DIR = BASE_DIR + '/templates'
+# TEMPLATES_DIR = BASE_DIR + '/templates'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -31,11 +31,12 @@ TEMPLATES_DIR = BASE_DIR + '/templates'
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # DEBUG = os.environ.get('DEBUG_VALUE')
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['porsgram.herokuapp.com',]
 
-# ALLOWED_HOSTS = ['porsgram.herokuapp.com']
+# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['localhost:8088',]
 
 
 # Application definition
@@ -86,7 +87,7 @@ ROOT_URLCONF = 'porsgram.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR,],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,6 +124,7 @@ DATABASES = {
         'NAME'     : 'porsgram',
         'USER'     : 'porsgram',
         'HOST'     : 'porsgram.herokuapp.com',
+        # 'HOST'     : 'localhost',
         'PASSWORD' : '6464psql@Porsgram',
         'PORT'     : 5432,
         'TEST': {
@@ -134,15 +136,6 @@ DATABASES = {
     # },
 }
 
-
-# DATABASES = {
-#     'OPTIONS': {
-#         'isolation_level': psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE,
-#     },
-# }
-
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -191,19 +184,18 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'user:login'
 
 
-STATIC_ROOT = os.path.join(TEMPLATES_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL  = '/static/'
 
-MEDIA_ROOT = TEMPLATES_DIR + '/media'
+
+MEDIA_ROOT = os.path.join(BASE_DIR , 'media/')
 MEDIA_URL  = '/media/'
 
-CKEDITOR_UPLOAD_PATH = 'QAImage/'
+# print(STATIC_ROOT)
+# print(STATIC_URL)
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "staticfiles"),
-# ]
 
-# print(TEMPLATES_DIR, STATICFILES_DIRS)
+CKEDITOR_UPLOAD_PATH = MEDIA_ROOT + 'QAImage/'
 
 CKEDITOR_CONFIGS = {
    'default': {
@@ -242,29 +234,23 @@ EMAIL_ADDRESS       = 'myjoinemail@gmail.com'
 EMAIL_FROM_ADDRESS  = 'myjoinemail@gmail.com'
 EMAIL_PASSWORD      = 'myjoinpass' # os.environ['password_key'] suggested
 EMAIL_MAIL_SUBJECT  = 'پرسگرام | تایید آدرس ایمیل'
-EMAIL_MAIL_HTML     = TEMPLATES_DIR + '/email' + '/confirmEmail.html'
+EMAIL_MAIL_HTML     = BASE_DIR + '/user/templates/email/confirmEmail.html'
 EMAIL_PAGE_DOMAIN   = 'http://localhost:8000/user/confirm-email/'
-EMAIL_PAGE_TEMPLATE = TEMPLATES_DIR + '/user' + '/confirmEmailTemplate.html'
+EMAIL_PAGE_TEMPLATE = BASE_DIR + '/user/templates/user/confirmEmailTemplate.html'
 
 
-EMAIL_RESET_PASSWORD_HTML    = TEMPLATES_DIR + '/email' + '/resetPassword.html'
-EMAIL_RESET_PASSWORD_DOMAIN  = 'http://localhost:8000/user/reset-password/'
-EMAIL_RESET_PASSWORD_SUBJECT = 'پرسگرام | بازیابی گذرواژه'
-EMAIL_RESET_PASSWORD_TEMPLATE = TEMPLATES_DIR + '/user' + '/resetPasswordTemplate.html'
+EMAIL_RESET_PASSWORD_HTML     = BASE_DIR + '/user/templates/email/resetPassword.html'
+EMAIL_RESET_PASSWORD_DOMAIN   = 'http://localhost:8000/user/reset-password/'
+EMAIL_RESET_PASSWORD_SUBJECT  = 'پرسگرام | بازیابی گذرواژه'
+EMAIL_RESET_PASSWORD_TEMPLATE = BASE_DIR + '/user/templates/user/resetPasswordTemplate.html'
 
 AUTH_USER_EMAIL_UNIQUE = True
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
-print(STATIC_ROOT, STATIC_URL)
-print(BASE_DIR)
-print(TEMPLATES_DIR)
 
 # try:
 #     from local_settings import *
 # except ImportError as e:
 #     pass
-
-
-# SET LOCAL FOR JDT
-# locale.setlocale(locale.LC_ALL, "fa_IR")
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
