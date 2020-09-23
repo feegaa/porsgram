@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # DEBUG = os.environ.get('DEBUG_VALUE')
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['porsgram.herokuapp.com',]
 
@@ -173,7 +173,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'user:login'
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL  = '/static/'
 
 STATICFILES_DIRS = (
