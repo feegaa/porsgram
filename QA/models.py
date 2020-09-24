@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.apps import apps
 
 
-from porsgram.settings import MEDIA_URL
+from porsgram.settings import MEDIA_URL, BASE_DIR
 
 from ckeditor_uploader.fields import RichTextUploadingField 
 import jdatetime as jdt
@@ -217,7 +217,7 @@ class AnswerApproved(models.Model):
 def deleteQAImages(content):
     imgs = re.findall('src="([^"]*)"', content)
     for img in imgs:
-        path = img
+        path = BASE_DIR + img
         if os.path.isfile(path):
             os.remove(path)
 

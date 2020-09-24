@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 # DEBUG = os.environ.get('DEBUG_VALUE')
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['porsgram.herokuapp.com',]
 
@@ -96,12 +96,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
 ]
 
-# WSGI_APPLICATION = 'porsgram.wsgi.application'
+WSGI_APPLICATION = 'porsgram.wsgi.application'
 
 
 # Database
@@ -116,11 +117,12 @@ DATABASES = {
         'NAME'     : 'porsgram',
         'USER'     : 'porsgram',
         'HOST'     : 'porsgram.herokuapp.com',
+        # 'HOST'     : 'localhost',
         'PASSWORD' : '6464psql@Porsgram',
         'PORT'     : 5432,
         'TEST': {
             'NAME': 'porsgram',
-        },
+        }
     }
 
 }
@@ -181,11 +183,12 @@ STATICFILES_DIRS = (
 )
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR , 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR , 'media')
 MEDIA_URL  = '/media/'
 
+# print(MEDIA_ROOT)
 
-CKEDITOR_UPLOAD_PATH = MEDIA_ROOT + 'QAImage/'
+CKEDITOR_UPLOAD_PATH = 'QAImage/'
 
 CKEDITOR_CONFIGS = {
    'default': {
@@ -227,12 +230,12 @@ EMAIL_FROM_ADDRESS  = os.environ.get('EMAIL_FROM_ADDRESS')
 EMAIL_PASSWORD      = os.environ.get('EMAIL_PASSWORD') # os.environ['password_key'] suggested
 EMAIL_MAIL_SUBJECT  = 'پرسگرام | تایید آدرس ایمیل'
 EMAIL_MAIL_HTML     = BASE_DIR + '/user/templates/email/confirmEmail.html'
-EMAIL_PAGE_DOMAIN   = 'http://localhost:8000/user/confirm-email/'
+EMAIL_PAGE_DOMAIN   = 'http://porsgram.herokuapp.com/user/confirm-email/'
 EMAIL_PAGE_TEMPLATE = BASE_DIR + '/user/templates/user/confirmEmailTemplate.html'
 
 
 EMAIL_RESET_PASSWORD_TEMPLATE = BASE_DIR + '/user/templates/user/resetPasswordTemplate.html'
-EMAIL_RESET_PASSWORD_DOMAIN   = 'http://localhost:8000/user/reset-password/'
+EMAIL_RESET_PASSWORD_DOMAIN   = 'http://porsgram.herokuapp.com/user/reset-password/'
 EMAIL_RESET_PASSWORD_SUBJECT  = 'پرسگرام | بازیابی گذرواژه'
 EMAIL_RESET_PASSWORD_HTML     = BASE_DIR + '/user/templates/email/resetPassword.html' 
 

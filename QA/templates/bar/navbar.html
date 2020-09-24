@@ -5,9 +5,10 @@
 
   <div class="inner">
     <a href="{% url 'QA:questions' %}">
+      {% load static %}
 
       <img width="30px" height="30px" 
-          src="{{ MEDIA_URL }}/images/logo.png" 
+          src="{% static 'QA/images/logo.png' %}" 
           alt="porsgram" 
           title="پرسگرام"></a>
 
