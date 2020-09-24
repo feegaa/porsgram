@@ -1,0 +1,83 @@
+{% extends 'template.html' %}
+
+
+
+
+
+
+
+{% block content %}
+
+
+<div class="ubox">
+    <div class="infobox">
+        <div class="acc">
+            <img src="{{ user.avatarmodel.avatar.url }}" alt="{{ user.username }}'s avatar'">
+            <div class="det">
+                <p>{{ user.username }}</p>
+                <p>امتیاز {{ user.getReputation }} </p>
+                <p>در <small>{{ user.getDate.jd }} </small> عضو شده</p>
+            </div>
+        </div>
+        <div class="aboute_me">
+            <h4>درباره من</h4>
+            <p>
+                {{ user.about_me|safe }}
+            </p>
+        </div>
+    </div>
+
+
+    <div class="qas">
+
+        <h4>سوال های <small style="color: #ff5000;">{{ user.username }} </small></h4>
+        <hr>
+
+        {% for question in user.getQuestions %}
+        <div class="qbox">
+            <a href="#">{{ question.title }}</a>
+            <div class="datag">
+            {% for tag in question.getTags %}
+                <div class="style">
+                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
+                </div>
+            {% endfor %}
+
+                <div class="date">
+                    {{ question.getDate }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="qas">
+        <h4>سوال هایی که <small style="color: #ff5000;">{{ user.username }} </small> جواب داده</h4>
+        <hr>
+
+        {% for answer in user.getAnswers %}
+        <div class="qbox">
+            <a href="#">{{ answer.question.title }}</a>
+            <div class="datag">
+            {% for tag in answer.question.getTags %}
+                <div class="style">
+                    <a href="{{ tag.id }}">{{ tag.tag }}</a>
+                </div>
+            {% endfor %}
+
+                <div class="date">
+                    {{ answer.question.getDate }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+{% endblock content %}
+    

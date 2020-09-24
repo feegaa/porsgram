@@ -1,0 +1,120 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+    
+
+
+{% for question in page_obj %}
+
+
+
+<div class="qbox">
+    <div class="inner">
+        <div class="acc">
+              <a href="{% url 'user:user' username=question.author.username %}">
+                <img src="{{ question.author.avatarmodel.avatar.url }}" alt="avatar">
+                <p>{{ question.author.username }}</p>
+            </a>
+        </div>
+        <div class="state">
+            <div class="tuple">
+              <small>جواب ها</small>
+              <p>{{ question.answers_NO }}</p>
+          </div>
+          <div class="tuple">
+      <small>رای</small>
+      <p>{{ question.vote }}</p>
+    </div>
+    <div class="tuple">
+      <small>بازدید</small>
+      <p>{{ question.review }}</p>
+    </div>
+        </div>
+        <div class="deti">
+            <div class="state-after">
+                <div class="tuple">
+        <small>جواب ها</small>
+        <p>{{ question.answers_NO }}</p>
+      </div>
+      <div class="tuple">
+        <small>رای</small>
+        <p>{{ question.vote }}</p>
+      </div>
+      <div class="tuple">
+        <small>بازدید</small>
+        <p>{{ question.review }}</p>
+      </div>
+            </div>
+
+    <a href="{% url 'QA:question' id=question.id %}" >{{ question.title }}</a>
+            
+            <div class="datag">
+
+                <div class="date">
+        <a href="#">{{ question.author.username }}</a>
+        <small> {{ question.getDate }}&nbsp; &nbsp;{% if question.edited %}ویرایش شده {% endif %} </small>
+
+                </div>
+
+      
+      {% for tag in question.getTags %}
+        <div class="style">
+          <a href="{% url 'QA:tag' id=tag.id %}">{{ tag.tag }}</a>
+        </div>
+      {% endfor %}
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endfor %}
+
+  <nav aria-label="...">
+    {% if page_obj.has_other_pages %}
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">قبلی</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">قبلی</span></li>
+      {% endif %}
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+    <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+    <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+  <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">بعدی</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">بعدی</span></li>
+      {% endif %}
+    </ul>
+  {% endif %}
+
+  </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+{% endblock content %}
+    

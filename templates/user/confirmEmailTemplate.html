@@ -1,0 +1,25 @@
+{% extends 'template.html' %}
+
+
+
+{% block content %}
+    <div class="confirm-box">
+        {% if success %}
+            <p>
+                حساب شما فعال شد
+            </p>
+            <div class="cqbtn">
+                <a href="{% url 'user:dashboard' %}">داشبورد</a>
+            </div>
+        {% else %}
+            <p>
+                مشکلی رخ داده! دوباره اقدام کنید.
+            </p>
+            <a href="{% url 'user:getEmailForActivate' %}">فعال کردن ایمیل.</a>
+
+        {% endif %}
+
+    </div>
+
+{% endblock content %}
+    

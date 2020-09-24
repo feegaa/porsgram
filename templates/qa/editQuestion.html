@@ -1,0 +1,77 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+
+
+
+
+
+<div class="cq">
+
+
+    <div id="has_editor">
+        <form id="post_form" method="post" action="" enctype="multipart/form-data">
+    
+            {% csrf_token %}
+              
+            
+            {{ q_form.media }}
+        
+
+    <p><label for="id_title">عنوان</label>{{ q_form.title }}</p>
+    <p><label for="id_content">سوال</label>
+    <div class="django-ckeditor-widget" data-field-id="id_content" style="display: inline-block; width: 100%;">
+        <textarea   
+            cols="50" 
+            id="id_content" 
+            name="content" 
+            rows="10" 
+            required data-processed="0" 
+            data-config="{&quot;skin&quot;: &quot;moono-lisa&quot;, &quot;toolbar_Basic&quot;: [[&quot;Source&quot;, &quot;-&quot;, &quot;Bold&quot;, &quot;Italic&quot;]], &quot;toolbar_Full&quot;: [[&quot;Bold&quot;, &quot;Underline&quot;, &quot;Strike&quot;, &quot;SpellChecker&quot;, &quot;Undo&quot;, &quot;Redo&quot;], [&quot;Link&quot;, &quot;Unlink&quot;], [&quot;Image&quot;, &quot;Table&quot;], [&quot;Source&quot;], [&quot;JustifyLeft&quot;, &quot;JustifyCenter&quot;, &quot;JustifyRight&quot;, &quot;JustifyBlock&quot;], [&quot;CodeSnippet&quot;]], &quot;toolbar&quot;: &quot;Full&quot;, &quot;height&quot;: 291, &quot;width&quot;: &quot;100%&quot;, &quot;filebrowserWindowWidth&quot;: 740, &quot;filebrowserWindowHeight&quot;: 648, &quot;enterMode&quot;: 2, &quot;extraPlugins&quot;: &quot;justify, liststyle, indent, codesnippet&quot;, &quot;filebrowserUploadUrl&quot;: &quot;/ckeditor/upload&quot;, &quot;filebrowserBrowseUrl&quot;: &quot;/ckeditor/browse&quot;, &quot;language&quot;: &quot;en-us&quot;}" data-external-plugin-resources="[]" data-id="id_content" data-type="ckeditortype">
+            {{ q_form.content }}
+        </textarea>
+    </div>
+       
+
+
+    <p><label for="tags">برچسب ها</label> </p>
+    <select required multiple="multiple" id="tags" name="tags">
+        {% for tag in tags %}
+            {% if tag.id in selected_tags %}
+                <option value="{{ tag.id }}" selected>{{ tag.tag }}</option>
+                {% else %}                
+                <option value="{{ tag.id }}" > {{ tag.tag }}</option>
+            {% endif %}
+        {% endfor %}
+        
+    </select>
+
+
+    <div>
+        <input type="submit" name="submit" value="ارسال" />
+    </div>
+</form>    
+
+
+
+
+    <div class="preview-box">
+        <p id="preview">پیش نمایش
+        </p>    
+    </div>
+    <!-- <div >پیش نمایش</div> -->
+
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock content %}
+    
+

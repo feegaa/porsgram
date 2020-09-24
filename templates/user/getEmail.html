@@ -1,0 +1,13 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">ایمیل</label>
+        <input type="email" name="email" id="email">
+        <input type="submit" name="reset" value="ارسال">
+    </form>
+{% endblock content %}
+    
+

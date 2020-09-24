@@ -1,0 +1,12 @@
+{% extends 'template.html' %}
+
+{% block content %}
+    <h2>You Loged Out</h2>
+    <br>
+    
+    {% if request.user.is_authenticated %}
+    <h3><a href="{% url 'user:login' %}">Login</a></h3>
+        
+    {% endif %}
+        
+{% endblock content %}

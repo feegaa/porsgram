@@ -1,0 +1,33 @@
+
+<!-- 
+<div id="modal-{{ user.username }}" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <p>{{ user.username }} سوال های زیر را پرسیده</p>
+            <span close-button-id="{{ user.username }}" class="closeBtn">&times;</span>    
+        </div>
+        <hr>
+        
+        {% for question in user.getQuestions %}
+            
+        <div class="modal-body">
+            <div class="qbox">
+                <a href="#">{{ question.title }}</a>
+                <div class="datag">
+                    
+                    {% for tag in question.getTags %}
+                        <div class="style">
+                            <a href="{{ tag.id }}">{{ tag.tag }}</a>
+                        </div>                        
+                    {% endfor %}
+                        
+                    <span class="date">{{ question.getDate }}</span>
+                </div>
+            </div>
+        </div>
+            
+        {% endfor %}
+    </div>
+</div> -->
+
+

@@ -1,0 +1,17 @@
+{% extends 'template.html' %}
+
+
+{% block content %}
+    
+    <div class="tbox">
+        {% for tag in tags %}
+            <a href="{% url 'QA:tag' id=tag.id %}">{{ tag.tag }}</a>        
+        {% endfor %}
+    
+    </div>
+        
+
+
+{% endblock content %}
+    
+
